@@ -116,9 +116,9 @@ export function App() {
               onToggleTheme={toggleTheme}
             />
             <Experience />
+            <Skills />
             <Projects />
             <GithubActivity />
-            <Skills />
             <Footer />
           </main>
 

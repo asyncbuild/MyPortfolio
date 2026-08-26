@@ -1,9 +1,9 @@
 import React, { useState, Component } from 'react';
 import type { ReactNode } from 'react';
-import { GitPullRequest, GitMerge, ExternalLink, Sparkles, AlertCircle } from 'lucide-react';
+import { ExternalLink, Sparkles, AlertCircle } from 'lucide-react';
 import { GitHubCalendar } from 'react-github-calendar';
 import { GithubIcon } from './SocialIcons';
-import { OPEN_SOURCE_PRS, PERSONAL_INFO } from '../data/portfolioData';
+import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -44,14 +44,16 @@ class CalendarErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
 }
 
 export const GithubActivity: React.FC = () => {
-  const [prFilter, setPrFilter] = useState<'All' | 'Merged' | 'Open'>('All');
+  // const [prFilter, setPrFilter] = useState<'All' | 'Merged' | 'Open'>('All');
   const [selectedYear, setSelectedYear] = useState<number | 'last'>('last');
 
+  /*
   const filteredPRs = OPEN_SOURCE_PRS.filter((pr) => {
     if (prFilter === 'Merged') return pr.status === 'merged';
     if (prFilter === 'Open') return pr.status === 'open';
     return true;
   });
+  */
 
   // Custom theme matching GitHub's dark theme colors
   const githubDarkTheme = {
@@ -143,13 +145,13 @@ export const GithubActivity: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Open Source PRs Sub-Section Header */}
+      {/* 3. Open Source PRs Sub-Section Header (Commented out) */}
+      {/*
       <div className="flex items-center justify-between gap-4 pt-2">
         <h3 className="text-lg font-bold theme-text-title tracking-tight">
           Featured Pull Requests
         </h3>
 
-        {/* Filter Tabs */}
         <div className="flex items-center gap-1 p-0.5 theme-subtle rounded-md">
           {(['All', 'Merged', 'Open'] as const).map((filter) => (
             <button
@@ -167,7 +169,6 @@ export const GithubActivity: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. PR List View */}
       <div className="space-y-2.5">
         {filteredPRs.length > 0 ? (
           filteredPRs.map((pr) => (
@@ -226,6 +227,7 @@ export const GithubActivity: React.FC = () => {
           </div>
         )}
       </div>
+      */}
     </section>
   );
 };
