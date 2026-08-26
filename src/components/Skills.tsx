@@ -58,22 +58,6 @@ const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   return <Code className="w-3.5 h-3.5 text-neutral-400 flex-shrink-0" />;
 };
 
-// ─── Balanced chunk helper ────────────────────────────────────────────────────
-// Splits a flat array into rows where each row has as equal a count as possible.
-// Adding/removing a skill in SKILLS_LIST is all that's needed — rows reflow auto.
-function chunkBalanced<T>(arr: T[], targetRowSize: number): T[][] {
-  const totalRows = Math.ceil(arr.length / targetRowSize);
-  const rows: T[][] = [];
-  const baseSize = Math.floor(arr.length / totalRows);
-  const extras   = arr.length % totalRows; // first `extras` rows get one more
-  let cursor = 0;
-  for (let r = 0; r < totalRows; r++) {
-    const size = baseSize + (r < extras ? 1 : 0);
-    rows.push(arr.slice(cursor, cursor + size));
-    cursor += size;
-  }
-  return rows;
-}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export const Skills: React.FC = () => {

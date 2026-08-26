@@ -11,8 +11,6 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => 
     { id: 'projects', label: 'Projects' },
     { id: 'opensource', label: 'Open Source' },
     { id: 'skills', label: 'Skills' },
-    { id: 'blog', label: 'Blog' },
-    { id: 'highlights', label: 'Highlights' },
   ];
 
   const scrollToSection = (id: string) => {

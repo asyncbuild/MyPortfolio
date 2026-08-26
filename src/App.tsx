@@ -6,8 +6,6 @@ import { Experience } from './components/Experience';
 import { Projects } from './components/Projects';
 import { GithubActivity } from './components/GithubActivity';
 import { Skills } from './components/Skills';
-import { Blog } from './components/Blog';
-import { Highlights } from './components/Highlights';
 import { IndexSidebar } from './components/IndexSidebar';
 import { Footer } from './components/Footer';
 import { ResumeView } from './components/ResumeView';
@@ -46,7 +44,7 @@ export function App() {
   useEffect(() => {
     if (currentView !== 'home') return;
     const handleScroll = () => {
-      const sectionIds = ['hero', 'experience', 'projects', 'opensource', 'skills', 'blog', 'highlights'];
+      const sectionIds = ['hero', 'experience', 'projects', 'opensource', 'skills'];
       const scrollPosition = window.scrollY + 180;
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
@@ -69,6 +67,7 @@ export function App() {
       // Don't trigger if user is actively typing in an input or textarea
       const target = e.target as HTMLElement;
       const isInput = target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
+      if (isInput) return;
 
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
@@ -120,8 +119,6 @@ export function App() {
             <Projects />
             <GithubActivity />
             <Skills />
-            <Blog />
-            <Highlights />
             <Footer />
           </main>
 

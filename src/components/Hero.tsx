@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, Mail, FileText, Command, Sun, Moon } from 'lucide-react';
+import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, TwitterIcon, LinkedinIcon, DiscordIcon } from './SocialIcons';
 
@@ -105,10 +106,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
 
           {/* Name & Subtitle */}
           <div className="mb-4">
-            <h1 className="text-2xl sm:text-4xl font-extrabold theme-text-title tracking-tight flex items-center gap-3">
-              {PERSONAL_INFO.name}
+            <h1 className="flex items-center gap-3">
+              <ContainerTextFlip
+                words={[PERSONAL_INFO.name, "asyncbuild"]}
+                interval={5000}
+                className="text-2xl sm:text-4xl font-extrabold tracking-tight pb-2"
+              />
             </h1>
-            <p className="text-xs theme-text-faint font-mono mt-1 font-medium flex items-center gap-1.5 flex-wrap">
+            <p className="text-xs theme-text-faint font-mono mt-2 font-medium flex items-center gap-1.5 flex-wrap">
               <LiveAgeCounter /> years old • {PERSONAL_INFO.location}
             </p>
           </div>
@@ -121,13 +126,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
           {/* Bio Bullet Points */}
           <ul className="space-y-2 mb-6 sm:mb-7 text-xs sm:text-sm theme-text-muted">
             {PERSONAL_INFO.bioPoints.map((point, index) => {
-              const parts = point.split(/(Draco|VengeanceUI)/g);
+              const parts = point.split(/(React|TypeScript|Draco|VengeanceUI)/g);
               return (
                 <li key={index} className="flex items-start gap-2.5">
                   <span className="theme-text-faint select-none mt-0.5">•</span>
                   <span className="leading-relaxed">
                     {parts.map((part, i) =>
-                      part === 'Draco' || part === 'VengeanceUI' ? (
+                      part === 'React' || part === 'TypeScript' || part === 'Draco' || part === 'VengeanceUI' ? (
                         <strong key={i} className="theme-text-title font-semibold">{part}</strong>
                       ) : (
                         part

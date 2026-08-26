@@ -169,56 +169,62 @@ export const GithubActivity: React.FC = () => {
 
       {/* 4. PR List View */}
       <div className="space-y-2.5">
-        {filteredPRs.map((pr) => (
-          <a
-            key={pr.id}
-            href={pr.url}
-            target="_blank"
-            rel="noreferrer"
-            className="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-lg theme-card transition-all duration-200 gap-3 select-none"
-          >
-            <div className="flex items-start gap-3">
-              <div className="pt-0.5">
-                {pr.status === 'merged' ? (
-                  <div className="p-1.5 rounded-md bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30" title="Merged">
-                    <GitMerge className="w-4 h-4" />
-                  </div>
-                ) : (
-                  <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" title="Open">
-                    <GitPullRequest className="w-4 h-4" />
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2 py-0.5 rounded-md theme-subtle text-[10px] font-mono theme-text-title font-semibold">
-                    {pr.repo}
-                  </span>
-                  <span className="text-xs font-mono theme-text-faint">#{pr.prNumber}</span>
-                  <span className="text-xs theme-text-faint font-mono">• {pr.mergedDate}</span>
+        {filteredPRs.length > 0 ? (
+          filteredPRs.map((pr) => (
+            <a
+              key={pr.id}
+              href={pr.url}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-lg theme-card transition-all duration-200 gap-3 select-none"
+            >
+              <div className="flex items-start gap-3">
+                <div className="pt-0.5">
+                  {pr.status === 'merged' ? (
+                    <div className="p-1.5 rounded-md bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30" title="Merged">
+                      <GitMerge className="w-4 h-4" />
+                    </div>
+                  ) : (
+                    <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" title="Open">
+                      <GitPullRequest className="w-4 h-4" />
+                    </div>
+                  )}
                 </div>
 
-                <h4 className="text-sm font-semibold theme-text-title transition-colors mt-1">
-                  {pr.title}
-                </h4>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md theme-subtle text-[10px] font-mono theme-text-title font-semibold">
+                      {pr.repo}
+                    </span>
+                    <span className="text-xs font-mono theme-text-faint">#{pr.prNumber}</span>
+                    <span className="text-xs theme-text-faint font-mono">• {pr.mergedDate}</span>
+                  </div>
 
-                <p className="text-xs theme-text-muted mt-0.5 line-clamp-1">
-                  {pr.description}
-                </p>
+                  <h4 className="text-sm font-semibold theme-text-title transition-colors mt-1">
+                    {pr.title}
+                  </h4>
+
+                  <p className="text-xs theme-text-muted mt-0.5 line-clamp-1">
+                    {pr.description}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center justify-between md:justify-end gap-4 text-xs font-mono">
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="text-emerald-500 font-medium">+{pr.additions}</span>
-                <span className="text-rose-500 font-medium">-{pr.deletions}</span>
+              <div className="flex items-center justify-between md:justify-end gap-4 text-xs font-mono">
+                <div className="flex items-center gap-2 text-[11px]">
+                  <span className="text-emerald-500 font-medium">+{pr.additions}</span>
+                  <span className="text-rose-500 font-medium">-{pr.deletions}</span>
+                </div>
+
+                <ExternalLink className="w-3.5 h-3.5 theme-text-faint group-hover:theme-text-title transition-colors" />
               </div>
-
-              <ExternalLink className="w-3.5 h-3.5 theme-text-faint group-hover:theme-text-title transition-colors" />
-            </div>
-          </a>
-        ))}
+            </a>
+          ))
+        ) : (
+          <div className="p-6 rounded-lg theme-card text-center text-xs font-mono theme-text-faint">
+            No public pull requests listed yet.
+          </div>
+        )}
       </div>
     </section>
   );

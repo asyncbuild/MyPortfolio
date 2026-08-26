@@ -5,7 +5,7 @@ export interface ExperienceItem {
   companyUrl?: string;
   period: string;
   location: string;
-  type: 'Full-time' | 'Contract' | 'Open Source' | 'Advisory';
+  type: 'Full-time' | 'Contract' | 'Freelance' | 'Open Source' | 'Advisory';
   metricBadges: string[];
   bulletPoints: string[];
   techStack: string[];
