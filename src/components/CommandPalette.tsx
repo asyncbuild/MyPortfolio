@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ArrowRight, FolderGit2, Briefcase, Code, BookOpen, User, Calendar, Mail, FileText, ExternalLink, X } from 'lucide-react';
+import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 
 interface CommandPaletteProps {
@@ -7,21 +7,40 @@ interface CommandPaletteProps {
   onClose: () => void;
   onOpenCalModal: () => void;
   onOpenResume: () => void;
+  onOpenTerminal?: () => void;
 }
 
-export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onOpenCalModal, onOpenResume }) => {
+export const CommandPalette: React.FC<CommandPaletteProps> = ({
+  isOpen,
+  onClose,
+  onOpenCalModal,
+  onOpenResume,
+  onOpenTerminal,
+}) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Define commands
+  // Define clean commands
   const commands = [
-    { id: 'sec-hero', category: 'Navigation', label: 'Go to Hero / Profile', icon: User, action: () => scrollToSection('hero') },
+    { id: 'sec-hero', category: 'Navigation', label: 'Go to About / Profile', icon: User, action: () => scrollToSection('hero') },
     { id: 'sec-exp', category: 'Navigation', label: 'Go to Work Experience', icon: Briefcase, action: () => scrollToSection('experience') },
+    { id: 'sec-skills', category: 'Navigation', label: 'Go to Skills & Technologies', icon: Code, action: () => scrollToSection('skills') },
     { id: 'sec-proj', category: 'Navigation', label: 'Go to Featured Projects', icon: FolderGit2, action: () => scrollToSection('projects') },
-    { id: 'sec-gh', category: 'Navigation', label: 'Go to GitHub Activity', icon: Code, action: () => scrollToSection('github') },
-    { id: 'sec-skills', category: 'Navigation', label: 'Go to Skills Matrix', icon: Code, action: () => scrollToSection('skills') },
-    { id: 'sec-blog', category: 'Navigation', label: 'Go to Technical Articles', icon: BookOpen, action: () => scrollToSection('blog') },
+    { id: 'sec-showcase', category: 'Navigation', label: 'Go to Code Craft & Architecture', icon: Code, action: () => scrollToSection('showcase') },
+    { id: 'sec-gh', category: 'Navigation', label: 'Go to GitHub Contributions', icon: Code, action: () => scrollToSection('opensource') },
+
+    // Developer CLI Tool
+    {
+      id: 'act-terminal',
+      category: 'Developer Tools',
+      label: 'Open Interactive CLI Terminal (Ctrl+T)',
+      icon: Terminal,
+      action: () => {
+        onClose();
+        if (onOpenTerminal) onOpenTerminal();
+      },
+    },
 
     // Quick Actions
     { id: 'act-cal', category: 'Actions', label: 'Book an Intro Call (Cal.com)', icon: Calendar, action: () => { onClose(); onOpenCalModal(); } },
@@ -44,6 +63,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
     { id: 'soc-gh', category: 'Social Links', label: 'GitHub Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.github, '_blank') },
     { id: 'soc-tw', category: 'Social Links', label: 'Twitter / X Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.twitter, '_blank') },
     { id: 'soc-li', category: 'Social Links', label: 'LinkedIn Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.linkedin, '_blank') },
+    { id: 'soc-dc', category: 'Social Links', label: 'Discord Community', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.discord, '_blank') },
   ];
 
   const filteredCommands = commands.filter(cmd =>

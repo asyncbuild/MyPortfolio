@@ -1,13 +1,17 @@
 import React from 'react';
-import { Calendar, Mail, FileText, Command, Sun, Moon } from 'lucide-react';
+import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, TwitterIcon, LinkedinIcon, DiscordIcon } from './SocialIcons';
+import { Magnetic } from './ui/Magnetic';
+import { SpotlightCard } from './ui/SpotlightCard';
+import { useToast } from '../context/ToastContext';
 
 interface HeroProps {
   onOpenCalModal: () => void;
   onOpenCommandPalette: () => void;
   onOpenResume: () => void;
+  onOpenTerminal: () => void;
   theme: 'dark' | 'light';
   onToggleTheme: (e?: React.MouseEvent) => void;
 }
@@ -32,19 +36,31 @@ const LiveAgeCounter: React.FC = () => {
   }, []);
 
   return (
-    <span className="font-mono text-cyan-400 font-bold tracking-tight">
+    <span className="font-mono text-indigo-400 dark:text-indigo-400 font-bold tracking-tight">
       {ageStr || '23.000000000'}
     </span>
   );
 };
 
-export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette, onOpenResume, theme, onToggleTheme }) => {
+export const Hero: React.FC<HeroProps> = ({
+  onOpenCalModal,
+  onOpenCommandPalette,
+  onOpenResume,
+  onOpenTerminal,
+  theme,
+  onToggleTheme,
+}) => {
   const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
+  const { copyToClipboard } = useToast();
+
+  const handleCopyEmail = () => {
+    copyToClipboard(PERSONAL_INFO.email, `Copied ${PERSONAL_INFO.email} to clipboard!`);
+  };
 
   return (
     <section id="hero" className="relative pt-2 pb-4">
       {/* Outer Clean Card */}
-      <div className="relative rounded-lg theme-card overflow-hidden shadow-sm">
+      <SpotlightCard className="relative overflow-hidden shadow-sm">
 
         {/* Top Header Banner Artwork */}
         <div className="w-full h-40 sm:h-52 relative overflow-hidden bg-black border-b theme-border">
@@ -59,31 +75,45 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
         {/* Profile Content Body */}
         <div className="p-4 sm:p-8 relative">
 
-          {/* Top Row: Avatar & Command trigger */}
+          {/* Top Row: Avatar & Controls */}
           <div className="flex items-start justify-between gap-4 -mt-14 sm:-mt-20 mb-5 sm:mb-6 relative z-10">
 
-            {/* Avatar Image */}
-            <div className="relative">
-              <img
-                src={PERSONAL_INFO.avatarUrl}
-                alt={PERSONAL_INFO.name}
-                className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg object-cover border-2 theme-border shadow-2xl bg-black"
-              />
-            </div>
+            {/* Avatar Image with Magnetic Pull */}
+            <Magnetic strength={0.2}>
+              <div className="relative cursor-pointer group">
+                <img
+                  src={PERSONAL_INFO.avatarUrl}
+                  alt={PERSONAL_INFO.name}
+                  className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg object-cover border-2 theme-border shadow-2xl bg-black group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-zinc-950 rounded-full shadow-sm ring-2 ring-emerald-500/30" title="Available for work" />
+              </div>
+            </Magnetic>
 
-            {/* Top Right Quick Action Controls */}
+            {/* Top Right Clean Controls */}
             <div className="flex items-center gap-1.5 sm:gap-2 pt-12 sm:pt-16">
-              {/* Command Palette Button (Handles both Ctrl+K and Cmd+K) */}
+              {/* CLI Terminal Launcher Button */}
+              <button
+                onClick={onOpenTerminal}
+                className="px-2.5 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                title="Open Interactive Terminal (Ctrl+T)"
+                aria-label="Open Terminal"
+              >
+                <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="hidden sm:inline">CLI</span>
+              </button>
+
+              {/* Command Palette Button */}
               <button
                 onClick={onOpenCommandPalette}
-                className="px-2 sm:px-2.5 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-sm cursor-pointer active:scale-95"
+                className="px-2.5 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
                 title={`Command Palette (${isMac ? '⌘K' : 'Ctrl+K'})`}
                 aria-label="Open Command Palette"
               >
                 {isMac ? (
-                  <Command className="w-3.5 h-3.5" />
+                  <Command className="w-3.5 h-3.5 text-indigo-400" />
                 ) : (
-                  <span className="text-[10px] font-semibold">Ctrl</span>
+                  <span className="text-[10px] font-semibold text-indigo-400">Ctrl</span>
                 )}
                 <span>K</span>
               </button>
@@ -91,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
               {/* Theme Toggle Button (Dark / Light) */}
               <button
                 onClick={(e) => onToggleTheme(e)}
-                className="p-1.5 sm:p-2 rounded-md theme-subtle text-xs font-mono transition-all flex items-center justify-center shadow-sm cursor-pointer active:scale-95"
+                className="p-1.5 sm:p-2 rounded-md theme-subtle text-xs font-mono transition-all flex items-center justify-center shadow-xs cursor-pointer active:scale-95"
                 title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
                 aria-label="Toggle theme"
               >
@@ -146,21 +176,27 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
 
           {/* Intro Call & Email Action Buttons */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-6 sm:mb-8">
-            <button
-              onClick={onOpenCalModal}
-              className="px-3.5 sm:px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
-            >
-              <Calendar className="w-4 h-4" />
-              Book an intro call
-            </button>
+            <Magnetic strength={0.15}>
+              <button
+                onClick={onOpenCalModal}
+                className="px-3.5 sm:px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
+              >
+                <Calendar className="w-4 h-4" />
+                Book an intro call
+              </button>
+            </Magnetic>
 
-            <a
-              href={`mailto:${PERSONAL_INFO.email}`}
-              className="px-3.5 sm:px-4 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Mail className="w-4 h-4" />
-              Send an email
-            </a>
+            <Magnetic strength={0.15}>
+              <button
+                onClick={handleCopyEmail}
+                className="px-3.5 sm:px-4 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-xs"
+                title="Click to copy email address"
+              >
+                <Mail className="w-4 h-4" />
+                <span>contact.deepeshreddy@gmail.com</span>
+                <Copy className="w-3 h-3 text-zinc-500 hover:text-white" />
+              </button>
+            </Magnetic>
           </div>
 
           {/* Social Links Section */}
@@ -170,59 +206,70 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCalModal, onOpenCommandPalette
             </p>
 
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <a
-                href={PERSONAL_INFO.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer"
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-                GitHub
-              </a>
+              <Magnetic strength={0.2}>
+                <a
+                  href={PERSONAL_INFO.socials.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
+                >
+                  <GithubIcon className="w-3.5 h-3.5" />
+                  GitHub
+                </a>
+              </Magnetic>
 
-              <a
-                href={PERSONAL_INFO.socials.twitter}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer"
-              >
-                <TwitterIcon className="w-3.5 h-3.5" />
-                Twitter
-              </a>
+              <Magnetic strength={0.2}>
+                <a
+                  href={PERSONAL_INFO.socials.twitter}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
+                >
+                  <TwitterIcon className="w-3.5 h-3.5" />
+                  Twitter
+                </a>
+              </Magnetic>
 
-              <a
-                href={PERSONAL_INFO.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer"
-              >
-                <LinkedinIcon className="w-3.5 h-3.5" />
-                LinkedIn
-              </a>
+              <Magnetic strength={0.2}>
+                <a
+                  href={PERSONAL_INFO.socials.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
+                >
+                  <LinkedinIcon className="w-3.5 h-3.5" />
+                  LinkedIn
+                </a>
+              </Magnetic>
 
-              <a
-                href={PERSONAL_INFO.socials.discord}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer"
-              >
-                <DiscordIcon className="w-3.5 h-3.5" />
-                Discord
-              </a>
+              <Magnetic strength={0.2}>
+                <a
+                  href={PERSONAL_INFO.socials.discord}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
+                >
+                  <DiscordIcon className="w-3.5 h-3.5" />
+                  Discord
+                </a>
+              </Magnetic>
 
-              <button
-                onClick={onOpenResume}
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                Resume
-              </button>
+              <Magnetic strength={0.2}>
+                <button
+                  onClick={onOpenResume}
+                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  Resume
+                </button>
+              </Magnetic>
             </div>
           </div>
 
         </div>
 
-      </div>
+      </SpotlightCard>
     </section>
   );
 };
+

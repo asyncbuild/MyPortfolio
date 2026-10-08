@@ -3,8 +3,8 @@ import type { ExperienceItem, ProjectItem, OpenSourcePR, BlogPost, HighlightItem
 export const PERSONAL_INFO = {
   name: "Deepesh Reddy",
   age: "23",
-  title: "Full Stack Web Developer",
-  tagline: "I love designing, building, and shipping fast, interactive web applications.",
+  title: "Data & AI Engineer • Full-Stack Developer",
+  tagline: "Data & AI Engineer at EY GDS by profession, Full-Stack Developer by passion. Building intelligent systems and fast, interactive web applications.",
   statusText: "Available for projects",
   location: "Remote",
   email: "contact.deepeshreddy@gmail.com",
@@ -20,9 +20,9 @@ export const PERSONAL_INFO = {
     discord: "https://discord.gg/asyncbuild",
   },
   bioPoints: [
-    "Passionate about building clean, high-performance web applications and UI components.",
-    "Crafting interactive full-stack web projects step-by-step with React, TypeScript, and modern tech.",
-    // "Currently building Draco, VengeanceUI, and experimental AI tools."
+    "Data & AI Engineer at EY GDS — engineering scalable data pipelines, AI integrations, and automated workflows.",
+    "Full-stack developer by passion — crafting real-time web platforms (WhisprLive), UI component systems, and interactive tools with React, TypeScript, and Node.js.",
+    "Bridging intelligent data/AI backends with high-performance, polished frontend experiences.",
   ],
   quickStats: [
     { label: "Projects Built", value: "95+" },
@@ -35,19 +35,19 @@ export const PERSONAL_INFO = {
 export const EXPERIENCES: ExperienceItem[] = [
   {
     id: "exp-1",
-    role: "Software Engineer",
+    role: "Data & AI Engineer",
     company: "EY GDS",
     companyUrl: "https://www.ey.com",
     period: "Aug 2025 - Present",
     location: "Kolkata",
     type: "Full-time",
-    metricBadges: ["Software Engineering", "Full Stack", "Python"],
+    metricBadges: ["Data & AI Engineering", "Python", "Enterprise Systems"],
     bulletPoints: [
-      "Developed web services and data tools using Python and modern web frameworks.",
-      "Collaborated with cross-functional teams to build and maintain high-quality software solutions.",
-      "Built internal web tools to streamline automated data collection and reporting workflows."
+      "Engineered scalable data pipelines, analytics services, and automated data tools using Python and SQL.",
+      "Collaborated with cross-functional enterprise teams to deploy robust data services and AI-assisted workflows.",
+      "Built internal full-stack web tools to streamline automated data collection, transformation, and reporting."
     ],
-    techStack: ["Python", "JavaScript", "SQL"],
+    techStack: ["Python", "SQL", "FastAPI", "JavaScript", "AI & ML Tools"],
     highlightColor: "indigo"
   },
   {
@@ -70,6 +70,28 @@ export const EXPERIENCES: ExperienceItem[] = [
 ];
 
 export const PROJECTS: ProjectItem[] = [
+  {
+    id: "proj-whispr",
+    title: "WhisprLive",
+    tagline: "Zero-install real-time audience interaction platform for conferences & events.",
+    description: "WhisprLive transforms presentations into interactive conversations with zero-install QR access, anonymous Q&A, crowdsourced upvoting, live polls, word clouds, and 4K stage projector mode.",
+    status: "Live",
+    metrics: "Sub-50ms Socket.IO • Zero App Installs • 4K Stage Mode",
+    mediaType: "image",
+    previewImage: "/whisprlive-logo.png",
+    embedUrl: "https://whisprlive.live",
+    demoUrl: "https://whisprlive.live",
+    githubUrl: "https://github.com/asyncbuild/WhisprLive",
+    tags: ["React", "Node.js", "Socket.IO", "PostgreSQL", "Tailwind CSS", "WebSockets"],
+    featured: true,
+    colorHighlight: "cyan",
+    architecture: {
+      painPoint: "Audience hesitation and fear of speaking up, friction from app downloads/signups, and disorganized Q&A chat flood during live presentations.",
+      whatWeSolved: "Zero-install instant QR access in under 3 seconds, 100% anonymous Q&A, crowdsourced democratic upvoting, and a dedicated 4K stage projector view.",
+      howWeSolved: "Engineered room-scoped Socket.IO WebSocket clustering for <50ms bi-directional event sync, in-memory democratic ranking algorithms, and decoupled asynchronous PostgreSQL persistence.",
+      keyMetric: "< 50ms Real-Time Event Sync"
+    }
+  },
   {
     id: "proj-1",
     title: "VengeanceUI",
@@ -102,7 +124,7 @@ export const PROJECTS: ProjectItem[] = [
   }
 ];
 
-export const ALL_PROJECTS_COUNT = 2;
+export const ALL_PROJECTS_COUNT = 3;
 
 export const OPEN_SOURCE_PRS: OpenSourcePR[] = [
   /*

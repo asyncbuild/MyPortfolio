@@ -43,20 +43,15 @@ class CalendarErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
   }
 }
 
-export const GithubActivity: React.FC = () => {
-  // const [prFilter, setPrFilter] = useState<'All' | 'Merged' | 'Open'>('All');
+interface GithubActivityProps {
+  theme?: 'dark' | 'light';
+}
+
+export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }) => {
   const [selectedYear, setSelectedYear] = useState<number | 'last'>('last');
 
-  /*
-  const filteredPRs = OPEN_SOURCE_PRS.filter((pr) => {
-    if (prFilter === 'Merged') return pr.status === 'merged';
-    if (prFilter === 'Open') return pr.status === 'open';
-    return true;
-  });
-  */
-
-  // Custom theme matching GitHub's dark theme colors
-  const githubDarkTheme = {
+  // Custom theme matching GitHub's official dark & light theme colors
+  const githubTheme = {
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
   };
@@ -101,7 +96,7 @@ export const GithubActivity: React.FC = () => {
                 onClick={() => setSelectedYear(year)}
                 className={`px-2.5 py-1 rounded-sm text-xs font-mono font-medium transition-all cursor-pointer ${
                   selectedYear === year
-                    ? 'bg-neutral-800 text-white dark:bg-[#27272a] shadow-sm font-semibold'
+                    ? 'theme-btn-primary shadow-xs font-semibold'
                     : 'theme-text-faint hover:theme-text-title'
                 }`}
               >
@@ -114,7 +109,7 @@ export const GithubActivity: React.FC = () => {
             href={PERSONAL_INFO.socials.github}
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-3 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs"
           >
             <span>GitHub Profile</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -129,8 +124,8 @@ export const GithubActivity: React.FC = () => {
             <GitHubCalendar
               username="asyncbuild"
               year={selectedYear}
-              colorScheme="dark"
-              theme={githubDarkTheme}
+              colorScheme={theme}
+              theme={githubTheme}
               blockSize={12}
               blockMargin={3.5}
               fontSize={12}

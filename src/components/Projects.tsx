@@ -1,188 +1,180 @@
 import React, { useState } from 'react';
-import { ExternalLink, ArrowRight, Hammer, Lock, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Hammer, Lock, Sparkles } from 'lucide-react';
 import { PROJECTS, ALL_PROJECTS_COUNT } from '../data/portfolioData';
+import { SpotlightCard } from './ui/SpotlightCard';
+import type { ProjectItem } from '../types/portfolio';
 
-// SVG Tech Icons matching screenshot 3
-const TechIcon: React.FC<{ name: string }> = ({ name }) => {
-  const n = name.toLowerCase();
-  if (n.includes('next')) {
-    return (
-      <span className="w-5 h-5 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center text-[10px] font-bold text-white" title="Next.js">
-        N
-      </span>
-    );
-  }
-  if (n.includes('react')) {
-    return (
-      <span className="w-5 h-5 rounded-full bg-cyan-950/60 border border-cyan-500/30 flex items-center justify-center text-[10px] text-cyan-400 font-bold" title="React">
-        ⚛
-      </span>
-    );
-  }
-  if (n.includes('ts') || n.includes('typescript')) {
-    return (
-      <span className="w-5 h-5 rounded bg-blue-950 border border-blue-500/30 flex items-center justify-center text-[9px] text-blue-400 font-bold font-mono" title="TypeScript">
-        TS
-      </span>
-    );
-  }
-  if (n.includes('tailwind')) {
-    return (
-      <span className="w-5 h-5 rounded-full bg-sky-950 border border-sky-500/30 flex items-center justify-center text-[10px] text-sky-400" title="Tailwind CSS">
-        ≈
-      </span>
-    );
-  }
-  if (n.includes('motion') || n.includes('framer')) {
-    return (
-      <span className="w-5 h-5 rounded bg-purple-950 border border-purple-500/30 flex items-center justify-center text-[10px] text-purple-400 font-bold" title="Framer Motion">
-        ▲
-      </span>
-    );
-  }
-  if (n.includes('python')) {
-    return (
-      <span className="w-5 h-5 rounded bg-amber-950 border border-amber-500/30 flex items-center justify-center text-[10px] text-amber-400 font-bold" title="Python">
-        🐍
-      </span>
-    );
-  }
-  return (
-    <span className="w-5 h-5 rounded bg-neutral-900 border border-neutral-700 flex items-center justify-center text-[9px] text-neutral-300 font-mono" title={name}>
-      {name.substring(0, 2).toUpperCase()}
-    </span>
-  );
-};
+interface ProjectsProps {
+  onSelectProject?: (project: ProjectItem) => void;
+}
 
-export const Projects: React.FC = () => {
+export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
   const [showAll, setShowAll] = useState(false);
 
   const displayedProjects = showAll ? PROJECTS : PROJECTS.slice(0, 4);
 
   return (
-    <section id="projects" className="py-2 relative">
+    <section id="projects" className="py-2 relative space-y-4">
       {/* Section Title */}
-      <h2 className="text-2xl font-bold theme-text-title tracking-tight mb-5">
-        Projects
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl sm:text-2xl font-bold theme-text-title tracking-tight flex items-center gap-2">
+          <span>Projects</span>
+          <span className="text-xs font-mono font-normal px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+            {PROJECTS.length} Featured
+          </span>
+        </h2>
+        <span className="text-xs font-mono theme-text-faint hidden sm:inline">
+          Click card for deep dive
+        </span>
+      </div>
 
-      {/* Projects Grid */}
+      {/* Clean Streamlined Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {displayedProjects.map((project) => {
           const isLive = project.status === 'Live';
 
           return (
-            <div
+            <SpotlightCard
               key={project.id}
-              className={`rounded-lg theme-card p-5 flex flex-col justify-between transition-all duration-200 group relative ${!isLive ? 'border-dashed opacity-90' : ''
-                }`}
+              onClick={() => {
+                if (onSelectProject) {
+                  onSelectProject(project);
+                }
+              }}
+              className={`p-4 sm:p-5 flex flex-col justify-between cursor-pointer group rounded-xl border theme-border transition-all duration-200 hover:border-zinc-700 ${
+                !isLive ? 'border-dashed opacity-85' : ''
+              }`}
+              spotlightColor="rgba(99, 102, 241, 0.08)"
             >
-              <div>
-                {/* Media Preview Box (Blurred when Building / In Progress) */}
-                <div className="relative w-full h-44 sm:h-48 rounded-md bg-black theme-border border overflow-hidden mb-4 group-hover:border-neutral-500 transition-colors">
+              <div className="space-y-3.5">
+                {/* Clean Media Preview Area */}
+                <div className="relative w-full h-40 sm:h-44 rounded-lg bg-zinc-950/80 border theme-border overflow-hidden flex items-center justify-center">
+                  {project.id === 'proj-whispr' ? (
+                    /* Clean WhisprLive Brand Showcase */
+                    <div className="w-full h-full p-4 flex flex-col items-center justify-center bg-gradient-to-br from-zinc-950 via-zinc-900 to-indigo-950/40 relative overflow-hidden">
+                      {/* Subtle Ambient Radial Glow */}
+                      <div className="absolute inset-0 bg-radial from-blue-600/10 via-transparent to-transparent pointer-events-none" />
 
-                  {/* Preview Image with conditional Blur */}
-                  <img
-                    src={project.previewImage}
-                    alt={project.title}
-                    className={`w-full h-full object-cover object-center transition-all duration-500 ${isLive
-                      ? 'group-hover:scale-105 opacity-90 group-hover:opacity-100'
-                      : 'filter blur-[7px] scale-110 opacity-40 select-none'
-                      }`}
-                  />
-
-                  {/* Subtle Gradient Shadow */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70 pointer-events-none" />
+                      <div className="relative z-10 flex flex-col items-center text-center space-y-1.5">
+                        <img
+                          src="/whisprlive-logo.png"
+                          alt="WhisprLive Logo"
+                          className="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-[0_6px_14px_rgba(37,99,235,0.3)] transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="text-sm font-bold text-white tracking-tight flex items-center gap-1">
+                          Whispr<span className="text-blue-400">Live</span>
+                        </div>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                          Sub-50ms Real-Time Platform
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Standard High-Quality Screenshot for Other Projects */
+                    <div className="w-full h-full relative overflow-hidden bg-zinc-950">
+                      <img
+                        src={project.previewImage}
+                        alt={project.title}
+                        className={`w-full h-full object-cover object-center transition-all duration-500 ${
+                          isLive
+                            ? 'group-hover:scale-105 opacity-90 group-hover:opacity-100'
+                            : 'filter blur-[7px] scale-110 opacity-30 select-none'
+                        }`}
+                      />
+                    </div>
+                  )}
 
                   {/* "In Progress / Building" Frosted Glass Overlay Badge */}
                   {!isLive && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-black/40 backdrop-blur-[2px] z-10 select-none">
-                      <div className="px-3 py-1.5 rounded-md bg-neutral-900/90 dark:bg-black/80 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center gap-2 shadow-2xl animate-in zoom-in duration-300">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-3 bg-black/40 backdrop-blur-[2px] z-10 select-none">
+                      <div className="px-3 py-1 rounded-md bg-neutral-900/90 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center gap-1.5 shadow-xl">
                         <Hammer className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
-                        <span className="font-semibold tracking-tight">Building in Progress</span>
+                        <span className="font-semibold">Building in Progress</span>
                       </div>
-                      <span className="text-[10px] font-mono text-neutral-400 mt-1.5 drop-shadow-md">
-                        Reveals once hosted & live
-                      </span>
                     </div>
                   )}
                 </div>
 
-                {/* Title & Status Pill */}
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-base sm:text-lg font-bold theme-text-title transition-colors flex items-center gap-2">
-                    {project.title}
-                    {!isLive && (
-                      <span title="Building in progress">
+                {/* Title & Status Row */}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h3 className="text-base font-bold theme-text-title group-hover:text-white transition-colors flex items-center gap-1.5">
+                      <span>{project.title}</span>
+                      {!isLive && (
                         <Lock className="w-3.5 h-3.5 theme-text-faint inline" />
-                      </span>
-                    )}
-                  </h3>
+                      )}
+                    </h3>
 
-                  <span
-                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-mono font-medium border ${isLive
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-                      }`}
-                  >
                     <span
-                      className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500 animate-pulse'
+                      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-mono font-medium border ${
+                        isLive
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isLive ? 'bg-emerald-400' : 'bg-amber-400'
                         }`}
-                    />
-                    {project.status}
-                  </span>
-                </div>
+                      />
+                      {project.status}
+                    </span>
+                  </div>
 
-                {/* Description */}
-                <p className="text-xs theme-text-muted leading-relaxed mb-4 line-clamp-2">
-                  {project.description}
-                </p>
+                  {/* Description */}
+                  <p className="text-xs theme-text-muted leading-relaxed line-clamp-2">
+                    {project.description}
+                  </p>
+                </div>
               </div>
 
-              {/* Footer Row: Tech Icons & View Project Link */}
-              <div className="pt-3 border-t theme-border flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5">
-                  {project.tags.slice(0, 5).map((tech) => (
-                    <TechIcon key={tech} name={tech} />
+              {/* Clean Footer Row: Tech Tags & Details Link */}
+              <div className="mt-4 pt-3 border-t theme-border flex items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-1">
+                  {project.tags.slice(0, 3).map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[10px] font-mono px-2 py-0.5 rounded theme-subtle text-zinc-300"
+                    >
+                      {tech}
+                    </span>
                   ))}
+                  {project.tags.length > 3 && (
+                    <span className="text-[10px] font-mono text-zinc-500 px-1">
+                      +{project.tags.length - 3}
+                    </span>
+                  )}
                 </div>
 
                 {isLive ? (
-                  <a
-                    href={project.demoUrl || project.githubUrl || '#'}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-mono theme-text-muted hover:theme-text-title flex items-center gap-1 group-hover:translate-x-0.5 transition-all"
-                  >
-                    View Project
-                    <ExternalLink className="w-3 h-3 theme-text-faint" />
-                  </a>
+                  <span className="text-xs font-mono text-zinc-400 group-hover:text-white font-medium flex items-center gap-0.5 transition-colors">
+                    <span>Details</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
                 ) : (
-                  <div
-                    className="text-xs font-mono theme-text-faint flex items-center gap-1 cursor-not-allowed select-none opacity-80"
-                    title="This project is currently being built"
-                  >
-                    <span>Launching Soon</span>
-                    <Sparkles className="w-3 h-3 text-amber-500/80" />
+                  <div className="text-xs font-mono theme-text-faint flex items-center gap-1 select-none opacity-80">
+                    <span>Coming Soon</span>
+                    <Sparkles className="w-3 h-3 text-amber-400/80" />
                   </div>
                 )}
               </div>
-            </div>
+            </SpotlightCard>
           );
         })}
       </div>
 
       {/* Bottom "View All" Button */}
-      <div className="mt-6 flex justify-center">
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className="px-4 py-2 rounded-md theme-subtle text-xs font-mono font-medium transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
-        >
-          {showAll ? 'Show Less' : `View All (${ALL_PROJECTS_COUNT} more)`}
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
-
+      {ALL_PROJECTS_COUNT > 4 && (
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="px-4 py-2 rounded-lg theme-subtle text-xs font-mono font-medium transition-all flex items-center gap-2 shadow-xs cursor-pointer active:scale-95"
+          >
+            {showAll ? 'Show Less' : `View All (${ALL_PROJECTS_COUNT})`}
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

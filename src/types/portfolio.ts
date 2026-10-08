@@ -9,7 +9,14 @@ export interface ExperienceItem {
   metricBadges: string[];
   bulletPoints: string[];
   techStack: string[];
-  highlightColor?: 'indigo' | 'emerald';
+  highlightColor?: 'indigo' | 'emerald' | 'cyan' | 'violet';
+}
+
+export interface ProjectArchitecture {
+  painPoint: string;
+  whatWeSolved: string;
+  howWeSolved: string;
+  keyMetric?: string;
 }
 
 export interface ProjectItem {
@@ -19,14 +26,16 @@ export interface ProjectItem {
   description: string;
   status: 'Live' | 'Building' | 'In Progress';
   metrics: string;
-  mediaType: 'image' | 'code' | 'video';
+  mediaType: 'image' | 'code' | 'video' | 'iframe';
   previewImage?: string;
+  embedUrl?: string;
   codeSnippet?: string;
   demoUrl?: string;
   githubUrl?: string;
   tags: string[];
   featured: boolean;
-  colorHighlight?: 'indigo' | 'emerald';
+  colorHighlight?: 'indigo' | 'emerald' | 'cyan' | 'violet';
+  architecture?: ProjectArchitecture;
 }
 
 export interface OpenSourcePR {

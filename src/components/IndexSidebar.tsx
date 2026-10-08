@@ -7,10 +7,12 @@ interface IndexSidebarProps {
 export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => {
   const indexItems = [
     { id: 'hero', label: 'About' },
+    { id: 'currently', label: 'Live Status' },
     { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'opensource', label: 'Open Source' },
     { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'showcase', label: 'Code Craft' },
+    { id: 'opensource', label: 'GitHub' },
   ];
 
   const scrollToSection = (id: string) => {
@@ -63,4 +65,5 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => 
     </aside>
   );
 };
+
 
