@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, ArrowRight, Hammer, Lock, Sparkles, Database, Activity, Cpu } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Hammer, Lock, Sparkles, Database } from 'lucide-react';
 import { PROJECTS, ALL_PROJECTS_COUNT } from '../data/portfolioData';
 import { SpotlightCard } from './ui/SpotlightCard';
 import type { ProjectItem } from '../types/portfolio';

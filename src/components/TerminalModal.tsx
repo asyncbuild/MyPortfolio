@@ -144,7 +144,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
         output = (
           <div className="text-xs space-y-1 text-zinc-300">
             <p>📧 Email: <a href={`mailto:${PERSONAL_INFO.email}`} className="text-zinc-200 underline">{PERSONAL_INFO.email}</a></p>
-            <p>📅 Schedule: <a href={PERSONAL_INFO.calComLink} target="_blank" rel="noreferrer" className="text-zinc-200 underline">{PERSONAL_INFO.calComLink}</a></p>
+            <p>📅 Schedule: <a href={PERSONAL_INFO.calComLink} target="_blank" rel="noopener noreferrer" className="text-zinc-200 underline">{PERSONAL_INFO.calComLink}</a></p>
           </div>
         );
         break;
@@ -152,10 +152,10 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
       case 'socials':
         output = (
           <div className="text-xs space-y-1 text-zinc-300 font-mono">
-            <p>GitHub:   <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.github}</a></p>
-            <p>Twitter:  <a href={PERSONAL_INFO.socials.twitter} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.twitter}</a></p>
-            <p>LinkedIn: <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.linkedin}</a></p>
-            <p>Discord:  <a href={PERSONAL_INFO.socials.discord} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.discord}</a></p>
+            <p>GitHub:   <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.github}</a></p>
+            <p>Twitter:  <a href={PERSONAL_INFO.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.twitter}</a></p>
+            <p>LinkedIn: <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.linkedin}</a></p>
+            <p>Discord:  <a href={PERSONAL_INFO.socials.discord} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.discord}</a></p>
           </div>
         );
         break;

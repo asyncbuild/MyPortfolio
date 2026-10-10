@@ -78,7 +78,7 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
               <a
                 href={PERSONAL_INFO.socials.github}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-emerald-500 hover:underline font-semibold"
               >
                 @asyncbuild
@@ -108,7 +108,7 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
           <a
             href={PERSONAL_INFO.socials.github}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="px-3 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs"
           >
             <span>GitHub Profile</span>
@@ -171,7 +171,7 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
               key={pr.id}
               href={pr.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-lg theme-card transition-all duration-200 gap-3 select-none"
             >
               <div className="flex items-start gap-3">

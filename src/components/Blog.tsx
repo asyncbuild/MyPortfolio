@@ -17,7 +17,7 @@ export const Blog: React.FC = () => {
             key={post.id}
             href={post.url}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="block p-5 sm:p-6 rounded-lg theme-card transition-all duration-200 group select-none"
           >
             <div className="flex items-start justify-between gap-4">

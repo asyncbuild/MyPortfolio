@@ -59,6 +59,12 @@ export function App() {
       document.documentElement.classList.remove('light');
       document.documentElement.classList.add('dark');
     }
+
+    // Refresh favicon dynamically to match active theme
+    const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
+    if (favicon) {
+      favicon.href = `/favicon.svg?theme=${theme}`;
+    }
   }, [theme]);
 
   // Handle browser back/forward and hash changes

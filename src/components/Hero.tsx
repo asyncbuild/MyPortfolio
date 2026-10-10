@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal, Clock, MapPin, Sparkles } from 'lucide-react';
+import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal, Clock, MapPin } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, TwitterIcon, LinkedinIcon, DiscordIcon } from './SocialIcons';
@@ -77,7 +77,9 @@ export const Hero: React.FC<HeroProps> = ({
                 <img
                   src={PERSONAL_INFO.avatarUrl}
                   alt={PERSONAL_INFO.name}
-                  className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg object-cover border-2 theme-border shadow-2xl bg-black group-hover:scale-105 transition-transform"
+                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl object-cover object-center border-2 border-white/20 dark:border-white/10 shadow-2xl bg-zinc-950 transition-all duration-300 group-hover:scale-105 group-hover:border-indigo-500/50 ring-1 ring-black/40"
+                  style={{ imageRendering: '-webkit-optimize-contrast' }}
+                  loading="eager"
                 />
               </div>
             </Magnetic>
@@ -98,16 +100,12 @@ export const Hero: React.FC<HeroProps> = ({
               {/* Command Palette Button */}
               <button
                 onClick={onOpenCommandPalette}
-                className="px-2.5 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                className="px-2.5 py-1.5 rounded-md theme-subtle text-xs font-mono transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95 group"
                 title={`Command Palette (${isMac ? '⌘K' : 'Ctrl+K'})`}
                 aria-label="Open Command Palette"
               >
-                {isMac ? (
-                  <Command className="w-3.5 h-3.5 text-indigo-400" />
-                ) : (
-                  <span className="text-[10px] font-semibold text-indigo-400">Ctrl</span>
-                )}
-                <span>K</span>
+                <Command className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-mono font-medium">{isMac ? '⌘K' : 'Ctrl+K'}</span>
               </button>
 
               {/* Theme Toggle Button (Dark / Light) */}
@@ -138,42 +136,42 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Integrated Live Status & Real-Time IST Clock Banner */}
-          <div className="mb-5 p-3 rounded-xl bg-[var(--subtle-bg)] border theme-border flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs shadow-xs">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          <div className="mb-5 p-3 sm:p-3.5 rounded-xl bg-[var(--subtle-bg)] border theme-border flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3 text-xs shadow-xs">
+            {/* Unified Status Badge & Full Readable Sentence */}
+            <div className="flex items-start gap-2.5 min-w-0">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider shrink-0 mt-0.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>Live</span>
               </span>
-              <div className="flex items-center gap-2 truncate text-xs">
-                <span className="font-mono font-bold uppercase tracking-wider text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shrink-0">
-                  Live
-                </span>
-                <span className="opacity-30 select-none theme-text-faint">•</span>
-                <span className="theme-text-muted truncate text-[11px] sm:text-xs">
-                  Scaling real-time AI on{' '}
-                  <a
-                    href="https://whisprlive.live"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="theme-text-title font-semibold underline decoration-emerald-500/50 underline-offset-2 hover:text-emerald-400 hover:decoration-emerald-400 transition-colors"
-                    title="Open WhisprLive (https://whisprlive.live)"
-                  >
-                    WhisprLive
-                  </a>{' '}
-                  &amp; engineering distributed data pipelines for{' '}
-                  <strong className="theme-text-title font-semibold">GitHub Pulse</strong>
-                </span>
-              </div>
+
+              <p className="theme-text-muted text-[11px] sm:text-xs leading-relaxed">
+                Scaling real-time AI on{' '}
+                <a
+                  href="https://whisprlive.live"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="theme-text-title font-semibold underline decoration-emerald-500/50 underline-offset-2 hover:text-emerald-400 hover:decoration-emerald-400 transition-colors"
+                  title="Open WhisprLive (https://whisprlive.live)"
+                >
+                  WhisprLive
+                </a>{' '}
+                &amp; engineering distributed data pipelines for{' '}
+                <strong className="theme-text-title font-semibold">GitHub Pulse</strong>
+              </p>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] font-mono theme-text-faint shrink-0 self-end sm:self-auto">
+            {/* Location & IST Clock */}
+            <div className="flex items-center gap-2.5 text-[11px] font-mono theme-text-faint shrink-0 pt-2 md:pt-0 border-t md:border-t-0 theme-border md:border-transparent">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-rose-400" />
+                <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                 <span className="theme-text-muted">India</span>
               </div>
               <span className="opacity-30 select-none theme-text-faint">•</span>
               <div className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-amber-400" />
+                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="theme-text-title tabular-nums font-semibold">
                   {timeStr || 'IST'}
                 </span>
