@@ -28,6 +28,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'sec-exp', category: 'Navigation', label: 'Go to Work Experience', icon: Briefcase, action: () => scrollToSection('experience') },
     { id: 'sec-skills', category: 'Navigation', label: 'Go to Skills & Technologies', icon: Code, action: () => scrollToSection('skills') },
     { id: 'sec-gh', category: 'Navigation', label: 'Go to GitHub Contributions', icon: Code, action: () => scrollToSection('opensource') },
+    { id: 'sec-contact', category: 'Navigation', label: 'Go to Custom Projects & Consulting', icon: FolderGit2, action: () => scrollToSection('contact') },
 
     // Developer CLI Tool
     {
@@ -62,7 +63,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'soc-gh', category: 'Social Links', label: 'GitHub Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.github, '_blank') },
     { id: 'soc-tw', category: 'Social Links', label: 'Twitter / X Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.twitter, '_blank') },
     { id: 'soc-li', category: 'Social Links', label: 'LinkedIn Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.linkedin, '_blank') },
-    { id: 'soc-dc', category: 'Social Links', label: 'Discord Community', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.discord, '_blank') },
   ];
 
   const filteredCommands = commands.filter(cmd =>

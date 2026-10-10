@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CommandPalette } from './components/CommandPalette';
 import { CalModal } from './components/CalModal';
 import { Hero } from './components/Hero';
@@ -6,6 +6,7 @@ import { Experience } from './components/Experience';
 import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { GithubActivity } from './components/GithubActivity';
+import { ContactCTA } from './components/ContactCTA';
 import { IndexSidebar } from './components/IndexSidebar';
 import { Footer } from './components/Footer';
 import { ResumeView } from './components/ResumeView';
@@ -33,6 +34,7 @@ export function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [activeSection, setActiveSection] = useState<string>('hero');
+  const scrollLockRef = useRef<number | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('portfolio-theme');
     return (saved as 'dark' | 'light') || 'dark';
@@ -49,6 +51,17 @@ export function App() {
       document.documentElement.classList.remove('light');
       document.documentElement.classList.add('dark');
     }
+  };
+
+  const handleSelectSection = (id: string) => {
+    setActiveSection(id);
+    if (scrollLockRef.current) {
+      window.clearTimeout(scrollLockRef.current);
+    }
+    // Lock scroll spy updates for 1000ms while smooth scrolling completes
+    scrollLockRef.current = window.setTimeout(() => {
+      scrollLockRef.current = null;
+    }, 1000);
   };
 
   useEffect(() => {
@@ -88,19 +101,38 @@ export function App() {
   useEffect(() => {
     if (currentView !== 'home') return;
     const handleScroll = () => {
-      const sectionIds = ['hero', 'projects', 'experience', 'skills', 'opensource'];
-      const scrollPosition = window.scrollY + 180;
+      // If user recently clicked an index link, ignore scroll spy updates until smooth scroll settles
+      if (scrollLockRef.current !== null) return;
+
+      const sectionIds = ['hero', 'projects', 'experience', 'skills', 'opensource', 'contact'];
+
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      // Check if contact section is visible in bottom half or if scrolled near bottom
+      const contactEl = document.getElementById('contact');
+      if (contactEl) {
+        const contactRect = contactEl.getBoundingClientRect();
+        if (contactRect.top <= windowHeight * 0.75 || scrollTop + windowHeight >= docHeight - 180) {
+          setActiveSection('contact');
+          return;
+        }
+      }
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const el = document.getElementById(sectionIds[i]);
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveSection(sectionIds[i]);
-          break;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= windowHeight * 0.45) {
+            setActiveSection(sectionIds[i]);
+            break;
+          }
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentView]);
@@ -179,11 +211,12 @@ export function App() {
               <Experience />
               <Skills />
               <GithubActivity theme={theme} />
+              <ContactCTA onOpenCalModal={() => setCalModalOpen(true)} />
               <Footer />
             </main>
 
             {/* Right Floating Index Sidebar Navigation */}
-            <IndexSidebar activeSection={activeSection} />
+            <IndexSidebar activeSection={activeSection} onSelectSection={handleSelectSection} />
           </div>
         )}
 

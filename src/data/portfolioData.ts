@@ -16,8 +16,7 @@ export const PERSONAL_INFO = {
   socials: {
     github: "https://github.com/asyncbuild",
     twitter: "https://twitter.com/asyncbuild",
-    linkedin: "https://linkedin.com/in/asyncbuild",
-    discord: "https://discord.gg/asyncbuild",
+    linkedin: "https://www.linkedin.com/in/deepesh-reddy-a33a71238/",
   },
   bioPoints: [
     "Data & AI Engineer at EY GDS — engineering scalable data pipelines, AI integrations, and automated workflows.",
@@ -153,8 +152,9 @@ export const SKILLS_LIST = [
   { name: "Web Scraping",  category: "Data" },
   { name: "Data Analysis", category: "Data" },
   { name: "XBRL",          category: "Data" },
-  // Databases (4)
+  // Databases (5)
   { name: "PostgreSQL", category: "Databases" },
+  { name: "Neon DB",    category: "Databases" },
   { name: "MongoDB",    category: "Databases" },
   { name: "MySQL",      category: "Databases" },
   { name: "Redis",      category: "Databases" },
@@ -169,12 +169,13 @@ export const SKILLS_LIST = [
   { name: "Tailwind CSS",category: "Frontend" },
   { name: "HTML/CSS",    category: "Frontend" },
   { name: "Puppeteer",   category: "Automation" },
-  // Tools (4)
+  // Tools & Cloud (6)
   { name: "JWT",       category: "Security" },
   { name: "Zegocloud", category: "Tools" },
   { name: "GitHub",    category: "Tools" },
   { name: "VS Code",   category: "Tools" },
   { name: "Vercel",    category: "Tools" },
+  { name: "Render",    category: "Cloud" },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [];

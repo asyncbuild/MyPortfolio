@@ -155,7 +155,6 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
             <p>GitHub:   <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.github}</a></p>
             <p>Twitter:  <a href={PERSONAL_INFO.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.twitter}</a></p>
             <p>LinkedIn: <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.linkedin}</a></p>
-            <p>Discord:  <a href={PERSONAL_INFO.socials.discord} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.discord}</a></p>
           </div>
         );
         break;

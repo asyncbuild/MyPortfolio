@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal, Clock, MapPin } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { GithubIcon, TwitterIcon, LinkedinIcon, DiscordIcon } from './SocialIcons';
+import { GithubIcon, TwitterIcon, LinkedinIcon } from './SocialIcons';
 import { Magnetic } from './ui/Magnetic';
 import { SpotlightCard } from './ui/SpotlightCard';
 import { useToast } from '../context/ToastContext';
@@ -258,7 +258,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <a
                   href={PERSONAL_INFO.socials.github}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
                 >
                   <GithubIcon className="w-3.5 h-3.5" />
@@ -270,7 +270,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <a
                   href={PERSONAL_INFO.socials.twitter}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
                 >
                   <TwitterIcon className="w-3.5 h-3.5" />
@@ -282,23 +282,11 @@ export const Hero: React.FC<HeroProps> = ({
                 <a
                   href={PERSONAL_INFO.socials.linkedin}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
                 >
                   <LinkedinIcon className="w-3.5 h-3.5" />
                   LinkedIn
-                </a>
-              </Magnetic>
-
-              <Magnetic strength={0.2}>
-                <a
-                  href={PERSONAL_INFO.socials.discord}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-3 py-1.5 rounded-md theme-subtle transition-all flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs"
-                >
-                  <DiscordIcon className="w-3.5 h-3.5" />
-                  Discord
                 </a>
               </Magnetic>
 

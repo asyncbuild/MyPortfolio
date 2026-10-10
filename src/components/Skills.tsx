@@ -38,6 +38,7 @@ const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   if (n.includes('analysis'))   return <BarChart3   className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />;
   if (n === 'puppeteer')        return <Bot         className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />;
   if (n.includes('postgres'))   return <Database    className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />;
+  if (n.includes('neon'))       return <Database    className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />;
   if (n === 'mysql')            return <Database    className="w-3.5 h-3.5 text-sky-500 flex-shrink-0" />;
   if (n === 'mongodb')          return <Leaf        className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />;
   if (n === 'redis')            return <Layers      className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />;
@@ -54,6 +55,7 @@ const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   if (n === 'github')           return <GithubIcon  className="w-3.5 h-3.5 theme-text-title flex-shrink-0" />;
   if (n.includes('vs code'))    return <Code        className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />;
   if (n === 'vercel')           return <span className="font-bold text-[10px] theme-text-title flex-shrink-0">▲</span>;
+  if (n === 'render')           return <Cloud       className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />;
 
   return <Code className="w-3.5 h-3.5 theme-text-faint flex-shrink-0" />;
 };

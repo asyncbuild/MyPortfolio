@@ -2,30 +2,28 @@ import React from 'react';
 
 interface IndexSidebarProps {
   activeSection: string;
+  onSelectSection?: (id: string) => void;
 }
 
-export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => {
+export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection, onSelectSection }) => {
   const indexItems = [
     { id: 'hero', label: 'About' },
     { id: 'projects', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
     { id: 'skills', label: 'Skills' },
     { id: 'opensource', label: 'GitHub' },
+    { id: 'contact', label: 'Contact' },
   ];
 
   const scrollToSection = (id: string) => {
+    if (onSelectSection) {
+      onSelectSection(id);
+    }
     const el = document.getElementById(id);
     if (el) {
-      const offset = 40;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const yOffset = -40;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
@@ -63,5 +61,6 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => 
     </aside>
   );
 };
+
 
 
