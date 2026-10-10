@@ -6,7 +6,7 @@ export const PERSONAL_INFO = {
   title: "Data & AI Engineer • Full-Stack Developer",
   tagline: "Data & AI Engineer at EY GDS by profession, Full-Stack Developer by passion. Building intelligent systems and fast, interactive web applications.",
   statusText: "Available for projects",
-  location: "Remote",
+  location: "India (Remote)",
   email: "contact.deepeshreddy@gmail.com",
   calComLink: "https://cal.com/saikumar2603",
   calSlug: "saikumar2603",
@@ -21,15 +21,9 @@ export const PERSONAL_INFO = {
   },
   bioPoints: [
     "Data & AI Engineer at EY GDS — engineering scalable data pipelines, AI integrations, and automated workflows.",
-    "Full-stack developer by passion — crafting real-time web platforms (WhisprLive), UI component systems, and interactive tools with React, TypeScript, and Node.js.",
+    "Full-stack developer by passion — crafting real-time web platforms (WhisprLive) and interactive tools with React, TypeScript, and Node.js.",
     "Bridging intelligent data/AI backends with high-performance, polished frontend experiences.",
   ],
-  quickStats: [
-    { label: "Projects Built", value: "95+" },
-    { label: "npm Downloads", value: "1.5M+" },
-    { label: "GitHub Stars", value: "3.2k+" },
-    { label: "Open Source PRs", value: "120+" }
-  ]
 };
 
 export const EXPERIENCES: ExperienceItem[] = [
@@ -73,7 +67,7 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: "proj-whispr",
     title: "WhisprLive",
-    tagline: "Zero-install real-time audience interaction platform for conferences & events.",
+    tagline: "Zero-install real-time audience interaction platform for keynotes & webinars.",
     description: "WhisprLive transforms presentations into interactive conversations with zero-install QR access, anonymous Q&A, crowdsourced upvoting, live polls, word clouds, and 4K stage projector mode.",
     status: "Live",
     metrics: "Sub-50ms Socket.IO • Zero App Installs • 4K Stage Mode",
@@ -85,6 +79,12 @@ export const PROJECTS: ProjectItem[] = [
     tags: ["React", "Node.js", "Socket.IO", "PostgreSQL", "Tailwind CSS", "WebSockets"],
     featured: true,
     colorHighlight: "cyan",
+    highlights: [
+      "Engineered room-scoped Socket.IO WebSocket clustering for sub-50ms live synchronization.",
+      "Zero app download or signup required for audience — join in under 3 seconds via dynamic QR code.",
+      "Dedicated high-contrast 4K Stage Projector Mode with live upvoted question spotlighting.",
+      "In-memory democratic question ranking algorithms with client-side anti-spam single-vote integrity."
+    ],
     architecture: {
       painPoint: "Audience hesitation and fear of speaking up, friction from app downloads/signups, and disorganized Q&A chat flood during live presentations.",
       whatWeSolved: "Zero-install instant QR access in under 3 seconds, 100% anonymous Q&A, crowdsourced democratic upvoting, and a dedicated 4K stage projector view.",
@@ -93,38 +93,35 @@ export const PROJECTS: ProjectItem[] = [
     }
   },
   {
-    id: "proj-1",
-    title: "VengeanceUI",
-    tagline: "Animated beautiful UI components for landing pages.",
-    description: "VengeanceUI provides animated components with smooth micro-interactions, dark mode glassmorphism, and copy-paste React snippets.",
-    status: "Live",
-    metrics: "1,420 GitHub Stars • 180k Views",
-    mediaType: "image",
-    previewImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800",
-    demoUrl: "https://vengeance-ui.dev",
-    githubUrl: "https://github.com/asyncbuild/vengeance-ui",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind", "Motion"],
-    featured: true,
-    colorHighlight: "emerald"
-  },
-  {
-    id: "proj-2",
-    title: "Scribble3D",
-    tagline: "Turn your sketches into 3D objects and worlds — no 3D skills required.",
-    description: "Turn your sketches into 3D objects and worlds — powered by depth estimation models and WebGL/Three.js rendering.",
+    id: "proj-pulse",
+    title: "GitHub Pulse",
+    tagline: "End-to-end cloud data pipeline on AWS with Airflow, PySpark, dbt & LLM RAG.",
+    description: "Automated data engineering pipeline ingesting millions of public GitHub events from GH Archive. Orchestrated on AWS with Apache Airflow and PySpark on AWS Glue, dbt star-schema modeling in S3/Athena, and a pgvector RAG question-answering app with FastAPI.",
     status: "Building",
-    metrics: "Active Development • Alpha Release",
+    metrics: "AWS Data Pipeline • PySpark & dbt • pgvector & RAG Q&A",
     mediaType: "image",
-    previewImage: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80&w=800",
-    demoUrl: "https://scribble3d.app",
-    githubUrl: "https://github.com/asyncbuild/scribble3d",
-    tags: ["Next.js", "Three.js", "TypeScript", "Tailwind"],
+    previewImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800",
+    demoUrl: "",
+    githubUrl: "https://github.com/asyncbuild/github-pulse",
+    tags: ["Python", "PySpark", "AWS (S3/Glue/Athena)", "Apache Airflow", "dbt", "pgvector", "FastAPI", "PostgreSQL"],
     featured: true,
-    colorHighlight: "indigo"
+    colorHighlight: "emerald",
+    highlights: [
+      "Automated scheduled ingestion of public GH Archive events via Airflow DAGs with fault-tolerant retries.",
+      "Distributed batch processing with PySpark on AWS Glue, generating partitioned Parquet tables in S3.",
+      "Analytics star-schema data modeling with dbt and Athena for daily trending repos and developer metrics.",
+      "RAG-powered conversational search over issue discussions using pgvector embeddings and FastAPI /ask endpoint with verified source links."
+    ],
+    architecture: {
+      painPoint: "Raw unorganized GitHub event logs are massive, unstructured, and difficult to query for developer trends or issue sentiment analysis.",
+      whatWeSolved: "Automated end-to-end pipeline that transforms raw event streams into clean analytics tables and provides plain-English Q&A with direct source links.",
+      howWeSolved: "Built an Airflow orchestration DAG ingesting GH Archive to S3 raw, PySpark cleaning on AWS Glue to partitioned Parquet, dbt star schema modeling, and an embedding retrieval layer (pgvector + FastAPI).",
+      keyMetric: "11-Stage Cloud Pipeline • Sub-second RAG Retrieval"
+    }
   }
 ];
 
-export const ALL_PROJECTS_COUNT = 3;
+export const ALL_PROJECTS_COUNT = 2;
 
 export const OPEN_SOURCE_PRS: OpenSourcePR[] = [
   /*

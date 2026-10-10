@@ -26,7 +26,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
       output: (
         <div className="space-y-1 text-zinc-200">
           <p className="font-bold text-white">Deepesh Reddy [asyncbuild] Interactive Terminal v2.4.0</p>
-          <p className="text-zinc-400">Type <span className="text-white font-semibold">help</span> to see available commands or <span className="text-white font-semibold">neofetch</span> for system info.</p>
+          <p className="text-zinc-400">Type <span className="text-white font-semibold">help</span> to see available commands.</p>
         </div>
       ),
     },
@@ -72,7 +72,6 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
               <div><span className="text-white font-mono font-medium">exp</span> - Work experience</div>
               <div><span className="text-white font-mono font-medium">contact</span> - Email & contact</div>
               <div><span className="text-white font-mono font-medium">socials</span> - GitHub, Twitter, etc.</div>
-              <div><span className="text-white font-mono font-medium">neofetch</span> - Developer specs</div>
               <div><span className="text-white font-mono font-medium">matrix</span> - Digital rain mode</div>
               <div><span className="text-white font-mono font-medium">sudo hire</span> - Direct hire shortcut</div>
               <div><span className="text-white font-mono font-medium">theme</span> - Toggle light/dark</div>
@@ -157,31 +156,6 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
             <p>Twitter:  <a href={PERSONAL_INFO.socials.twitter} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.twitter}</a></p>
             <p>LinkedIn: <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.linkedin}</a></p>
             <p>Discord:  <a href={PERSONAL_INFO.socials.discord} target="_blank" rel="noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.discord}</a></p>
-          </div>
-        );
-        break;
-
-      case 'neofetch':
-        output = (
-          <div className="text-xs font-mono flex flex-col sm:flex-row gap-4 p-2 bg-black/60 rounded border border-zinc-800 text-zinc-300">
-            <div className="text-zinc-400 select-none text-[10px] leading-tight">
-              {`
-   ___  ___  _______ 
-  / _ \\/ _ \\/ __/ _ \\
- / // / // / _// ___/
-/____/____/___/_/    
-              `}
-            </div>
-            <div className="space-y-0.5 text-[11px]">
-              <p><span className="text-white font-bold">deepesh</span>@<span className="text-zinc-400">asyncbuild</span></p>
-              <p className="text-zinc-600">----------------------</p>
-              <p><span className="text-zinc-300 font-semibold">OS:</span> Web Engine 2026</p>
-              <p><span className="text-zinc-300 font-semibold">Host:</span> Full Stack Developer</p>
-              <p><span className="text-zinc-300 font-semibold">Kernel:</span> React 19.2 + TypeScript 6.0</p>
-              <p><span className="text-zinc-300 font-semibold">Shell:</span> antigravity-zsh</p>
-              <p><span className="text-zinc-300 font-semibold">Stack:</span> React, Next.js, Node.js, Python, SQL</p>
-              <p><span className="text-zinc-300 font-semibold">Uptime:</span> 23 Years & Counting</p>
-            </div>
           </div>
         );
         break;
@@ -279,11 +253,9 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 10 }}
           transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-          className={`relative w-full ${
-            isMaximized ? 'max-w-5xl h-[85vh]' : 'max-w-2xl h-[480px]'
-          } bg-zinc-950/95 border border-zinc-700/80 rounded-xl shadow-2xl z-10 flex flex-col font-mono overflow-hidden transition-all duration-300 ${
-            isMatrixMode ? 'text-emerald-400 border-emerald-500/40 shadow-emerald-500/10' : 'text-zinc-200'
-          }`}
+          className={`relative w-full ${isMaximized ? 'max-w-5xl h-[85vh]' : 'max-w-2xl h-[480px]'
+            } bg-zinc-950/95 border border-zinc-700/80 rounded-xl shadow-2xl z-10 flex flex-col font-mono overflow-hidden transition-all duration-300 ${isMatrixMode ? 'text-emerald-400 border-emerald-500/40 shadow-emerald-500/10' : 'text-zinc-200'
+            }`}
         >
           {/* Title Bar */}
           <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900/90 border-b border-zinc-800 select-none">

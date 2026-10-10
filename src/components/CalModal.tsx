@@ -6,15 +6,16 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 interface CalModalProps {
   isOpen: boolean;
   onClose: () => void;
+  theme?: 'dark' | 'light';
 }
 
-export const CalModal: React.FC<CalModalProps> = ({ isOpen, onClose }) => {
+export const CalModal: React.FC<CalModalProps> = ({ isOpen, onClose, theme = 'dark' }) => {
   useEffect(() => {
     (async () => {
       try {
         const cal = await getCalApi({});
         cal('ui', {
-          theme: 'dark',
+          theme: theme,
           styles: { branding: { brandColor: '#10b981' } },
           hideEventTypeDetails: false,
           layout: 'month_view',
@@ -23,7 +24,7 @@ export const CalModal: React.FC<CalModalProps> = ({ isOpen, onClose }) => {
         console.error('Cal.com embed initialization error:', err);
       }
     })();
-  }, []);
+  }, [theme]);
 
   if (!isOpen) return null;
 
@@ -72,10 +73,11 @@ export const CalModal: React.FC<CalModalProps> = ({ isOpen, onClose }) => {
           <Cal
             calLink={PERSONAL_INFO.calSlug || 'saikumar2603'}
             style={{ width: '100%', height: '100%', minHeight: '550px', overflow: 'scroll' }}
-            config={{ layout: 'month_view', theme: 'dark' }}
+            config={{ layout: 'month_view', theme: theme }}
           />
         </div>
       </div>
     </div>
   );
 };
+

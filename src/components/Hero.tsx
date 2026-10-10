@@ -1,5 +1,5 @@
-import React from 'react';
-import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal, Clock, MapPin, Sparkles } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, TwitterIcon, LinkedinIcon, DiscordIcon } from './SocialIcons';
@@ -16,32 +16,6 @@ interface HeroProps {
   onToggleTheme: (e?: React.MouseEvent) => void;
 }
 
-// Live Ticking Age Counter for DOB: May 26, 2003, 7:30 AM IST
-const LiveAgeCounter: React.FC = () => {
-  const [ageStr, setAgeStr] = React.useState('');
-
-  React.useEffect(() => {
-    const dobMs = new Date('2003-05-26T07:30:00+05:30').getTime();
-    const msPerYear = 365.2425 * 24 * 60 * 60 * 1000;
-
-    const updateAge = () => {
-      const diff = Date.now() - dobMs;
-      const age = (diff / msPerYear).toFixed(9);
-      setAgeStr(age);
-    };
-
-    updateAge();
-    const interval = setInterval(updateAge, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <span className="font-mono text-indigo-400 dark:text-indigo-400 font-bold tracking-tight">
-      {ageStr || '23.000000000'}
-    </span>
-  );
-};
-
 export const Hero: React.FC<HeroProps> = ({
   onOpenCalModal,
   onOpenCommandPalette,
@@ -52,6 +26,25 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   const { copyToClipboard } = useToast();
+  const [timeStr, setTimeStr] = useState<string>('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Kolkata',
+      };
+      setTimeStr(now.toLocaleTimeString('en-US', options));
+    };
+
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleCopyEmail = () => {
     copyToClipboard(PERSONAL_INFO.email, `Copied ${PERSONAL_INFO.email} to clipboard!`);
@@ -86,7 +79,6 @@ export const Hero: React.FC<HeroProps> = ({
                   alt={PERSONAL_INFO.name}
                   className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg object-cover border-2 theme-border shadow-2xl bg-black group-hover:scale-105 transition-transform"
                 />
-                <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-zinc-950 rounded-full shadow-sm ring-2 ring-emerald-500/30" title="Available for work" />
               </div>
             </Magnetic>
 
@@ -134,7 +126,7 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Name & Subtitle */}
+          {/* Name */}
           <div className="mb-4">
             <h1 className="flex items-center gap-3">
               <ContainerTextFlip
@@ -143,31 +135,89 @@ export const Hero: React.FC<HeroProps> = ({
                 className="text-2xl sm:text-4xl font-extrabold tracking-tight pb-2"
               />
             </h1>
-            <p className="text-xs theme-text-faint font-mono mt-2 font-medium flex items-center gap-1.5 flex-wrap">
-              <LiveAgeCounter /> years old • {PERSONAL_INFO.location}
-            </p>
+          </div>
+
+          {/* Integrated Live Status & Real-Time IST Clock Banner */}
+          <div className="mb-5 p-3 rounded-xl bg-[var(--subtle-bg)] border theme-border flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs shadow-xs">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <div className="flex items-center gap-2 truncate text-xs">
+                <span className="font-mono font-bold uppercase tracking-wider text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shrink-0">
+                  Live
+                </span>
+                <span className="opacity-30 select-none theme-text-faint">•</span>
+                <span className="theme-text-muted truncate text-[11px] sm:text-xs">
+                  Scaling real-time AI on{' '}
+                  <a
+                    href="https://whisprlive.live"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="theme-text-title font-semibold underline decoration-emerald-500/50 underline-offset-2 hover:text-emerald-400 hover:decoration-emerald-400 transition-colors"
+                    title="Open WhisprLive (https://whisprlive.live)"
+                  >
+                    WhisprLive
+                  </a>{' '}
+                  &amp; engineering distributed data pipelines for{' '}
+                  <strong className="theme-text-title font-semibold">GitHub Pulse</strong>
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-[11px] font-mono theme-text-faint shrink-0 self-end sm:self-auto">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-rose-400" />
+                <span className="theme-text-muted">India</span>
+              </div>
+              <span className="opacity-30 select-none theme-text-faint">•</span>
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-amber-400" />
+                <span className="theme-text-title tabular-nums font-semibold">
+                  {timeStr || 'IST'}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Bio Tagline */}
-          <p className="text-sm sm:text-lg theme-text-body font-medium leading-relaxed mb-5">
+          <p className="text-sm sm:text-base theme-text-body font-medium leading-relaxed mb-4">
             {PERSONAL_INFO.tagline}
           </p>
 
           {/* Bio Bullet Points */}
           <ul className="space-y-2 mb-6 sm:mb-7 text-xs sm:text-sm theme-text-muted">
             {PERSONAL_INFO.bioPoints.map((point, index) => {
-              const parts = point.split(/(React|TypeScript|Draco|VengeanceUI)/g);
+              const parts = point.split(/(React|TypeScript|Python|WhisprLive|GitHub Pulse|EY GDS)/g);
               return (
                 <li key={index} className="flex items-start gap-2.5">
                   <span className="theme-text-faint select-none mt-0.5">•</span>
                   <span className="leading-relaxed">
-                    {parts.map((part, i) =>
-                      part === 'React' || part === 'TypeScript' || part === 'Draco' || part === 'VengeanceUI' ? (
-                        <strong key={i} className="theme-text-title font-semibold">{part}</strong>
-                      ) : (
-                        part
-                      )
-                    )}
+                    {parts.map((part, i) => {
+                      if (part === 'WhisprLive') {
+                        return (
+                          <a
+                            key={i}
+                            href="https://whisprlive.live"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="theme-text-title font-semibold underline decoration-indigo-500/50 underline-offset-2 hover:text-indigo-400 hover:decoration-indigo-400 transition-colors cursor-pointer"
+                            title="Open WhisprLive (https://whisprlive.live)"
+                          >
+                            WhisprLive
+                          </a>
+                        );
+                      }
+                      if (part === 'React' || part === 'TypeScript' || part === 'Python' || part === 'GitHub Pulse' || part === 'EY GDS') {
+                        return (
+                          <strong key={i} className="theme-text-title font-semibold">
+                            {part}
+                          </strong>
+                        );
+                      }
+                      return part;
+                    })}
                   </span>
                 </li>
               );
@@ -194,7 +244,7 @@ export const Hero: React.FC<HeroProps> = ({
               >
                 <Mail className="w-4 h-4" />
                 <span>contact.deepeshreddy@gmail.com</span>
-                <Copy className="w-3 h-3 text-zinc-500 hover:text-white" />
+                <Copy className="w-3 h-3 theme-text-faint hover:theme-text-title transition-colors" />
               </button>
             </Magnetic>
           </div>

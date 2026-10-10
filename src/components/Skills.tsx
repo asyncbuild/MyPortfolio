@@ -43,7 +43,7 @@ const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   if (n === 'redis')            return <Layers      className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />;
   if (n === 'prisma')           return <span className="font-bold text-[10px] text-teal-300 flex-shrink-0">◮</span>;
   if (n.includes('node'))       return <Server      className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />;
-  if (n.includes('express'))    return <span className="font-bold text-[10px] text-zinc-300 font-mono flex-shrink-0">ex</span>;
+  if (n.includes('express'))    return <span className="font-bold text-[10px] theme-text-title font-mono flex-shrink-0">ex</span>;
   if (n.includes('react'))      return <Atom        className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />;
   if (n.includes('tailwind'))   return <Palette     className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />;
   if (n.includes('html'))       return <Code        className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />;
@@ -51,11 +51,11 @@ const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   if (n === 'webrtc')           return <Video       className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />;
   if (n === 'jwt')              return <ShieldCheck className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />;
   if (n === 'zegocloud')        return <Cloud       className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />;
-  if (n === 'github')           return <GithubIcon  className="w-3.5 h-3.5 text-zinc-100 flex-shrink-0" />;
+  if (n === 'github')           return <GithubIcon  className="w-3.5 h-3.5 theme-text-title flex-shrink-0" />;
   if (n.includes('vs code'))    return <Code        className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />;
-  if (n === 'vercel')           return <span className="font-bold text-[10px] text-zinc-100 flex-shrink-0">▲</span>;
+  if (n === 'vercel')           return <span className="font-bold text-[10px] theme-text-title flex-shrink-0">▲</span>;
 
-  return <Code className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />;
+  return <Code className="w-3.5 h-3.5 theme-text-faint flex-shrink-0" />;
 };
 
 

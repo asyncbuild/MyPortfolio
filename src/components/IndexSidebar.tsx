@@ -7,11 +7,9 @@ interface IndexSidebarProps {
 export const IndexSidebar: React.FC<IndexSidebarProps> = ({ activeSection }) => {
   const indexItems = [
     { id: 'hero', label: 'About' },
-    { id: 'currently', label: 'Live Status' },
+    { id: 'projects', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
     { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'showcase', label: 'Code Craft' },
     { id: 'opensource', label: 'GitHub' },
   ];
 

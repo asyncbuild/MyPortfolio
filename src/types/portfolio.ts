@@ -35,6 +35,7 @@ export interface ProjectItem {
   tags: string[];
   featured: boolean;
   colorHighlight?: 'indigo' | 'emerald' | 'cyan' | 'violet';
+  highlights?: string[];
   architecture?: ProjectArchitecture;
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, ArrowRight, Hammer, Lock, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Hammer, Lock, Sparkles, Database, Activity, Cpu } from 'lucide-react';
 import { PROJECTS, ALL_PROJECTS_COUNT } from '../data/portfolioData';
 import { SpotlightCard } from './ui/SpotlightCard';
 import type { ProjectItem } from '../types/portfolio';
@@ -19,7 +19,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
       <div className="flex items-center justify-between">
         <h2 className="text-xl sm:text-2xl font-bold theme-text-title tracking-tight flex items-center gap-2">
           <span>Projects</span>
-          <span className="text-xs font-mono font-normal px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+          <span className="text-xs font-mono font-normal px-2 py-0.5 rounded theme-subtle">
             {PROJECTS.length} Featured
           </span>
         </h2>
@@ -37,14 +37,17 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
             <SpotlightCard
               key={project.id}
               onClick={() => {
+                if (!isLive) return;
                 if (onSelectProject) {
                   onSelectProject(project);
                 }
               }}
-              className={`p-4 sm:p-5 flex flex-col justify-between cursor-pointer group rounded-xl border theme-border transition-all duration-200 hover:border-zinc-700 ${
-                !isLive ? 'border-dashed opacity-85' : ''
+              className={`p-4 sm:p-5 flex flex-col justify-between group rounded-xl border theme-border transition-all duration-200 ${
+                isLive
+                  ? 'cursor-pointer hover:border-neutral-400 dark:hover:border-zinc-700'
+                  : 'cursor-default border-dashed opacity-90 select-none'
               }`}
-              spotlightColor="rgba(99, 102, 241, 0.08)"
+              spotlightColor={isLive ? "rgba(99, 102, 241, 0.08)" : "transparent"}
             >
               <div className="space-y-3.5">
                 {/* Clean Media Preview Area */}
@@ -67,6 +70,28 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
                           Sub-50ms Real-Time Platform
                         </span>
+                      </div>
+                    </div>
+                  ) : project.id === 'proj-pulse' ? (
+                    /* Clean GitHub Pulse Data Pipeline Brand Card */
+                    <div className="w-full h-full p-4 flex flex-col items-center justify-center bg-gradient-to-br from-zinc-950 via-zinc-900 to-emerald-950/40 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-radial from-emerald-600/10 via-transparent to-transparent pointer-events-none" />
+
+                      <div className="relative z-10 flex flex-col items-center text-center space-y-2">
+                        <div className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-md transition-transform duration-300 group-hover:scale-110">
+                          <Database className="w-5 h-5" />
+                        </div>
+                        <div className="text-sm font-bold text-white tracking-tight flex items-center gap-1.5 font-mono">
+                          GitHub <span className="text-emerald-400 font-sans">Pulse</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-300/90">
+                          <span>Airflow</span>
+                          <span>•</span>
+                          <span>PySpark</span>
+                          <span>•</span>
+                          <span>pgvector RAG</span>
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -98,7 +123,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
                 {/* Title & Status Row */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="text-base font-bold theme-text-title group-hover:text-white transition-colors flex items-center gap-1.5">
+                    <h3 className="text-base font-bold theme-text-title group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                       <span>{project.title}</span>
                       {!isLive && (
                         <Lock className="w-3.5 h-3.5 theme-text-faint inline" />
@@ -108,13 +133,13 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
                     <span
                       className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-mono font-medium border ${
                         isLive
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                          ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-500 dark:text-amber-400 border-amber-500/20'
                       }`}
                     >
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
-                          isLive ? 'bg-emerald-400' : 'bg-amber-400'
+                          isLive ? 'bg-emerald-500' : 'bg-amber-500'
                         }`}
                       />
                       {project.status}
@@ -134,27 +159,27 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
                   {project.tags.slice(0, 3).map((tech) => (
                     <span
                       key={tech}
-                      className="text-[10px] font-mono px-2 py-0.5 rounded theme-subtle text-zinc-300"
+                      className="text-[10px] font-mono px-2 py-0.5 rounded theme-subtle"
                     >
                       {tech}
                     </span>
                   ))}
                   {project.tags.length > 3 && (
-                    <span className="text-[10px] font-mono text-zinc-500 px-1">
+                    <span className="text-[10px] font-mono theme-text-faint px-1">
                       +{project.tags.length - 3}
                     </span>
                   )}
                 </div>
 
                 {isLive ? (
-                  <span className="text-xs font-mono text-zinc-400 group-hover:text-white font-medium flex items-center gap-0.5 transition-colors">
+                  <span className="text-xs font-mono theme-text-faint group-hover:theme-text-title font-medium flex items-center gap-0.5 transition-colors">
                     <span>Details</span>
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
                 ) : (
                   <div className="text-xs font-mono theme-text-faint flex items-center gap-1 select-none opacity-80">
                     <span>Coming Soon</span>
-                    <Sparkles className="w-3 h-3 text-amber-400/80" />
+                    <Sparkles className="w-3 h-3 text-amber-500 dark:text-amber-400" />
                   </div>
                 )}
               </div>

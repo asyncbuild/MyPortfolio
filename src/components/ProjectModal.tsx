@@ -156,8 +156,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 </h2>
                 <p className="text-xs sm:text-sm theme-text-muted mt-0.5 font-medium">{project.tagline}</p>
                 {project.metrics && (
-                  <p className="text-xs font-mono text-zinc-300 dark:text-zinc-300 mt-2 flex items-center gap-1.5 font-medium">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                  <p className="text-xs font-mono theme-text-muted mt-2 flex items-center gap-1.5 font-medium">
+                    <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                     {project.metrics}
                   </p>
                 )}
@@ -179,8 +179,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 onClick={() => setActiveTab('overview')}
                 className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                   activeTab === 'overview'
-                    ? 'bg-zinc-800 text-white font-semibold'
-                    : 'text-zinc-400 hover:text-zinc-200'
+                    ? 'theme-btn-primary font-semibold shadow-xs'
+                    : 'theme-text-faint hover:theme-text-title'
                 }`}
               >
                 Overview
@@ -190,8 +190,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   onClick={() => setActiveTab('casestudy')}
                   className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 cursor-pointer ${
                     activeTab === 'casestudy'
-                      ? 'bg-zinc-800 text-white font-semibold'
-                      : 'text-zinc-400 hover:text-zinc-200'
+                      ? 'theme-btn-primary font-semibold shadow-xs'
+                      : 'theme-text-faint hover:theme-text-title'
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
@@ -202,8 +202,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 onClick={() => setActiveTab('stack')}
                 className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                   activeTab === 'stack'
-                    ? 'bg-zinc-800 text-white font-semibold'
-                    : 'text-zinc-400 hover:text-zinc-200'
+                    ? 'theme-btn-primary font-semibold shadow-xs'
+                    : 'theme-text-faint hover:theme-text-title'
                 }`}
               >
                 Tech Stack
@@ -223,23 +223,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 </div>
 
                 {/* Highlights List */}
-                <div className="space-y-2.5 p-4 rounded-lg bg-[var(--subtle-bg)] border theme-border">
-                  <h4 className="text-xs font-semibold theme-text-title">Key Highlights</h4>
-                  <ul className="space-y-1.5 text-xs theme-text-muted">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
-                      <span className="leading-relaxed">Production-ready distributed architecture engineered for high concurrency.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
-                      <span className="leading-relaxed">Optimized bundle performance, zero layout shift (CLS), and sub-50ms latency.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
-                      <span className="leading-relaxed">Integrated dark / light mode theming, fluid typography, and clean micro-interactions.</span>
-                    </li>
-                  </ul>
-                </div>
+                {project.highlights && project.highlights.length > 0 && (
+                  <div className="space-y-2.5 p-4 rounded-lg bg-[var(--subtle-bg)] border theme-border">
+                    <h4 className="text-xs font-semibold theme-text-title">Key Highlights & Architecture</h4>
+                    <ul className="space-y-2 text-xs theme-text-muted">
+                      {project.highlights.map((highlight, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 mt-0.5 shrink-0" />
+                          <span className="leading-relaxed">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
 
@@ -250,16 +246,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 {project.architecture.keyMetric && (
                   <div className="flex items-center justify-between pb-2 border-b theme-border font-mono text-xs">
                     <span className="theme-text-faint">Case Study Highlight</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
                       ⚡ {project.architecture.keyMetric}
                     </span>
                   </div>
                 )}
 
                 {/* 1. The Pain Point */}
-                <div className="p-4 rounded-xl bg-zinc-900/40 border theme-border space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-rose-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                <div className="p-4 rounded-xl bg-[var(--subtle-bg)] border theme-border space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-rose-500 dark:text-rose-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400" />
                     <span>The Problem &amp; Pain Point</span>
                   </div>
                   <p className="text-xs sm:text-sm theme-text-muted leading-relaxed">
@@ -268,9 +264,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 </div>
 
                 {/* 2. What We Solved */}
-                <div className="p-4 rounded-xl bg-zinc-900/40 border theme-border space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <div className="p-4 rounded-xl bg-[var(--subtle-bg)] border theme-border space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     <span>What We Solved</span>
                   </div>
                   <p className="text-xs sm:text-sm theme-text-muted leading-relaxed">
@@ -279,9 +275,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 </div>
 
                 {/* 3. How We Solved It */}
-                <div className="p-4 rounded-xl bg-zinc-900/40 border theme-border space-y-1.5">
-                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-indigo-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                <div className="p-4 rounded-xl bg-[var(--subtle-bg)] border theme-border space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 dark:bg-indigo-400" />
                     <span>How We Solved It (Technical Architecture)</span>
                   </div>
                   <p className="text-xs sm:text-sm theme-text-muted leading-relaxed">
@@ -296,14 +292,14 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               <div className="space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-xs font-mono uppercase tracking-wider theme-text-faint flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-zinc-400" />
+                    <Layers className="w-3.5 h-3.5 theme-text-faint" />
                     Technologies Used
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 rounded-md text-xs font-mono theme-subtle font-medium text-zinc-200"
+                        className="px-2.5 py-1 rounded-md text-xs font-mono theme-subtle font-medium"
                       >
                         {tag}
                       </span>
@@ -311,7 +307,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-zinc-900/40 border theme-border text-xs theme-text-muted space-y-2 leading-relaxed">
+                <div className="p-4 rounded-lg bg-[var(--subtle-bg)] border theme-border text-xs theme-text-muted space-y-2 leading-relaxed">
                   <p>
                     Engineered with modern frontend components, high-efficiency build pipelines, and production-grade state management for snappy and seamless user interactions.
                   </p>

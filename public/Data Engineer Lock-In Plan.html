@@ -1,0 +1,824 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Data Engineer Lock-In Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column planner. Header, progress, finish line, weekly rhythm, four phases of week cards with checklists, rules. */
+:root {
+  --bg: #EEF2F1;
+  --surface: #FFFFFF;
+  --fg: #13211F;
+  --muted: #586966;
+  --line: #D3DCDA;
+  --accent: #0F766E;
+  --accent-soft: #DDF0ED;
+  --now: #B45309;
+  --now-soft: #FBEBD6;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Public Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1413;
+    --surface: #142120;
+    --fg: #E4EEEB;
+    --muted: #93A8A3;
+    --line: #253633;
+    --accent: #34D3C1;
+    --accent-soft: #12302D;
+    --now: #F5A524;
+    --now-soft: #33260F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1413;
+  --surface: #142120;
+  --fg: #E4EEEB;
+  --muted: #93A8A3;
+  --line: #253633;
+  --accent: #34D3C1;
+  --accent-soft: #12302D;
+  --now: #F5A524;
+  --now-soft: #33260F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.55 var(--font-body);
+  margin: 0;
+  padding-inline: 16px;
+  padding-block: 28px 72px;
+}
+.wrap { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 34px; }
+h1, h2, h3, p, ul { margin: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.01em; }
+.mono, .eyebrow, .tag, .pcount { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.eyebrow { color: var(--muted); }
+
+/* header */
+.top { display: flex; flex-direction: column; gap: 10px; }
+h1 { font-size: clamp(1.75rem, 7vw, 2.4rem); line-height: 1.1; font-weight: 700; }
+.lede { max-width: 60ch; color: var(--muted); }
+
+/* progress */
+.meter { display: flex; flex-direction: column; gap: 10px; }
+.meter-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+#doneText { color: var(--fg); font-size: 0.78rem; }
+.bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.fill { height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width 0.25s ease; }
+.small { font-size: 0.8rem; color: var(--muted); }
+.btn {
+  font: 500 0.85rem var(--font-body);
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* generic sections */
+.sec { display: flex; flex-direction: column; gap: 12px; }
+.sec h2 { font-size: 1.15rem; }
+.rows { display: flex; flex-direction: column; }
+.row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 12px; padding-block: 10px; border-top: 1px solid var(--line); }
+.row:last-child { border-bottom: 1px solid var(--line); }
+.row .k { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); padding-top: 3px; }
+.goal { padding-block: 10px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.goal:last-child { border-bottom: 1px solid var(--line); }
+.goal strong { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; }
+.goal span { color: var(--muted); font-size: 0.9rem; }
+
+/* phases and weeks */
+#phases { display: flex; flex-direction: column; gap: 40px; }
+.phase { display: flex; flex-direction: column; gap: 12px; }
+.phase-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.phase-head h2 { font-size: 1.5rem; line-height: 1.15; font-weight: 700; }
+.pcount { color: var(--accent); background: var(--accent-soft); padding: 4px 8px; border-radius: 5px; white-space: nowrap; }
+.phase-note { color: var(--muted); max-width: 60ch; }
+.weeks { display: flex; flex-direction: column; gap: 12px; }
+.week { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 6px; scroll-margin-top: 16px; }
+.week.now { border-color: var(--now); }
+.wk-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wk-head .wk { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.wk-head .dates { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.badge { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; background: var(--now-soft); color: var(--now); padding: 2px 7px; border-radius: 4px; }
+.week h3 { font-size: 1.1rem; line-height: 1.25; font-weight: 600; margin-block: 6px 6px; }
+.items { list-style: none; padding: 0; }
+.items li { border-top: 1px dashed var(--line); }
+.item { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; padding-block: 10px; cursor: pointer; }
+.item input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); cursor: pointer; }
+.item .txt { min-width: 0; overflow-wrap: anywhere; }
+.tag { color: var(--muted); margin-right: 6px; }
+.item.proof .tag { color: var(--accent); }
+.item.proof .txt { font-weight: 500; }
+.item.done .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+
+.why { padding-block: 10px; border-top: 1px solid var(--line); }
+.why:last-of-type { border-bottom: 1px solid var(--line); }
+.why b { font-weight: 600; }
+.why a, .src a { color: var(--accent); }
+.src { font-size: 0.8rem; color: var(--muted); }
+.track { display: flex; flex-direction: column; gap: 10px; }
+.track h3 { font-size: 1.05rem; font-weight: 600; }
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: st; display: flex; flex-direction: column; }
+.steps li { counter-increment: st; display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: 8px; padding-block: 10px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.steps li:last-child { border-bottom: 1px solid var(--line); }
+.steps li::before { content: counter(st); font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); padding-top: 3px; }
+.how { margin: -2px 0 10px 30px; }
+.how summary { cursor: pointer; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); padding: 4px 0; list-style-position: inside; }
+.how summary:focus-visible, .hlinks a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.how-body { display: flex; flex-direction: column; gap: 6px; padding: 8px 0 2px; border-top: 1px dashed var(--line); margin-top: 4px; }
+.hstep { display: grid; grid-template-columns: 1.3rem minmax(0, 1fr); gap: 6px; font-size: 0.9rem; color: var(--fg); overflow-wrap: anywhere; }
+.hn { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); padding-top: 2px; }
+.hlinks { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-top: 4px; }
+.hl { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-right: 2px; }
+.hlinks a { font-size: 0.82rem; color: var(--accent); background: var(--accent-soft); border-radius: 5px; padding: 3px 8px; text-decoration: none; overflow-wrap: anywhere; }
+.hlinks a:hover { text-decoration: underline; }
+.item.done + .how summary { color: var(--muted); }
+.stuckl { display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.stuckl a { color: var(--accent); }
+.proj-p { max-width: 62ch; }
+.diagram { margin: 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 12px 14px; font: 0.78rem/1.5 var(--font-mono); color: var(--fg); white-space: pre; }
+.qa { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.qa .q { font-weight: 600; }
+.qa .s { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); overflow-wrap: anywhere; }
+.qa hr { border: 0; border-top: 1px dashed var(--line); margin: 6px 0; width: 100%; }
+.tagnote { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--now); }
+.dw { display: block; margin-top: 4px; color: var(--muted); font-size: 0.86rem; }
+.dw b { color: var(--accent); font-weight: 600; }
+.outs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.outs li { padding-block: 9px; border-top: 1px solid var(--line); }
+.outs li:last-child { border-bottom: 1px solid var(--line); }
+.outs b { font-weight: 600; }
+.rules { display: flex; flex-direction: column; gap: 12px; }
+.rules h2 { font-size: 1.15rem; }
+.rule { padding-block: 10px; border-top: 1px solid var(--line); }
+.rule:last-child { border-bottom: 1px solid var(--line); }
+.rule b { font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+@media (max-width: 420px) { .row { grid-template-columns: 4.6rem minmax(0, 1fr); } }
+</style>
+
+<main class="wrap">
+  <header class="top">
+    <p class="eyebrow">Oct 12, 2026 to Feb 7, 2027 · 17 weeks · about 13 hours a week</p>
+    <h1>Data Engineer Lock-In Plan</h1>
+    <p class="lede">One spine: Python, SQL and AWS data pipelines, with LLM and RAG work on top. One flagship project, built on public GitHub activity data. Aimed at product companies first, remote USD roles next. Every week ends with something you can show.</p>
+  </header>
+
+  <section class="meter" aria-label="Progress">
+    <div class="meter-top">
+      <span id="doneText" class="mono">0 tasks done</span>
+      <button id="jump" class="btn" type="button" hidden>Jump to this week</button>
+    </div>
+    <div class="bar" id="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Plan progress"><div class="fill" id="fill"></div></div>
+    <p class="small" id="startnote" hidden></p>
+    <p class="small">Ticks are saved on this device only.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Finish line, Feb 7</h2>
+    <div>
+      <div class="goal"><strong>150 DSA problems</strong><span>Easy and medium, solved by pattern in NeetCode 150 order.</span></div>
+      <div class="goal"><strong>60 SQL problems</strong><span>Including window functions, CTEs and query tuning.</span></div>
+      <div class="goal"><strong>1 live project</strong><span>GitHub activity pipeline on AWS with Airflow, Spark and dbt, plus a RAG app with eval numbers in the README.</span></div>
+      <div class="goal"><strong>AWS Certified Data Engineer Associate</strong><span>Exam booked, or passed. Confirm the current exam code and fee on the AWS site.</span></div>
+      <div class="goal"><strong>25 applications</strong><span>Product companies and GCCs first. At least 8 to remote-first companies that hire in India. Tracked in a sheet.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="project">
+    <h2>The project: GitHub Pulse</h2>
+    <p class="proj-p">GitHub Pulse is a data pipeline plus a chat app. Every day it collects public activity from GitHub (stars, issues and comments), cleans it, organises it into tables, and lets you ask questions in plain English. You can ask which repos are trending this week, or what people complain about in a repo's issues. Every answer links back to its source.</p>
+    <div class="rows">
+      <div class="row"><span class="k">Data</span><span>GH Archive, a free public record of GitHub events. Nothing from EY and nothing confidential.</span></div>
+      <div class="row"><span class="k">Why it</span><span>It touches what data engineer job posts list: ingestion, orchestration, Spark, SQL modeling, tests, AWS, then an LLM layer on top, deployed.</span></div>
+      <div class="row"><span class="k">Interview line</span><span>"I built an end-to-end data pipeline on AWS that processes GitHub events and serves a question-answering app, and I measured its accuracy."</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>What you will have at the end</h2>
+    <ul class="outs">
+      <li><b>A public GitHub repo</b> with a clear README, an architecture diagram and a tests badge.</li>
+      <li><b>A pipeline that runs by itself</b> on a schedule in Airflow and recovers from failures.</li>
+      <li><b>Clean data tables</b> in S3 (Parquet) and analytics tables built with dbt, such as trending repos per day.</li>
+      <li><b>A live chat page</b> where anyone can ask questions and see answers with source links.</li>
+      <li><b>An evaluation table</b> in the README: how often the app finds the right source and answers correctly, on 20 questions you wrote.</li>
+      <li><b>A 2-minute demo video</b> and 3 numbers for your resume: rows processed, runtime, and eval accuracy.</li>
+    </ul>
+  </section>
+
+  <section class="sec">
+    <h2>What the chat will look like</h2>
+    <div class="qa">
+      <span class="tagnote">Illustrative example, not real data</span>
+      <span class="q">Which repos gained the most stars on Oct 3?</span>
+      <span>The top three by new stars on Oct 3 were example-org/repo-a (1,240), example-org/repo-b (980) and example-org/repo-c (870).</span>
+      <span class="s">Source: gold.trending_repos_daily, date 2026-10-03</span>
+      <hr>
+      <span class="q">What do people complain about in repo-a's issues?</span>
+      <span>Most of the sampled issues mention slow builds and missing Windows support. A few ask for better docs.</span>
+      <span class="s">Sources: github.com/example-org/repo-a/issues/101, /issues/187, /issues/203</span>
+    </div>
+    <p class="small">Your repo names and numbers will differ. The first question is answered from SQL tables. The second is answered by searching issue text.</p>
+  </section>
+
+  <section class="sec">
+    <h2>How the pieces fit</h2>
+    <pre class="diagram">GH Archive (public GitHub events)
+      |  Python script, one hour per day
+      v
+Airflow  (schedule, retries)
+      |
+      v
+S3 raw  --->  Spark on Glue  --->  S3 clean (Parquet, by date)
+                                     |                |
+                         Athena + dbt                 issue text
+                                     v                v
+                            gold tables         pgvector (embeddings)
+                                     \               /
+                                      FastAPI  /ask
+                                            |
+                                  React chat + source links</pre>
+    <p class="small">Read it top to bottom. Each stage below builds one box.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Build it in 11 stages</h2>
+    <ol class="steps">
+      <li><span><b>Set up (weeks 1-2).</b> Create the repo. Run Postgres in Docker. Download 3 to 6 hourly files from GH Archive, load them into a table and write 5 SQL queries.<span class="dw"><b>Done when</b> the queries return sensible results and are saved in /sql.</span></span></li>
+      <li><span><b>Model it (week 3).</b> Design a star schema: one fact table for events plus tables for repo, actor, date and event type.<span class="dw"><b>Done when</b> the fact table has the same row count as the raw table.</span></span></li>
+      <li><span><b>Package it (week 4).</b> Turn your loading code into a small Python ETL in Docker, add tests and a CI workflow.<span class="dw"><b>Done when</b> GitHub Actions shows a green check.</span></span></li>
+      <li><span><b>Move to the cloud (week 5).</b> Create an AWS account safely and write a script that uploads raw files to S3.<span class="dw"><b>Done when</b> 7 hourly files sit in S3 and your budget alert is on.</span></span></li>
+      <li><span><b>Schedule it (week 6).</b> Wrap the download-and-upload in an Airflow DAG with retries.<span class="dw"><b>Done when</b> it runs on a schedule and recovers after a forced failure.</span></span></li>
+      <li><span><b>Clean it at scale (week 7).</b> Use PySpark to clean, type and de-duplicate events, write Parquet partitioned by date, and query it in Athena.<span class="dw"><b>Done when</b> the Athena row count matches Spark.</span></span></li>
+      <li><span><b>Model it for analytics (week 8).</b> Build dbt models for the star schema and a daily trending-repos table, with tests.<span class="dw"><b>Done when</b> dbt build passes and you have a lineage graph screenshot.</span></span></li>
+      <li><span><b>Make text searchable (week 9).</b> Take issue text, split it into chunks, turn each into an embedding and store it in pgvector.<span class="dw"><b>Done when</b> search returns sensible top-5 results for 10 test questions.</span></span></li>
+      <li><span><b>Answer questions (week 10).</b> Build a FastAPI /ask endpoint. Count and trend questions go to SQL, discussion questions go to text search. Each answer includes source links.<span class="dw"><b>Done when</b> 20 golden questions with correct answers are written down.</span></span></li>
+      <li><span><b>Measure it (week 11).</b> Write a script that asks all 20 questions and scores the results. Put the table in the README.<span class="dw"><b>Done when</b> the README shows real numbers and one before-and-after fix.</span></span></li>
+      <li><span><b>Ship it (week 12).</b> Build the React chat page, deploy the API and the page on AWS, and record a demo.<span class="dw"><b>Done when</b> a public URL works on your phone and the video link is in the README.</span></span></li>
+    </ol>
+    <p class="small">If you fall behind, finish stages 1 to 7 first. A working pipeline with clean tables is already a strong project. The chat layer can start simple.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Repo layout</h2>
+    <pre class="diagram">github-pulse/
+  README.md            what it is, diagram, eval results, demo link
+  docker-compose.yml   local Postgres and Airflow
+  ingest/              download and upload scripts
+  airflow/dags/        the scheduled pipeline
+  spark/               PySpark cleaning job
+  dbt/                 gold models and tests
+  rag/                 chunking, embeddings, retrieval
+  api/                 FastAPI app
+  web/                 React chat page
+  eval/                golden questions and scoring script
+  sql/                 your analysis queries
+  docs/                diagrams and design pages
+  tests/               pytest tests
+  .github/workflows/   CI</pre>
+  </section>
+
+  <section class="sec">
+    <h2>Words you will meet</h2>
+    <div class="rows">
+      <div class="row"><span class="k">Pipeline</span><span>A chain of steps that moves data from a source to a place where people can use it.</span></div>
+      <div class="row"><span class="k">Idempotent</span><span>Running a step twice gives the same result as running it once. It makes reruns safe.</span></div>
+      <div class="row"><span class="k">Parquet</span><span>A compact file format for tables. Queries read only the columns they need.</span></div>
+      <div class="row"><span class="k">Partition</span><span>Splitting data into folders, such as one per date, so queries skip what they do not need.</span></div>
+      <div class="row"><span class="k">DAG</span><span>The Airflow name for a pipeline: tasks and the order they run in.</span></div>
+      <div class="row"><span class="k">Embedding</span><span>A list of numbers that represents the meaning of a piece of text. Similar texts get similar numbers.</span></div>
+      <div class="row"><span class="k">RAG</span><span>Find the most relevant text first, then give it to the model so its answer is based on real sources.</span></div>
+      <div class="row"><span class="k">Eval</span><span>A fixed set of questions with known answers that you re-run to measure quality.</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Keep it small, cheap and clean</h2>
+    <div class="rows">
+      <div class="row"><span class="k">Size</span><span>GH Archive hourly files can be large. Check a file's size before downloading it. Take one hour per day, and keep only three event types early on: WatchEvent (stars), IssuesEvent and IssueCommentEvent.</span></div>
+      <div class="row"><span class="k">Cost</span><span>Set an AWS budget alert first. Stop or delete databases and Glue jobs you are not using.</span></div>
+      <div class="row"><span class="k">Privacy</span><span>Events contain public usernames. Do not store emails or other personal details, and show aggregated results in your demo.</span></div>
+      <div class="row"><span class="k">Secrets</span><span>Keep AWS keys and API keys in environment variables. Never commit them to the repo.</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Weekly rhythm</h2>
+    <div class="rows">
+      <div class="row"><span class="k">Mon-Fri</span><span>90 minutes. 40 on DSA or SQL, 50 on learning or building.</span></div>
+      <div class="row"><span class="k">Saturday</span><span>4 hours. Build session on the flagship project.</span></div>
+      <div class="row"><span class="k">Sunday</span><span>2 hours. Weekly review, one mock or explain-out-loud, plan the next week.</span></div>
+      <div class="row"><span class="k">Bad day</span><span>30 minutes still counts. Never a zero day.</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Why AWS for you</h2>
+    <div>
+      <p class="why"><b>It is where product and startup hiring sits.</b> AWS holds about 32% of the global cloud market and is described as the common choice of startups and tech-forward companies. Those are the employers behind product-based and remote roles.</p>
+      <p class="why"><b>Azure leans enterprise.</b> It is strongest in Microsoft-heavy enterprises and regulated industries such as banking and insurance. That is a good market, but it is closer to the service-company path you want to leave.</p>
+      <p class="why"><b>The core skills move with you.</b> SQL, Python, Spark, Airflow, dbt and pipeline design work on any cloud, so picking AWS now costs little if you later land on Azure or GCP.</p>
+    </div>
+    <p class="src">Source: <a href="https://dataengineeracademy.com/blog/aws-vs-azure-data-engineering/">Data Engineer Academy, AWS vs Azure data engineering</a>. Salary and share figures vary by source, so treat them as rough.</p>
+  </section>
+
+  <section class="sec">
+    <h2>How you actually get the job</h2>
+    <div class="track">
+      <h3>Track A: product-based company (main goal)</h3>
+      <ol class="steps">
+        <li><span>Pass the online test first. Most product-company screens are DSA plus SQL, so weeks 1 to 17 of DSA and SQL practice matter more than any certificate.</span></li>
+        <li><span>Make a target list of 30 companies by week 12: 10 reach, 10 realistic, 10 safe. Include Indian product companies, GCCs of global firms and fintech data teams. Note each careers URL.</span></li>
+        <li><span>Get the project live by week 12 and the AWS exam booked by week 13. The project proves you can build, and the certificate gets past resume filters.</span></li>
+        <li><span>From week 14, message 5 engineers or recruiters a week on LinkedIn. Send a 3-line note and your repo link, and ask for a referral only after they reply. Referrals beat cold applications at product companies.</span></li>
+        <li><span>Expect a loop of online test, DSA round, SQL and data modeling round, pipeline design round, then hiring manager. Practice each one in your mocks.</span></li>
+        <li><span>Negotiate with a competing offer or your current pay in hand. Ask for the CTC split in writing before you accept.</span></li>
+      </ol>
+    </div>
+    <div class="track">
+      <h3>Track B: remote USD role (next goal, be realistic)</h3>
+      <ol class="steps">
+        <li><span>Know the odds. Many US remote roles want US work authorization, several years of experience, or heavy time-zone overlap. With about 1.2 years, a direct remote USD offer is possible but uncommon.</span></li>
+        <li><span>Use the likely route. Move to a strong product company or GCC first, build 2 to 3 years there, then apply remote. This plan makes that first move possible and still lets you try Track B in parallel.</span></li>
+        <li><span>Target remote-first companies that say they hire in India or anywhere. Search Wellfound, Himalayas, We Work Remotely, RemoteOK and LinkedIn with the remote filter, and read each posting for location limits before applying. Many hire through an employer-of-record service such as Deel or Remote.</span></li>
+        <li><span>Build public proof. Keep the repo, README, architecture diagram and demo video polished, and write one short post on what you learned. Remote teams hire on written proof.</span></li>
+        <li><span>Practise async communication. Write clear updates, answer in complete sentences and be ready to work a few hours of US overlap. Include a line on this in your applications.</span></li>
+        <li><span>Protect yourself. Never pay a fee to get a job or to receive equipment, and be wary of offers that skip interviews. Check your EY contract on outside work, and ask a chartered accountant about tax on foreign income before you accept USD pay.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>When you get stuck</h2>
+    <div class="rows">
+      <div class="row"><span class="k">30 minutes</span><span>Try alone for 30 minutes. Then search the exact error text. Then ask. Never lose a whole evening to one error.</span></div>
+      <div class="row"><span class="k">Ask here</span><span class="stuckl"><a href="https://stackoverflow.com" target="_blank" rel="noopener noreferrer">Stack Overflow</a> <a href="https://www.reddit.com/r/dataengineering/" target="_blank" rel="noopener noreferrer">r/dataengineering</a> <a href="https://datatalks.club/slack.html" target="_blank" rel="noopener noreferrer">DataTalks.Club Slack</a> <a href="https://repost.aws" target="_blank" rel="noopener noreferrer">AWS re:Post</a></span></div>
+      <div class="row"><span class="k">Ask Claude</span><span>Come back to this chat with the task name, the exact error and what you already tried. I can break any task into smaller steps.</span></div>
+      <div class="row"><span class="k">Behind one week</span><span>Cut Learn items and keep Build and Proof.</span></div>
+      <div class="row"><span class="k">Behind two weeks</span><span>Drop DSA to 5 problems a week, move the rest to the buffer at the end, and keep the project moving.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="standout">
+    <h2>What will make you stand out</h2>
+    <p class="proj-p">Finishing the plan makes you credible. These habits are what make you memorable at 1 to 2 years of experience.</p>
+    <div class="rows">
+      <div class="row"><span class="k">Depth</span><span>Go deep on one hard problem in the project and write down what broke and how you fixed it. Debugging stories are what interviewers remember.</span></div>
+      <div class="row"><span class="k">Numbers</span><span>Rows processed, runtime, cost, and accuracy before and after. Specific results beat a list of tools.</span></div>
+      <div class="row"><span class="k">Writing</span><span>Three short posts on your portfolio. Few juniors publish anything, so clear writing gets noticed, especially for remote roles.</span></div>
+      <div class="row"><span class="k">Domain</span><span>Your financial-data work is rare. Talk about the problems it solved. Never name clients or share confidential details.</span></div>
+      <div class="row"><span class="k">Open source</span><span>One merged pull request, even a docs fix, in a tool you used shows you can work in other people's code.</span></div>
+      <div class="row"><span class="k">Basics</span><span>Clear the SQL and DSA rounds comfortably. Many people with good projects fail there.</span></div>
+      <div class="row"><span class="k">Honesty</span><span>Claim only what you have used. Overstating gets caught in interviews.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="blog">
+    <h2>Blog on your portfolio</h2>
+    <p class="proj-p">Write three posts while you build. Each one should come from something you actually did, so it is easy to write and hard to fake.</p>
+    <h3>Post ideas and when to write them</h3>
+    <div class="rows">
+      <div class="row"><span class="k">Week 6</span><span>How I made my Airflow pipeline safe to rerun. Cover idempotency, retries and backfills.</span></div>
+      <div class="row"><span class="k">Week 7</span><span>Partitioning and Parquet: how I reduced the data Athena scans. Show before and after sizes.</span></div>
+      <div class="row"><span class="k">Week 8</span><span>What I learned building a GitHub events pipeline on AWS. This is post 1.</span></div>
+      <div class="row"><span class="k">Week 9</span><span>Chunk size and retrieval: what changed my search results.</span></div>
+      <div class="row"><span class="k">Week 11</span><span>How I measured my RAG app and what the numbers showed. This is post 2.</span></div>
+      <div class="row"><span class="k">Week 12</span><span>What it costs to run a small data pipeline on AWS, with an itemised breakdown.</span></div>
+      <div class="row"><span class="k">Week 13</span><span>How I prepared for the AWS Data Engineer exam: my plan, resources and what I skipped.</span></div>
+      <div class="row"><span class="k">Week 14+</span><span>Lessons from parsing messy financial filings into clean tables. Keep it general: no client names, no confidential details.</span></div>
+      <div class="row"><span class="k">Week 17</span><span>My first open-source pull request. This is post 3.</span></div>
+    </div>
+    <h3>Post template</h3>
+    <ol class="steps">
+      <li><span><b>Problem.</b> What were you trying to do, in two or three sentences?</span></li>
+      <li><span><b>Approach.</b> What did you build or try? Add one diagram and one short code snippet.</span></li>
+      <li><span><b>What broke.</b> The bug, the slow query or the wrong answer, and how you found the cause.</span></li>
+      <li><span><b>Numbers.</b> Before and after results, such as runtime, cost or accuracy.</span></li>
+      <li><span><b>What I would do differently.</b> Two or three honest lines.</span></li>
+      <li><span><b>Links.</b> The repo, the relevant folder and the demo.</span></li>
+    </ol>
+    <p class="small">Aim for 800 to 1,200 words. Do not include anything from EY or any client.</p>
+    <h3>How to add a blog to your portfolio</h3>
+    <ol class="steps">
+      <li><span>Keep each post as a Markdown file in your portfolio repo, for example src/posts/airflow-reruns.md, with a title, date, short summary and tags at the top.</span></li>
+      <li><span>Add a Blog page that lists the posts (title, date, summary), and a post page at /blog/post-name.</span></li>
+      <li><span>Render the Markdown with react-markdown, or with MDX if you want React components inside posts. Add code highlighting.</span></li>
+      <li><span>Set a page title, a description and Open Graph tags for each post, so the link shows a proper preview when you share it on LinkedIn.</span></li>
+      <li><span>Deploy the way you deploy your portfolio now, then open each post on your phone to check it.</span></li>
+      <li><span>Share each post on LinkedIn with a two-line summary and the link. Put your blog link at the top of your resume and in your GitHub profile.</span></li>
+    </ol>
+    <p class="src">Tools: <a href="https://github.com/remarkjs/react-markdown" target="_blank" rel="noopener noreferrer">react-markdown</a> and <a href="https://mdxjs.com/" target="_blank" rel="noopener noreferrer">MDX</a>. I have not seen your portfolio code, so these steps assume a React site. If it is plain HTML, write each post as its own page and link them from a Blog page. Send me the stack and I can give exact steps.</p>
+  </section>
+
+  <div id="phases"></div>
+
+  <section class="rules">
+    <h2>Rules</h2>
+    <div>
+      <p class="rule"><b>Sunday review.</b> Tick what is done and move what slipped. If you fall more than a week behind, cut Learn items. Never cut Build or Proof.</p>
+      <p class="rule"><b>One project only.</b> Do not start a second one before week 17.</p>
+      <p class="rule"><b>Keep EY out of it.</b> The project uses public GitHub data and fresh code. Never reuse company code, client data or anything confidential. Check your employment contract on outside projects.</p>
+      <p class="rule"><b>Interview calls come first.</b> If an interview lands, spend that week preparing for it, then return to the plan.</p>
+      <p class="rule"><b>Watch cloud cost.</b> Set an AWS budget alert before you create anything. Delete NAT gateways, idle databases and Glue dev endpoints when you are not using them. Skip managed Airflow, which bills while it runs.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var START = new Date(2026, 9, 12);
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var KEY = 'lockin-plan-v1';
+
+  var PHASES = [
+    { name: 'Foundations', from: 1, to: 4, note: 'SQL depth, Docker, tests and CI. This is the base every later week stands on.' },
+    { name: 'AWS data stack', from: 5, to: 8, note: 'S3 and IAM, Airflow, Spark with Glue and Athena, then dbt. Land real data and make the pipeline scale.' },
+    { name: 'Flagship project and AI', from: 9, to: 13, note: 'Add the RAG layer, evaluate it honestly, deploy it on AWS, and prepare for the AWS exam.' },
+    { name: 'Interview-ready', from: 14, to: 17, note: 'System design, resume, mocks and applications. Then keep the routine going.' }
+  ];
+
+  var U = {
+    sqlbolt: 'https://sqlbolt.com',
+    sql50: 'https://leetcode.com/studyplan/top-sql-50/',
+    mode: 'https://www.thoughtspot.com/sql-tutorial',
+    datalemur: 'https://datalemur.com',
+    neetcode: 'https://neetcode.io/roadmap',
+    lcset: 'https://leetcode.com/problemset/',
+    gharchive: 'https://www.gharchive.org',
+    docker: 'https://docs.docker.com/get-started/',
+    pgimg: 'https://hub.docker.com/_/postgres',
+    pytest: 'https://docs.pytest.org',
+    actions: 'https://docs.github.com/en/actions/quickstart',
+    ghnew: 'https://github.com/new',
+    skillb: 'https://skillbuilder.aws',
+    budgets: 'https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-create.html',
+    iam: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html',
+    s3: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html',
+    boto3: 'https://docs.aws.amazon.com/boto3/latest/guide/quickstart.html',
+    aftut: 'https://airflow.apache.org/docs/apache-airflow/stable/tutorial/index.html',
+    afdc: 'https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html',
+    zoom: 'https://github.com/DataTalksClub/data-engineering-zoomcamp',
+    pyspark: 'https://spark.apache.org/docs/latest/api/python/getting_started/index.html',
+    glue: 'https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html',
+    athena: 'https://docs.aws.amazon.com/athena/latest/ug/getting-started.html',
+    learndbt: 'https://learn.getdbt.com',
+    dbtathena: 'https://docs.getdbt.com/docs/core/connect-data-platform/athena-setup',
+    snow: 'https://signup.snowflake.com',
+    indexluke: 'https://use-the-index-luke.com',
+    explain: 'https://www.postgresql.org/docs/current/using-explain.html',
+    kimball: 'https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/',
+    drawio: 'https://app.diagrams.net',
+    dlai: 'https://www.deeplearning.ai/short-courses/',
+    claude: 'https://docs.claude.com',
+    bedrock: 'https://docs.aws.amazon.com/bedrock/',
+    hf: 'https://huggingface.co/learn/llm-course',
+    pgvector: 'https://github.com/pgvector/pgvector',
+    fastapi: 'https://fastapi.tiangolo.com/tutorial/',
+    ragas: 'https://docs.ragas.io',
+    apprunner: 'https://docs.aws.amazon.com/apprunner/latest/dg/getting-started.html',
+    ecs: 'https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html',
+    cf: 'https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html',
+    cw: 'https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html',
+    redshift: 'https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html',
+    lakeform: 'https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html',
+    kinesis: 'https://docs.aws.amazon.com/streams/latest/dev/introduction.html',
+    kafka: 'https://kafka.apache.org/intro',
+    cert: 'https://aws.amazon.com/certification/certified-data-engineer-associate/',
+    bytebytego: 'https://bytebytego.com',
+    star: 'https://www.themuse.com/advice/star-interview-method',
+    loom: 'https://www.loom.com',
+    overleaf: 'https://www.overleaf.com/latex/templates',
+    linkedin: 'https://www.linkedin.com/jobs',
+    naukri: 'https://www.naukri.com',
+    cutshort: 'https://cutshort.io',
+    wellfound: 'https://wellfound.com',
+    himalayas: 'https://himalayas.app',
+    wwr: 'https://weworkremotely.com',
+    remoteok: 'https://remoteok.com',
+    sheets: 'https://docs.google.com/spreadsheets/',
+    interviewing: 'https://interviewing.io',
+    aced: 'https://www.aced.io/practice',
+    ossguide: 'https://opensource.guide/how-to-contribute/',
+    goodfirst: 'https://github.com/topics/good-first-issue',
+    dbtoss: 'https://docs.getdbt.com/community/resources/contributor-expectations',
+    mdx: 'https://mdxjs.com/',
+    reactmd: 'https://github.com/remarkjs/react-markdown'
+  };
+  function L(a) { return a.map(function (k) { return [LN[k], U[k]]; }); }
+  var LN = {
+    sqlbolt: 'SQLBolt', sql50: 'LeetCode SQL 50', mode: 'SQL tutorial (ThoughtSpot)', datalemur: 'DataLemur', neetcode: 'NeetCode roadmap', lcset: 'LeetCode problem list',
+    gharchive: 'GH Archive', docker: 'Docker get started', pgimg: 'Postgres Docker image', pytest: 'pytest docs', actions: 'GitHub Actions quickstart', ghnew: 'Create a GitHub repo',
+    skillb: 'AWS Skill Builder', budgets: 'AWS Budgets guide', iam: 'IAM best practices', s3: 'Amazon S3 guide', boto3: 'boto3 quickstart', aftut: 'Airflow tutorial', afdc: 'Airflow in Docker Compose',
+    zoom: 'Data Engineering Zoomcamp', pyspark: 'PySpark getting started', glue: 'What is AWS Glue', athena: 'Amazon Athena getting started', learndbt: 'dbt Learn', dbtathena: 'dbt-athena setup',
+    snow: 'Snowflake trial', indexluke: 'Use The Index, Luke', explain: 'Postgres EXPLAIN docs', kimball: 'Kimball dimensional modeling', drawio: 'diagrams.net', dlai: 'DeepLearning.AI short courses',
+    claude: 'Anthropic API docs', bedrock: 'Amazon Bedrock docs', hf: 'Hugging Face LLM Course', pgvector: 'pgvector README', fastapi: 'FastAPI tutorial', ragas: 'Ragas docs', apprunner: 'App Runner getting started',
+    ecs: 'Amazon ECS guide', cf: 'CloudFront intro', cw: 'CloudWatch intro', redshift: 'Redshift guide', lakeform: 'Lake Formation guide', kinesis: 'Kinesis intro', kafka: 'Kafka intro', cert: 'AWS Data Engineer Associate exam page',
+    bytebytego: 'ByteByteGo', star: 'STAR method guide', loom: 'Loom', overleaf: 'Overleaf templates', linkedin: 'LinkedIn Jobs', naukri: 'Naukri', cutshort: 'Cutshort', wellfound: 'Wellfound', himalayas: 'Himalayas',
+    wwr: 'We Work Remotely', remoteok: 'RemoteOK', sheets: 'Google Sheets', interviewing: 'interviewing.io', ossguide: 'How to contribute to open source', goodfirst: 'Good first issue repos', dbtoss: 'dbt contributor guide', mdx: 'MDX', reactmd: 'react-markdown'
+  };
+
+  var WEEKS = [
+    { t: 'Foundations and SQL core', i: [
+      ['Learn', 'SQL joins, GROUP BY, HAVING and subqueries. Quick pass on SQLBolt, then the LeetCode SQL 50 plan.',
+        ['Open SQLBolt and finish lessons 1 to 12 (SELECT, joins, aggregates, subqueries).', 'Then start the LeetCode SQL 50 plan. If you are stuck for more than 20 minutes, read the editorial and re-solve it the next day.'], L(['sqlbolt', 'sql50'])],
+      ['SQL', '15 problems from the LeetCode SQL 50 plan.',
+        ['Open the SQL 50 plan and work through the Select and Basic Joins sections.', 'Keep a notes file: one line per problem on why the solution works.'], L(['sql50'])],
+      ['DSA', 'Arrays and hashing, 6 problems.',
+        ['Open the NeetCode roadmap and start at Arrays and Hashing.', 'Try each problem alone for 20 minutes, then watch the solution, then re-solve it from memory the next day.'], L(['neetcode'])],
+      ['Build', 'Create a public GitHub repo for the flagship project. Run Postgres in Docker. Start a one-line daily log.',
+        ['Create a new public repo with a short name and a README outline (problem, data, architecture, how to run).', 'Run Postgres with docker run using the official image and connect with psql or DBeaver.', 'Create log.md and add one line every day.'], L(['ghnew', 'pgimg', 'docker'])],
+      ['Proof', '15 SQL problems done. Repo is live with a README outline.',
+        ['Check your solved count on your LeetCode profile and take a screenshot.', 'Open the repo in a private window to confirm it is public and has a README.'], L(['sql50'])]
+    ] },
+    { t: 'Window functions and CTEs', i: [
+      ['Learn', 'Window functions (ROW_NUMBER, RANK, LAG, LEAD, running totals) and CTEs. Use the Mode or DataLemur tutorials.',
+        ['Read the Mode tutorial pages on window functions and CTEs.', 'Try each function on a small table of your own: ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD and a running SUM.'], L(['mode', 'datalemur'])],
+      ['SQL', '15 more problems, adding medium ones from DataLemur.',
+        ['On DataLemur, filter by medium difficulty and pick window-function and CTE problems.', 'Solve 15, with at least 8 of them medium.'], L(['datalemur', 'sql50'])],
+      ['DSA', 'Two pointers and sliding window, 6 problems.',
+        ['On the NeetCode roadmap, do Two Pointers, then Sliding Window.', 'Use the same 20-minute rule as last week.'], L(['neetcode'])],
+      ['Build', 'Download a few hours of GH Archive (public GitHub event data) and load it into Postgres. Write 5 analytical queries with window functions, such as top repos per day.',
+        ['Download 3 to 6 hourly files from GH Archive with curl or wget. The site shows the file name pattern.', 'Create a table with a JSONB column and load the files with COPY or a small Python script.', 'Write 5 queries, for example top 10 repos per day by push events, using window functions.'], L(['gharchive', 'pgimg'])],
+      ['Proof', '30 SQL problems total. You can explain RANK, DENSE_RANK and ROW_NUMBER without notes.',
+        ['Explain the three ranking functions out loud with one example each.', 'Check that your SQL count is 30.'], L(['mode'])]
+    ] },
+    { t: 'Query performance and data modeling', i: [
+      ['Learn', 'Indexes, EXPLAIN ANALYZE, star schemas, normalization vs denormalization, slowly changing dimensions.',
+        ['Read the first chapters of Use The Index, Luke on how indexes work.', 'Run EXPLAIN ANALYZE on a slow query before and after adding an index.', 'Skim the Kimball page for facts, dimensions and slowly changing dimensions.'], L(['indexluke', 'explain', 'kimball'])],
+      ['SQL', 'Finish the remaining SQL 50 problems, then 10 harder ones on DataLemur.',
+        ['Finish the last sections of the SQL 50 plan.', 'Then pick 10 hard problems on DataLemur.'], L(['sql50', 'datalemur'])],
+      ['DSA', 'Stack and binary search, 6 problems.',
+        ['On the NeetCode roadmap, do Stack, then Binary Search.'], L(['neetcode'])],
+      ['Build', 'Design a star schema for GitHub events (a fact table plus repo, actor, date and event type dimensions) and load your sample.',
+        ['Sketch the schema in diagrams.net: one fact table and four dimensions.', 'Write the CREATE TABLE statements and a loader that fills them from your sample.'], L(['drawio', 'kimball', 'pgimg'])],
+      ['Proof', '60 SQL problems total. Written notes on two slow queries you sped up with an index.',
+        ['For each query write four lines: the slow plan, the index you added, the new plan, and the time saved.', 'Commit the notes in a docs folder in your repo.'], L(['explain'])]
+    ] },
+    { t: 'Git, Docker, tests and CI', i: [
+      ['Learn', 'Docker Compose, pytest, type hints, logging, Git branches and pull requests, GitHub Actions basics.',
+        ['Follow the Docker get-started tutorial through the Compose part.', 'Write 3 pytest tests for a small function and run them.', 'Follow the GitHub Actions quickstart so tests run on every push.'], L(['docker', 'pytest', 'actions'])],
+      ['DSA', 'Linked lists, 6 problems. Total so far: 24.',
+        ['On the NeetCode roadmap, do Linked List.', 'Update the running total in your log.'], L(['neetcode'])],
+      ['Build', 'Containerize a small Python ETL for your schema. Add tests and a CI workflow that runs them.',
+        ['Write a Python ETL that reads your sample files and loads the star schema.', 'Add a Dockerfile and a docker-compose.yml with Postgres and the ETL.', 'Add .github/workflows/ci.yml that installs dependencies and runs pytest.'], L(['docker', 'pytest', 'actions'])],
+      ['Proof', 'Green CI check on the repo. One timed SQL mock: 3 problems in 30 minutes.',
+        ['Open the Actions tab and confirm the latest run is green.', 'Pick 3 DataLemur problems, set a 30-minute timer and use no hints.'], L(['actions', 'datalemur'])]
+    ] },
+    { t: 'AWS fundamentals and a landing zone', i: [
+      ['Learn', 'IAM users, roles and least privilege, S3, budgets and cost alerts. Use the free AWS Skill Builder fundamentals. Create the account, turn on MFA and set a budget alert before anything else.',
+        ['Create an AWS account, turn on MFA for the root user, then stop using root for daily work.', 'Create a budget with an email alert, for example 5 USD.', 'Do the free fundamentals lessons on Skill Builder for IAM and S3.'], L(['budgets', 'iam', 'skillb', 's3'])],
+      ['DSA', 'Trees (BFS and DFS), 10 problems. Ten a week from here.',
+        ['On the NeetCode roadmap, do Trees.', 'Draw each tree on paper before coding.'], L(['neetcode'])],
+      ['Build', 'Python job in Docker that downloads one hour of GH Archive per day for 7 days (for example 15:00 UTC) and uploads them to S3 under year/month/day/hour prefixes. Use an IAM role with least privilege, never root keys. Never commit keys to the repo.',
+        ['Install the AWS CLI and boto3. Create an IAM user or role allowed to write to one bucket only.', 'Write a script that downloads one GH Archive hour and uploads it to s3://your-bucket/raw/year=/month=/day=/hour=/.', 'Wrap it in Docker and loop over 7 days, taking one hour per day so the data stays small. Keep keys in environment variables or an AWS profile, never in git.'], L(['boto3', 'iam', 'gharchive', 'docker'])],
+      ['Proof', 'Budget alert and MFA are on. The raw zone in S3 holds 7 sampled hours, one per day.',
+        ['Open the S3 console and confirm 7 hourly files.', 'Open Billing and confirm the budget alert exists.'], L(['budgets', 's3'])]
+    ] },
+    { t: 'Orchestration with Airflow', i: [
+      ['Learn', 'Airflow DAGs, scheduling, retries, idempotent tasks and backfills. Use the Airflow tutorials, then the orchestration module of the free Data Engineering Zoomcamp.',
+        ['Read the Airflow tutorial: DAGs, tasks and operators.', 'Run Airflow locally with the official Docker Compose guide.', 'Work through the orchestration module in the Zoomcamp repo.'], L(['aftut', 'afdc', 'zoom'])],
+      ['DSA', 'Heaps and priority queues, 10 problems.',
+        ['On the NeetCode roadmap, do Heap and Priority Queue.'], L(['neetcode'])],
+      ['Build', 'Run Airflow in Docker on your laptop. Build a DAG with a parameterized hour that downloads to S3 with retries. Skip managed Airflow on AWS, since it bills while it runs.',
+        ['Start Airflow from the official docker-compose file.', 'Write a DAG with a parameter for the hour that downloads the file and uploads it to S3. Set retries to 3.', 'Make the task idempotent: if the S3 object already exists, skip it.'], L(['afdc', 'aftut', 'boto3'])],
+      ['Proof', 'The DAG runs on its schedule and recovers from a forced failure using retries. Save a screenshot of the run view for the README.',
+        ['Break a task on purpose (use a wrong URL), watch the retries, then fix it and clear the task.', 'Screenshot the run view and add it to the README.'], L(['aftut'])]
+    ] },
+    { t: 'Spark, Glue and Athena', i: [
+      ['Learn', 'Spark DataFrames, transformations vs actions, partitions and shuffles. Parquet and partitioning. Glue Data Catalog and Athena. Write and test PySpark locally in Docker first, then run it as one AWS Glue job.',
+        ['Follow the PySpark getting-started guide locally or in Docker.', 'Read the Glue and Athena getting-started pages for the Data Catalog, Parquet and partitions.', 'Run one tiny Glue job from the console to see how it works.'], L(['pyspark', 'glue', 'athena'])],
+      ['DSA', 'Graphs (BFS, DFS, connected components), 10 problems.',
+        ['On the NeetCode roadmap, do Graphs.'], L(['neetcode'])],
+      ['Build', 'Raw JSON in S3 becomes cleaned, typed, de-duplicated Parquet partitioned by date, written by PySpark. Register the tables in the Glue Catalog and query them in Athena.',
+        ['Write a PySpark script that reads the raw JSON, selects typed columns, drops duplicates and writes Parquet partitioned by date.', 'Run it locally first, then as a Glue job reading from and writing to S3.', 'Create a Glue crawler or table definition, then query the table in Athena.'], L(['pyspark', 'glue', 'athena'])],
+      ['Proof', 'The full 7-hour sample through the pipeline. Record row counts, runtime and Athena data scanned. These become resume numbers.',
+        ['Run COUNT(*) in Athena and compare it with the raw row count.', 'Write the Athena data-scanned figure and the job runtime in the README.'], L(['athena'])]
+    ] },
+    { t: 'Gold layer with dbt', i: [
+      ['Learn', 'dbt basics: models, tests, docs, lineage. Use dbt with Athena, or a Snowflake trial if you want warehouse experience.',
+        ['Take the dbt Fundamentals course on the dbt Learn site.', 'Follow the dbt-athena setup page to connect to Athena, or start a Snowflake trial instead.'], L(['learndbt', 'dbtathena', 'snow'])],
+      ['DSA', 'Recursion and backtracking, 8 problems. Total so far: 62.',
+        ['On the NeetCode roadmap, do Backtracking.'], L(['neetcode'])],
+      ['Build', 'Gold star schema: fact events plus repo, actor, date and event type dimensions. Add a daily trending-repos model.',
+        ['Run dbt init and add sources that point at your Athena tables.', 'Write staging models, then a fact model and dimension models.', 'Add a daily trending-repos model and tests: unique, not_null and accepted_values.'], L(['learndbt', 'dbtathena', 'kimball'])],
+      ['Proof', 'dbt project with at least 5 models and passing tests. Lineage graph saved for the README.',
+        ['Run dbt build and confirm all tests pass.', 'Run dbt docs generate, open the lineage graph and screenshot it.'], L(['learndbt'])],
+      ["Write", "Stretch: publish blog post 1 on your portfolio about what you learned building the pipeline so far.",
+        ["Pick one idea from the blog section on this page, for example how you made reruns safe in Airflow.", "Use the post template: problem, approach, what broke, numbers, what you would do differently, repo link.", "Write 800 to 1,200 words with one diagram or screenshot and one code snippet.", "Publish it on your portfolio and share it on LinkedIn with a two-line summary."], L([])]
+    ] },
+    { t: 'Embeddings and vector search', i: [
+      ['Learn', 'How embeddings, chunking and vector search work. Take the DeepLearning.AI short courses on RAG, read the Amazon Bedrock docs and the Anthropic API docs, and use the Hugging Face LLM Course for background.',
+        ['Do the short RAG courses on DeepLearning.AI.', 'Skim the Anthropic and Bedrock docs for model calls and embeddings.', 'Read the pgvector README for index types.'], L(['dlai', 'claude', 'bedrock', 'pgvector', 'hf'])],
+      ['DSA', 'Intervals and greedy, 10 problems.',
+        ['On the NeetCode roadmap, do Intervals and Greedy.'], L(['neetcode'])],
+      ['Build', 'Take issue titles and bodies from the IssuesEvent records, chunk them and store embeddings in Postgres with pgvector, running in Docker.',
+        ['Extract issue title and body text from IssuesEvent records into a table.', 'Split the text into chunks of roughly 300 to 500 tokens with a small overlap.', 'Create embeddings through an API and store them in a pgvector column with an index.'], L(['pgvector', 'claude', 'bedrock'])],
+      ['Proof', 'Semantic search returns sensible top-5 issues for 10 test questions.',
+        ['Write 10 questions by hand, run the search and read the top 5 results for each.', 'Mark each result relevant or not in a sheet.'], L(['sheets', 'pgvector'])],
+      ["Stretch", "Stretch: choose your deep-dive problem, one hard thing you will go deep on, such as retrieval accuracy or data quality checks.",
+        ["Write the problem in one sentence, for example: how often does my search return the right issue?", "Pick a number to measure now, before you change anything.", "Start a deep-dive.md file and log every experiment, including the failed ones.", "Plan to improve that number over the next weeks. It becomes the heart of blog post 2."], L([])]
+    ] },
+    { t: 'RAG with citations', i: [
+      ['Learn', 'Retrieval plus generation, prompt design, tool use, and when to query SQL instead of text.',
+        ['Read the FastAPI tutorial for request and response models.', 'Read your model provider docs on prompts that cite sources.'], L(['fastapi', 'claude'])],
+      ['DSA', 'One-dimensional dynamic programming, 10 problems.',
+        ['On the NeetCode roadmap, do 1-D Dynamic Programming.'], L(['neetcode'])],
+      ['Build', 'FastAPI /ask endpoint. Numeric and trend questions go to SQL over the gold tables, discussion questions go to vector search. Every answer links to its source repo or issue.',
+        ['Create a FastAPI app with an /ask endpoint.', 'Route trend questions to a SQL query on the gold tables and discussion questions to vector search.', 'Return the answer together with links to the repo or issue it came from.'], L(['fastapi', 'pgvector', 'claude'])],
+      ['Proof', 'A golden set of 20 questions with correct answers and sources, written by hand.',
+        ['Write 20 questions with the expected answer and source in a CSV file.', 'Do it by hand so the test does not depend on the model.'], L(['sheets'])]
+    ] },
+    { t: 'Evaluation', i: [
+      ['Learn', 'Retrieval hit rate at k, answer grading, hallucination checks and regression tests for LLM apps.',
+        ['Read the Ragas docs for retrieval and answer metrics.', 'Learn hit rate at k: how often the right source appears in the top k results.'], L(['ragas'])],
+      ['DSA', 'Two-dimensional DP basics, 8 problems.',
+        ['On the NeetCode roadmap, do 2-D Dynamic Programming.'], L(['neetcode'])],
+      ['Build', 'Eval script that runs the golden set and writes a results table. Run it in CI.',
+        ['Write a script that loops over the golden CSV, calls /ask and records hit rate and pass or fail.', 'Add it as a GitHub Actions job that prints a results table.'], L(['ragas', 'actions'])],
+      ['Proof', 'README shows real eval numbers, even if they are poor. Fix one weak spot and show before and after.',
+        ['Paste the results table into the README.', 'Change one thing, such as chunk size or the prompt, re-run, and show before and after.'], L(['ragas'])],
+      ["Write", "Stretch: publish blog post 2 on how you measured your RAG app and what the numbers showed.",
+        ["Use your eval table and your deep-dive notes as the raw material.", "Show the before and after numbers and one thing that surprised you.", "Link to the repo and the eval folder.", "Publish on your portfolio and share it on LinkedIn."], L([])]
+    ] },
+    { t: 'Deploy and front end', i: [
+      ['Learn', 'Deploying the API on AWS App Runner or ECS Fargate and the front end on S3 with CloudFront. Logging in CloudWatch, token usage and cost tracking.',
+        ['Follow the App Runner getting-started page to deploy a container.', 'Read the CloudFront intro for serving a static site from S3.', 'Find your service logs in CloudWatch.'], L(['apprunner', 'cf', 'cw', 'ecs'])],
+      ['DSA', 'Mixed review of your weakest topics, 10 problems.',
+        ['Open your log, find the topics where you needed the editorial most, and redo 10 problems from them.'], L(['neetcode', 'lcset'])],
+      ['Build', 'React front end with chat and citations. This is your strongest skill, so use it. Deploy the whole stack and move the database to RDS Postgres.',
+        ['Build the React app with a chat box and a sources list, pointed at your API.', 'Push the API image to ECR and deploy it on App Runner.', 'Upload the React build to S3 and put CloudFront in front.', 'Move the database to RDS Postgres, or keep a small instance and note the cost.'], L(['apprunner', 'cf', 's3'])],
+      ['Proof', 'Public demo URL, plus a 2-minute screen recording linked in the README.',
+        ['Open the demo URL on your phone.', 'Record a 2-minute screen video with Loom and link it in the README.'], L(['loom'])]
+    ] },
+    { t: 'Catch-up and AWS exam prep', i: [
+      ['Learn', 'AWS Certified Data Engineer Associate material: Glue, Kinesis, Redshift, Lake Formation and IAM. Confirm the current exam code on the AWS site, then take the official practice questions.',
+        ['Open the exam page and read the exam guide for DEA-C01.', 'Study Glue, Kinesis, Redshift, Lake Formation and IAM.', 'Take the official practice questions on Skill Builder.'], L(['cert', 'skillb', 'glue', 'redshift', 'lakeform', 'kinesis'])],
+      ['DSA', 'Timed sets: 10 problems, 2 per 45-minute session.',
+        ['Pick 2 problems, start a 45-minute timer and solve them without hints.', 'Repeat 5 times this week.'], L(['neetcode', 'lcset'])],
+      ['Build', 'Catch up on anything that slipped in weeks 9 to 12. Add an architecture diagram to the README.',
+        ['List what slipped from weeks 9 to 12 and finish it before anything new.', 'Draw the architecture in diagrams.net and add the image to the README.'], L(['drawio'])],
+      ['Proof', 'Practice score recorded and an exam date booked. Check the current exam fee first.',
+        ['Write your practice score in your log.', 'Book the exam through the exam page. The fee was listed as 150 USD when I checked, so confirm the current fee.'], L(['cert'])]
+    ] },
+    { t: 'System design for data', i: [
+      ['Learn', 'Batch vs streaming, Kafka and Kinesis basics, idempotency, backfills, data quality checks, partitioning, change data capture.',
+        ['Read the Kafka intro and the Kinesis intro and note how they differ.', 'Write two lines each on idempotency, backfills and data quality checks in your own words.'], L(['kafka', 'kinesis', 'bytebytego'])],
+      ['DSA', '10 problems, mostly timed.',
+        ['Do 10 problems, at least 6 of them with a timer.'], L(['neetcode', 'lcset'])],
+      ['Build', 'Write three one-page pipeline designs in your repo docs folder: GitHub events ingestion on AWS, clickstream to warehouse, near-real-time events with Kinesis.',
+        ['Create three one-page docs in the docs folder of your repo.', 'Use the same headings in each: goal, data sources, ingestion, storage, transform, serving, failure handling, cost.', 'Add a simple diagram to each.'], L(['drawio', 'bytebytego'])],
+      ['Proof', 'Explain one design out loud for 10 minutes without notes.',
+        ['Record yourself explaining one design for 10 minutes.', 'Watch it back and note every gap and filler word.'], L(['loom'])],
+      ["Stretch", "Stretch: find one open-source issue you can fix in a data tool you already use, such as dbt, Airflow, Great Expectations or a small library.",
+        ["Read the open source guide and the contributing file of the project you pick.", "Look for issues labelled good first issue or documentation in a tool you used during this plan.", "Comment on the issue to say you want to take it, and wait for a reply.", "If nothing fits, choose a docs fix such as unclear steps, broken links or missing examples."], L(["ossguide", "goodfirst", "dbtoss"])]
+    ] },
+    { t: 'Resume and stories', i: [
+      ['Learn', 'Write 3 STAR stories: the XBRL parser, a hard bug, something you owned end to end.',
+        ['Write each story as situation, task, action and result, with a number in the result.', 'Practise telling each one in about 2 minutes.'], L(['star'])],
+      ['DSA', '10 company-tagged problems.',
+        ['On the LeetCode problem list, filter by the company of a role you want.', 'Solve 10 of its problems.'], L(['lcset'])],
+      ['Build', 'Rewrite the resume on one page, led by the pipeline project and real numbers. Leave out anything confidential. Update the LinkedIn headline and GitHub pins.',
+        ['Start from a clean one-page template, or a plain document.', 'Put the pipeline project first, using the numbers from weeks 7 and 11.', 'Change your LinkedIn headline to Data Engineer and pin the repo on your GitHub profile.'], L(['overleaf', 'linkedin'])],
+      ['Proof', 'A 5-minute project walkthrough recorded and watched back. Resume reviewed by two people.',
+        ['Record a 5-minute walkthrough of the project and watch it back.', 'Send the resume to two people and ask each for 3 specific fixes.'], L(['loom'])],
+      ["Stretch", "Stretch: work on the fix and open a pull request.",
+        ["Fork the repo, clone it and create a branch.", "Make the smallest change that fixes the issue and run the project tests.", "Open a pull request that links the issue and explains what you changed and how you tested it."], L(["ossguide"])]
+    ] },
+    { t: 'Mocks and first applications', i: [
+      ['Learn', 'Read 10 target job descriptions. List the most common requirements and check each one against your resume.',
+        ['Open 10 postings on LinkedIn, Naukri and Cutshort.', 'Copy the required skills into a sheet and count which appear most.', 'Compare the list with your resume and fix the gaps.'], L(['linkedin', 'naukri', 'cutshort', 'sheets'])],
+      ['DSA', '10 problems, timed.',
+        ['Do 10 problems with a timer, picking from your weakest topics.'], L(['neetcode', 'lcset'])],
+      ['Build', 'Two full mock interviews (SQL, DSA and design) with friends, seniors or a free peer platform.',
+        ['Book two mocks with a friend, a senior, or a peer platform.', 'Do one SQL plus DSA mock and one pipeline design mock.'], L(['interviewing'])],
+      ['Proof', '10 applications to product companies and GCCs, 5 to remote-first companies that hire in India, and 10 referral messages sent.',
+        ['Apply to 10 product company and GCC roles through career pages and LinkedIn.', 'Apply to 5 remote-first roles. Read the location limits in each posting first.', 'Send 10 referral messages and log every application in a sheet.'], L(['linkedin', 'wellfound', 'himalayas', 'wwr', 'remoteok', 'sheets'])],
+      ["Stretch", "Stretch: respond to review feedback and keep the pull request moving.",
+        ["Check the pull request daily and reply politely within a day.", "Make requested changes in new commits and explain each one.", "If there is no reply after a week, leave one friendly nudge. If the project looks inactive, pick another issue."], L([])]
+    ] },
+    { t: 'Ship and stay ready', i: [
+      ['Learn', 'Re-read the weak points from your resume review and tick what is fixed.',
+        ['Open your mock notes and the resume feedback.', 'Redo the problems you got wrong.'], L(['neetcode'])],
+      ['DSA', '10 problems. Total reaches 150.',
+        ['Do 10 problems and check your total against 150.'], L(['neetcode', 'lcset'])],
+      ['Build', '10 more applications, 3 of them remote-first. Keep a tracker with dates and follow-ups. Put the maintenance routine in your calendar.',
+        ['Apply to 10 more roles, with 3 remote-first.', 'Make a sheet with company, role, date, link, status and follow-up date.', 'Add a recurring calendar block for the daily DSA or SQL practice.'], L(['sheets', 'wellfound', 'linkedin'])],
+      ['Proof', '25+ applications out, tracker running, routine scheduled: daily 30 minutes of DSA or SQL, weekly mock, monthly resume refresh.',
+        ['Count the rows in your tracker.', 'Follow up on week 16 applications after 7 days.'], L(['sheets'])],
+      ["Write", "Stretch: publish blog post 3 about your open-source contribution, or about how you prepared for the AWS exam.",
+        ["Write what the issue was, how you found the cause and what the review taught you.", "If the pull request is not merged yet, write about what you learned anyway and say it is still open.", "Add the posts and the pull request link to your resume, LinkedIn Featured section and GitHub profile."], L([])]
+    ] }
+  ];
+
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+  function range(a, b) {
+    if (a.getMonth() === b.getMonth()) return MONTHS[a.getMonth()] + ' ' + a.getDate() + ' – ' + b.getDate();
+    return MONTHS[a.getMonth()] + ' ' + a.getDate() + ' – ' + MONTHS[b.getMonth()] + ' ' + b.getDate();
+  }
+
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var dayIndex = Math.round((today - START) / 86400000);
+  var currentWeek = (dayIndex >= 0 && dayIndex < 7 * WEEKS.length) ? Math.floor(dayIndex / 7) + 1 : 0;
+
+  var app = document.getElementById('phases');
+  var html = '';
+  PHASES.forEach(function (p, pi) {
+    var first = addDays(START, 7 * (p.from - 1));
+    var last = addDays(START, 7 * (p.to - 1) + 6);
+    html += '<section class="phase"><header class="phase-head"><div><p class="eyebrow">Weeks ' + p.from + '–' + p.to + ' · ' + range(first, last) + '</p><h2>' + p.name + '</h2></div><span class="pcount" id="pcount' + pi + '"></span></header>';
+    html += '<p class="phase-note">' + p.note + '</p><div class="weeks">';
+    for (var n = p.from; n <= p.to; n++) {
+      var w = WEEKS[n - 1];
+      var s = addDays(START, 7 * (n - 1));
+      var e = addDays(s, 6);
+      var isNow = n === currentWeek;
+      html += '<section class="week' + (isNow ? ' now' : '') + '" id="week' + n + '"><div class="wk-head"><span class="wk">Week ' + n + '</span><span class="dates">' + range(s, e) + '</span>' + (isNow ? '<span class="badge">This week</span>' : '') + '</div>';
+      html += '<h3>' + w.t + '</h3><ul class="items">';
+      w.i.forEach(function (it, k) {
+        var id = 'w' + n + '-' + k;
+        var checked = state[id] ? ' checked' : '';
+        var how = '';
+        if (it[2]) {
+          how = '<details class="how"><summary>How to do this</summary><div class="how-body">';
+          it[2].forEach(function (st, si) { how += '<p class="hstep"><span class="hn">' + (si + 1) + '</span><span>' + st + '</span></p>'; });
+          if (it[3] && it[3].length) {
+            how += '<p class="hlinks"><span class="hl">Where</span>';
+            it[3].forEach(function (lk) { how += '<a href="' + lk[1] + '" target="_blank" rel="noopener noreferrer">' + lk[0] + '</a>'; });
+            how += '</p>';
+          }
+          how += '</div></details>';
+        }
+        html += '<li><label class="item' + (it[0] === 'Proof' ? ' proof' : '') + '"><input type="checkbox" id="' + id + '" data-phase="' + pi + '"' + checked + '><span class="txt"><b class="tag">' + it[0] + '</b>' + it[1] + '</span></label>' + how + '</li>';
+      });
+      html += '</ul></section>';
+    }
+    html += '</div></section>';
+  });
+  app.innerHTML = html;
+
+  function refresh() {
+    var boxes = app.querySelectorAll('input[type=checkbox]');
+    var done = 0;
+    var per = PHASES.map(function () { return { d: 0, t: 0 }; });
+    boxes.forEach(function (b) {
+      var ph = +b.getAttribute('data-phase');
+      per[ph].t++;
+      if (b.checked) { done++; per[ph].d++; }
+      var label = b.parentNode;
+      if (label.classList) label.classList.toggle('done', b.checked);
+    });
+    var total = boxes.length;
+    var pct = total ? Math.round(done * 100 / total) : 0;
+    document.getElementById('doneText').textContent = done + ' of ' + total + ' tasks done';
+    document.getElementById('fill').style.width = pct + '%';
+    document.getElementById('bar').setAttribute('aria-valuenow', String(pct));
+    per.forEach(function (c, i) { document.getElementById('pcount' + i).textContent = c.d + ' / ' + c.t; });
+  }
+
+  app.addEventListener('change', function (ev) {
+    var t = ev.target;
+    if (!t || t.type !== 'checkbox') return;
+    if (t.checked) state[t.id] = 1; else delete state[t.id];
+    save();
+    refresh();
+  });
+
+  var startNote = document.getElementById('startnote');
+  if (dayIndex < 0) {
+    startNote.hidden = false;
+    startNote.textContent = 'Week 1 starts Monday, Oct 12. Use the days before it to create your GitHub, LeetCode and AWS accounts (with MFA on) and install Docker.';
+  }
+
+  var jump = document.getElementById('jump');
+  if (currentWeek) {
+    jump.hidden = false;
+    jump.addEventListener('click', function () {
+      var el = document.getElementById('week' + currentWeek);
+      if (!el) return;
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    });
+  }
+  refresh();
+})();
+</script>
+
+</body></html>

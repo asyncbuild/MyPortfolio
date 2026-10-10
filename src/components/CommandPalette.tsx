@@ -23,11 +23,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   // Define clean commands
   const commands = [
-    { id: 'sec-hero', category: 'Navigation', label: 'Go to About / Profile', icon: User, action: () => scrollToSection('hero') },
+    { id: 'sec-hero', category: 'Navigation', label: 'Go to About / Profile (Live Status)', icon: User, action: () => scrollToSection('hero') },
+    { id: 'sec-proj', category: 'Navigation', label: 'Go to Featured Projects', icon: FolderGit2, action: () => scrollToSection('projects') },
     { id: 'sec-exp', category: 'Navigation', label: 'Go to Work Experience', icon: Briefcase, action: () => scrollToSection('experience') },
     { id: 'sec-skills', category: 'Navigation', label: 'Go to Skills & Technologies', icon: Code, action: () => scrollToSection('skills') },
-    { id: 'sec-proj', category: 'Navigation', label: 'Go to Featured Projects', icon: FolderGit2, action: () => scrollToSection('projects') },
-    { id: 'sec-showcase', category: 'Navigation', label: 'Go to Code Craft & Architecture', icon: Code, action: () => scrollToSection('showcase') },
     { id: 'sec-gh', category: 'Navigation', label: 'Go to GitHub Contributions', icon: Code, action: () => scrollToSection('opensource') },
 
     // Developer CLI Tool
@@ -142,7 +141,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Command List */}
-        <div className="overflow-y-auto p-2 divide-y theme-border">
+        <div className="overflow-y-auto p-2 flex flex-col gap-0.5">
           {filteredCommands.length === 0 ? (
             <div className="p-8 text-center text-sm theme-text-faint">
               No commands found matching "{query}"
@@ -156,7 +155,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
               if (showCategoryHeader) {
                 acc.push(
-                  <div key={`cat-${cmd.category}`} className="px-3 pt-3 pb-1 text-[11px] font-mono uppercase tracking-wider theme-text-faint">
+                  <div
+                    key={`cat-${cmd.category}`}
+                    className={`px-3 ${index !== 0 ? 'pt-3 mt-1.5' : 'pt-2'} pb-1 text-[11px] font-mono uppercase tracking-wider theme-text-faint`}
+                  >
                     {cmd.category}
                   </div>
                 );
@@ -167,13 +169,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   key={cmd.id}
                   onClick={cmd.action}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium text-left transition-all cursor-pointer ${isSelected
-                      ? 'bg-indigo-500/15 text-indigo-400 font-semibold border border-indigo-500/40 shadow-sm'
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer ${isSelected
+                      ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-semibold'
                       : 'theme-text-muted hover:bg-[var(--subtle-bg)] hover:theme-text-title'
                     }`}
                 >
                   <div className="flex items-center gap-3 truncate">
-                    <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-indigo-500' : 'theme-text-faint'}`} />
+                    <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isSelected ? 'text-indigo-500' : 'theme-text-faint'}`} />
                     <span className="truncate">{cmd.label}</span>
                   </div>
                   {isSelected && (

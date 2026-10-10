@@ -13,91 +13,87 @@ interface CodeSnippet {
 
 const SNIPPETS: CodeSnippet[] = [
   {
-    id: 'hook',
-    name: 'useDebouncedSearch.ts',
+    id: 'socket-router',
+    name: 'whisprRoomRouter.ts',
     language: 'TypeScript',
-    description: 'Custom generic debounce hook with abort controller for zero race conditions in search queries.',
-    code: `import { useState, useEffect, useRef } from 'react';
+    description: 'Room-scoped Socket.IO event router with client fingerprinting and sub-50ms stage broadcast pipeline.',
+    code: `import { Server, Socket } from 'socket.io';
 
-export function useDebouncedSearch<T>(
-  query: string,
-  fetcher: (q: string, signal: AbortSignal) => Promise<T>,
-  delay = 300
-) {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
+interface RoomSession {
+  roomId: string;
+  fingerprint: string;
+  joinedAt: number;
+}
 
-  useEffect(() => {
-    if (!query.trim()) {
-      setData(null);
-      return;
-    }
+export class WhisprRoomRouter {
+  private activeRooms = new Map<string, Set<string>>();
 
-    setLoading(true);
-    abortControllerRef.current?.abort();
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
+  constructor(private io: Server) {}
 
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetcher(query, controller.signal);
-        setData(res);
-      } catch (err) {
-        if ((err as Error).name !== 'AbortError') console.error(err);
-      } finally {
-        setLoading(false);
+  public handleConnection(socket: Socket) {
+    socket.on('room:join', ({ roomId, fingerprint }: RoomSession) => {
+      socket.join(roomId);
+
+      if (!this.activeRooms.has(roomId)) {
+        this.activeRooms.set(roomId, new Set());
       }
-    }, delay);
+      this.activeRooms.get(roomId)!.add(fingerprint);
 
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-  }, [query, delay, fetcher]);
+      // Broadcast real-time audience counter to stage projector
+      const liveCount = this.activeRooms.get(roomId)!.size;
+      this.io.to(roomId).emit('room:presence_sync', { liveCount });
+    });
 
-  return { data, loading };
+    socket.on('qa:submit_question', async ({ roomId, text, isAnon }) => {
+      const payload = {
+        id: crypto.randomUUID(),
+        text: text.trim(),
+        upvotes: 0,
+        createdAt: Date.now(),
+        isAnonymous: isAnon ?? true,
+      };
+
+      // Sub-50ms broadcast to audience & 4K stage projector
+      this.io.to(roomId).emit('qa:new_question', payload);
+    });
+  }
 }`,
   },
   {
-    id: 'rate-limit',
-    name: 'rateLimiter.ts',
+    id: 'ranking-engine',
+    name: 'democraticRanking.ts',
     language: 'TypeScript',
-    description: 'Sliding window token bucket rate limiter for scalable high-throughput backend API endpoints.',
-    code: `interface TokenBucket {
-  tokens: number;
-  lastRefill: number;
+    description: 'In-memory dynamic question priority ranking with client-side single-vote integrity.',
+    code: `interface QuestionItem {
+  id: string;
+  text: string;
+  upvotes: number;
+  timestamp: number;
 }
 
-export class SlidingWindowRateLimiter {
-  private buckets = new Map<string, TokenBucket>();
+export class DemocraticRanker {
+  private questions = new Map<string, QuestionItem>();
+  private voterRecords = new Set<string>(); // composite key: \`\${fingerprint}:\${questionId}\`
 
-  constructor(
-    private capacity: number,
-    private refillRatePerSec: number
-  ) {}
+  public castVote(questionId: string, fingerprint: string): boolean {
+    const voterKey = \`\${fingerprint}:\${questionId}\`;
+    if (this.voterRecords.has(voterKey)) return false; // single-vote integrity
 
-  public isAllowed(key: string): boolean {
-    const now = Date.now();
-    const bucket = this.buckets.get(key) || {
-      tokens: this.capacity,
-      lastRefill: now,
-    };
+    const item = this.questions.get(questionId);
+    if (!item) return false;
 
-    const deltaSec = (now - bucket.lastRefill) / 1000;
-    bucket.tokens = Math.min(
-      this.capacity,
-      bucket.tokens + deltaSec * this.refillRatePerSec
-    );
-    bucket.lastRefill = now;
+    item.upvotes += 1;
+    this.voterRecords.add(voterKey);
+    return true;
+  }
 
-    if (bucket.tokens >= 1) {
-      bucket.tokens -= 1;
-      this.buckets.set(key, bucket);
-      return true;
-    }
-
-    return false;
+  public getTopQuestions(limit = 10): QuestionItem[] {
+    return Array.from(this.questions.values())
+      .sort((a, b) => {
+        if (b.upvotes !== a.upvotes) return b.upvotes - a.upvotes;
+        return a.timestamp - b.timestamp; // FIFO on equal upvotes
+      })
+      .slice(0, limit);
   }
 }`,
   },
