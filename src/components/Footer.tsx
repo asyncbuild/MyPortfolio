@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { Magnetic } from './ui/Magnetic';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -23,18 +22,16 @@ export const Footer: React.FC = () => {
           Built with React 19, TypeScript &amp; Tailwind
         </div>
 
-        {/* Right: Magnetic Back to Top */}
-        <Magnetic strength={0.2}>
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md theme-subtle transition-all shadow-xs cursor-pointer active:scale-95 hover:theme-text-title group"
-            title="Scroll back to top"
-            aria-label="Back to top"
-          >
-            <span>Back to top</span>
-            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-          </button>
-        </Magnetic>
+        {/* Right: Back to Top */}
+        <button
+          onClick={scrollToTop}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 shadow-xs cursor-pointer active:scale-[0.98] hover:theme-text-title group"
+          title="Scroll back to top"
+          aria-label="Back to top"
+        >
+          <span>Back to top</span>
+          <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-150" />
+        </button>
       </div>
     </footer>
   );

@@ -2,7 +2,6 @@ import React from 'react';
 import { Mail, Calendar, Copy } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { SpotlightCard } from './ui/SpotlightCard';
-import { Magnetic } from './ui/Magnetic';
 import { useToast } from '../context/ToastContext';
 
 interface ContactCTAProps {
@@ -29,37 +28,31 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({ onOpenCalModal }) => {
           </p>
 
           <div className="pt-1 flex flex-wrap items-center gap-3">
-            <Magnetic strength={0.15}>
-              <a
-                href={`mailto:${PERSONAL_INFO.email}`}
-                className="px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Contact Me</span>
-              </a>
-            </Magnetic>
+            <a
+              href={`mailto:${PERSONAL_INFO.email}`}
+              className="px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 shadow-sm active:scale-[0.98] cursor-pointer"
+            >
+              <Mail className="w-4 h-4" />
+              <span>Contact Me</span>
+            </a>
 
-            <Magnetic strength={0.15}>
-              <button
-                onClick={handleCopyEmail}
-                className="px-3.5 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-xs"
-                title="Click to copy email address"
-              >
-                <Copy className="w-3.5 h-3.5 opacity-70" />
-                <span className="font-mono text-xs">{PERSONAL_INFO.email}</span>
-              </button>
-            </Magnetic>
+            <button
+              onClick={handleCopyEmail}
+              className="px-3.5 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-[0.98] shadow-xs"
+              title="Click to copy email address"
+            >
+              <Copy className="w-3.5 h-3.5 opacity-70" />
+              <span className="font-mono text-xs">{PERSONAL_INFO.email}</span>
+            </button>
 
             {onOpenCalModal && (
-              <Magnetic strength={0.15}>
-                <button
-                  onClick={onOpenCalModal}
-                  className="px-3.5 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-xs"
-                >
-                  <Calendar className="w-3.5 h-3.5 opacity-70" />
-                  <span>Book a call</span>
-                </button>
-              </Magnetic>
+              <button
+                onClick={onOpenCalModal}
+                className="px-3.5 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-[0.98] shadow-xs"
+              >
+                <Calendar className="w-3.5 h-3.5 opacity-70" />
+                <span>Book a call</span>
+              </button>
             )}
           </div>
         </div>

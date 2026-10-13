@@ -119,7 +119,7 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
 
       {/* 2. Interactive GitHub Contribution Calendar Card */}
       <div className="p-4 sm:p-6 rounded-lg theme-card shadow-sm backdrop-blur-sm relative overflow-hidden group">
-        <div className="w-full flex justify-start sm:justify-center text-xs theme-text-muted overflow-x-auto py-1 max-w-full">
+        <div className="w-full flex justify-start sm:justify-center text-xs theme-text-muted overflow-x-auto py-1 max-w-full [&_text]:fill-current [&_text]:font-mono [&_text]:opacity-75">
           <CalendarErrorBoundary fallbackYear={typeof selectedYear === 'number' ? selectedYear : currentYear}>
             <GitHubCalendar
               username="asyncbuild"

@@ -152,7 +152,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({
 
           <button
             onClick={handleDownload}
-            className="px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
+            className="px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 shadow-sm active:scale-[0.98] cursor-pointer"
           >
             <Download className="w-4 h-4" />
             Download

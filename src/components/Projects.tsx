@@ -73,7 +73,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
                       </div>
                     </div>
                   ) : project.id === 'proj-pulse' ? (
-                    /* Clean GitHub Pulse Data Pipeline Brand Card */
+                     /* Clean GitHub Pulse Data Pipeline Brand Card */
                     <div className="w-full h-full p-4 flex flex-col items-center justify-center bg-gradient-to-br from-zinc-950 via-zinc-900 to-emerald-950/40 relative overflow-hidden">
                       <div className="absolute inset-0 bg-radial from-emerald-600/10 via-transparent to-transparent pointer-events-none" />
 
@@ -193,7 +193,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onSelectProject }) => {
         <div className="mt-4 flex justify-center">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="px-4 py-2 rounded-lg theme-subtle text-xs font-mono font-medium transition-all flex items-center gap-2 shadow-xs cursor-pointer active:scale-95"
+            className="px-4 py-2 rounded-lg theme-subtle text-xs font-mono font-medium transition-all duration-150 flex items-center gap-2 shadow-xs cursor-pointer active:scale-[0.98]"
           >
             {showAll ? 'Show Less' : `View All (${ALL_PROJECTS_COUNT})`}
             <ArrowRight className="w-3.5 h-3.5" />

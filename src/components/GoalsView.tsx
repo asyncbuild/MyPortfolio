@@ -12,7 +12,7 @@ export const GoalsView: React.FC<GoalsViewProps> = ({ onBack }) => {
       <div className="h-12 bg-[#142120] border-b border-[#253633] px-4 sm:px-6 flex items-center justify-between z-20 shrink-0 select-none">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#12302D] hover:bg-[#0F766E]/40 text-[#34D3C1] text-xs font-mono transition-all cursor-pointer shadow-xs active:scale-95 border border-[#34D3C1]/30"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#12302D] hover:bg-[#0F766E]/40 text-[#34D3C1] text-xs font-mono transition-all duration-150 cursor-pointer shadow-xs active:scale-[0.98] border border-[#34D3C1]/30"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Portfolio</span>
