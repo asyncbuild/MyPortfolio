@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, useRef, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ExternalLink, Sparkles, AlertCircle } from 'lucide-react';
 import { GitHubCalendar } from 'react-github-calendar';
@@ -49,6 +49,7 @@ interface GithubActivityProps {
 
 export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }) => {
   const [selectedYear, setSelectedYear] = useState<number | 'last'>('last');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Custom theme matching GitHub's official dark & light theme colors
   const githubTheme = {
@@ -58,6 +59,70 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
 
   const currentYear = new Date().getFullYear();
   const availableYears: (number | 'last')[] = ['last', currentYear, currentYear - 1];
+
+  // Keep scroller aligned to the right on mobile views so latest commits are immediately visible
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let userHasScrolled = false;
+    const handleUserInteraction = () => {
+      userHasScrolled = true;
+    };
+
+    container.addEventListener('touchstart', handleUserInteraction, { passive: true });
+    container.addEventListener('pointerdown', handleUserInteraction, { passive: true });
+    container.addEventListener('wheel', handleUserInteraction, { passive: true });
+
+    const scrollToLatest = () => {
+      if (!userHasScrolled && container && container.scrollWidth > container.clientWidth) {
+        container.scrollLeft = container.scrollWidth;
+      }
+    };
+
+    // Immediate attempt
+    scrollToLatest();
+
+    // Observe element resize (e.g. when SVG calendar finishes loading and renders full width)
+    const resizeObserver = new ResizeObserver(() => {
+      scrollToLatest();
+    });
+    resizeObserver.observe(container);
+
+    // Observe DOM mutations in case the SVG is dynamically injected
+    const mutationObserver = new MutationObserver(() => {
+      scrollToLatest();
+      Array.from(container.children).forEach((child) => {
+        try {
+          resizeObserver.observe(child);
+        } catch {
+          // ignore
+        }
+      });
+    });
+
+    mutationObserver.observe(container, { childList: true, subtree: true });
+
+    // Safety timers to ensure positioning after async fetch and font painting
+    const t1 = setTimeout(scrollToLatest, 50);
+    const t2 = setTimeout(scrollToLatest, 150);
+    const t3 = setTimeout(scrollToLatest, 350);
+    const t4 = setTimeout(scrollToLatest, 800);
+    const t5 = setTimeout(scrollToLatest, 1500);
+
+    return () => {
+      container.removeEventListener('touchstart', handleUserInteraction);
+      container.removeEventListener('pointerdown', handleUserInteraction);
+      container.removeEventListener('wheel', handleUserInteraction);
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [selectedYear]);
 
   return (
     <section id="opensource" className="py-2 relative space-y-6">
@@ -119,7 +184,10 @@ export const GithubActivity: React.FC<GithubActivityProps> = ({ theme = 'dark' }
 
       {/* 2. Interactive GitHub Contribution Calendar Card */}
       <div className="p-4 sm:p-6 rounded-lg theme-card shadow-sm backdrop-blur-sm relative overflow-hidden group">
-        <div className="w-full flex justify-start sm:justify-center text-xs theme-text-muted overflow-x-auto py-1 max-w-full [&_text]:fill-current [&_text]:font-mono [&_text]:opacity-75">
+        <div
+          ref={scrollContainerRef}
+          className="w-full flex justify-start sm:justify-center text-xs theme-text-muted overflow-x-auto py-1 max-w-full [&_text]:fill-current [&_text]:font-mono [&_text]:opacity-75"
+        >
           <CalendarErrorBoundary fallbackYear={typeof selectedYear === 'number' ? selectedYear : currentYear}>
             <GitHubCalendar
               username="asyncbuild"

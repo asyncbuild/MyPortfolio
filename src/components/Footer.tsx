@@ -8,10 +8,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="pt-8 pb-14 mt-14 border-t theme-border text-xs font-mono theme-text-faint select-none">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer className="pt-8 pb-14 mt-12 sm:mt-14 border-t theme-border text-xs font-mono theme-text-faint select-none">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         {/* Left: Name & Title */}
-        <div className="flex items-center gap-2 text-center sm:text-left">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <span className="theme-text-title font-semibold">{PERSONAL_INFO.name}</span>
           <span className="opacity-30">•</span>
           <span className="theme-text-muted">Data &amp; AI Engineer</span>
@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
         {/* Right: Back to Top */}
         <button
           onClick={scrollToTop}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 shadow-xs cursor-pointer active:scale-[0.98] hover:theme-text-title group"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 shadow-xs cursor-pointer active:scale-[0.98] hover:theme-text-title group"
           title="Scroll back to top"
           aria-label="Back to top"
         >

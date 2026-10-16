@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Mail, FileText, Command, Sun, Moon, Copy, Terminal, Clock, MapPin } from 'lucide-react';
+import { Calendar, Mail, FileText, Command, Sun, Moon, Terminal, Clock, MapPin } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, TwitterIcon, LinkedinIcon } from './SocialIcons';
 import { Magnetic } from './ui/Magnetic';
 import { SpotlightCard } from './ui/SpotlightCard';
-import { useToast } from '../context/ToastContext';
 
 interface HeroProps {
   onOpenCalModal: () => void;
@@ -25,7 +24,6 @@ export const Hero: React.FC<HeroProps> = ({
   onToggleTheme,
 }) => {
   const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
-  const { copyToClipboard } = useToast();
   const [timeStr, setTimeStr] = useState<string>('');
 
   useEffect(() => {
@@ -45,10 +43,6 @@ export const Hero: React.FC<HeroProps> = ({
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
-
-  const handleCopyEmail = () => {
-    copyToClipboard(PERSONAL_INFO.email, `Copied ${PERSONAL_INFO.email} to clipboard!`);
-  };
 
   return (
     <section id="hero" className="relative pt-2 pb-4">
@@ -223,24 +217,23 @@ export const Hero: React.FC<HeroProps> = ({
           </ul>
 
           {/* Intro Call & Email Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 mb-6 sm:mb-8">
             <button
               onClick={onOpenCalModal}
-              className="px-3.5 sm:px-4 py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 shadow-sm active:scale-[0.98] cursor-pointer"
+              className="w-full sm:w-auto justify-center px-4 py-2.5 sm:py-2 rounded-md theme-btn-primary font-semibold text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 shadow-sm active:scale-[0.98] cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              Book an intro call
+              <span>Book an intro call</span>
             </button>
 
-            <button
-              onClick={handleCopyEmail}
-              className="px-3.5 sm:px-4 py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-[0.98] shadow-xs"
-              title="Click to copy email address"
+            <a
+              href={`mailto:${PERSONAL_INFO.email}`}
+              className="w-full sm:w-auto justify-center px-4 py-2.5 sm:py-2 rounded-md theme-subtle font-medium text-xs sm:text-sm transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-[0.98] shadow-xs hover:theme-text-title"
+              title="Send an email"
             >
               <Mail className="w-4 h-4" />
-              <span>contact.deepeshreddy@gmail.com</span>
-              <Copy className="w-3 h-3 theme-text-faint hover:theme-text-title transition-colors" />
-            </button>
+              <span>Send an email</span>
+            </a>
           </div>
 
           {/* Social Links Section */}
@@ -249,43 +242,43 @@ export const Hero: React.FC<HeroProps> = ({
               Here are my <strong className="theme-text-title font-medium">socials</strong>
             </p>
 
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
               <a
                 href={PERSONAL_INFO.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
+                className="justify-center px-3 py-2 sm:py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
               >
                 <GithubIcon className="w-3.5 h-3.5" />
-                GitHub
+                <span>GitHub</span>
               </a>
 
               <a
                 href={PERSONAL_INFO.socials.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
+                className="justify-center px-3 py-2 sm:py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
               >
                 <TwitterIcon className="w-3.5 h-3.5" />
-                Twitter
+                <span>Twitter</span>
               </a>
 
               <a
                 href={PERSONAL_INFO.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
+                className="justify-center px-3 py-2 sm:py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
               >
                 <LinkedinIcon className="w-3.5 h-3.5" />
-                LinkedIn
+                <span>LinkedIn</span>
               </a>
 
               <button
                 onClick={onOpenResume}
-                className="px-3 py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
+                className="justify-center px-3 py-2 sm:py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
               >
                 <FileText className="w-3.5 h-3.5" />
-                Resume
+                <span>Resume</span>
               </button>
             </div>
           </div>
