@@ -9,6 +9,13 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="pt-8 pb-14 mt-12 sm:mt-14 border-t theme-border text-xs font-mono theme-text-faint select-none">
+      {/* Closing Philosophy Note */}
+      <div className="flex flex-col items-center justify-center text-center pb-7 mb-7 border-b theme-border space-y-1.5">
+        <p className="text-sm sm:text-base italic font-serif tracking-wide theme-text-title select-text">
+          “Be Delusional.”
+        </p>
+      </div>
+
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         {/* Left: Name & Title */}
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">

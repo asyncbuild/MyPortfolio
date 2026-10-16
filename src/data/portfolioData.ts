@@ -15,9 +15,11 @@ export const PERSONAL_INFO = {
   bannerUrl: "/banner.png",
   socials: {
     github: "https://github.com/asyncbuild",
-    twitter: "https://twitter.com/asyncbuild",
+    x: "https://x.com/asyncbuild",
+    twitter: "https://x.com/asyncbuild",
     linkedin: "https://www.linkedin.com/in/deepesh-reddy-a33a71238/",
   },
+  philosophy: "Be Delusional.",
   bioPoints: [
     "Data & AI Engineer at EY GDS — engineering scalable data pipelines, AI integrations, and automated workflows.",
     "Full-stack developer by passion — crafting real-time web platforms (WhisprLive) and interactive tools with React, TypeScript, and Node.js.",

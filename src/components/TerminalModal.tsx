@@ -71,7 +71,8 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
               <div><span className="text-white font-mono font-medium">projects</span> - View shipped apps</div>
               <div><span className="text-white font-mono font-medium">exp</span> - Work experience</div>
               <div><span className="text-white font-mono font-medium">contact</span> - Email & contact</div>
-              <div><span className="text-white font-mono font-medium">socials</span> - GitHub, Twitter, etc.</div>
+              <div><span className="text-white font-mono font-medium">socials</span> - GitHub, X, etc.</div>
+              <div><span className="text-white font-mono font-medium">motto</span> - Core guiding belief</div>
               <div><span className="text-white font-mono font-medium">matrix</span> - Digital rain mode</div>
               <div><span className="text-white font-mono font-medium">sudo hire</span> - Direct hire shortcut</div>
               <div><span className="text-white font-mono font-medium">theme</span> - Toggle light/dark</div>
@@ -87,6 +88,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
           <div className="space-y-1 text-zinc-300 text-xs">
             <p className="font-bold text-white">{PERSONAL_INFO.name} ({PERSONAL_INFO.title})</p>
             <p className="text-zinc-400">{PERSONAL_INFO.tagline}</p>
+            <p className="text-amber-400/90 italic font-mono">Creed: “Be delusional.”</p>
             <p className="text-zinc-300 mt-1">Status: {PERSONAL_INFO.statusText} • Location: {PERSONAL_INFO.location}</p>
           </div>
         );
@@ -153,8 +155,18 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
         output = (
           <div className="text-xs space-y-1 text-zinc-300 font-mono">
             <p>GitHub:   <a href={PERSONAL_INFO.socials.github} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.github}</a></p>
-            <p>Twitter:  <a href={PERSONAL_INFO.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.twitter}</a></p>
+            <p>X:        <a href={PERSONAL_INFO.socials.x || PERSONAL_INFO.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.x || PERSONAL_INFO.socials.twitter}</a></p>
             <p>LinkedIn: <a href={PERSONAL_INFO.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-200 hover:underline">{PERSONAL_INFO.socials.linkedin}</a></p>
+          </div>
+        );
+        break;
+
+      case 'motto':
+      case 'creed':
+      case 'belief':
+        output = (
+          <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs space-y-1">
+            <p className="text-amber-400 font-serif italic text-sm">“Be Delusional.”</p>
           </div>
         );
         break;

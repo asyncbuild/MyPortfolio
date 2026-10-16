@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Mail, FileText, Command, Sun, Moon, Terminal, Clock, MapPin } from 'lucide-react';
+import { Calendar, Mail, FileText, Command, Sun, Moon, Terminal, Clock, MapPin, Eye } from 'lucide-react';
 import { ContainerTextFlip } from './ui/container-text-flip';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { GithubIcon, TwitterIcon, LinkedinIcon } from './SocialIcons';
+import { GithubIcon, XIcon, LinkedinIcon } from './SocialIcons';
 import { Magnetic } from './ui/Magnetic';
 import { SpotlightCard } from './ui/SpotlightCard';
+import { useVisitorCount } from '../utils/useVisitorCount';
 
 interface HeroProps {
   onOpenCalModal: () => void;
@@ -25,6 +26,7 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   const [timeStr, setTimeStr] = useState<string>('');
+  const { count: visitCount } = useVisitorCount();
 
   useEffect(() => {
     const updateTime = () => {
@@ -157,8 +159,8 @@ export const Hero: React.FC<HeroProps> = ({
               </p>
             </div>
 
-            {/* Location & IST Clock */}
-            <div className="flex items-center gap-2.5 text-[11px] font-mono theme-text-faint shrink-0 pt-2 md:pt-0 border-t md:border-t-0 theme-border md:border-transparent">
+            {/* Location, IST Clock & Live Total Visits */}
+            <div className="flex items-center gap-2.5 text-[11px] font-mono theme-text-faint shrink-0 pt-2 md:pt-0 border-t md:border-t-0 theme-border md:border-transparent flex-wrap">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                 <span className="theme-text-muted">India</span>
@@ -168,6 +170,16 @@ export const Hero: React.FC<HeroProps> = ({
                 <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="theme-text-title tabular-nums font-semibold">
                   {timeStr || 'IST'}
+                </span>
+              </div>
+              <span className="opacity-30 select-none theme-text-faint">•</span>
+              <div className="flex items-center gap-1.5" title="Total unique visits tracked live">
+                <Eye className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                <span className="theme-text-title tabular-nums font-semibold">
+                  {visitCount.toLocaleString()}
+                </span>
+                <span className="theme-text-faint text-[10px]">
+                  {visitCount === 1 ? 'visit' : 'visits'}
                 </span>
               </div>
             </div>
@@ -254,13 +266,13 @@ export const Hero: React.FC<HeroProps> = ({
               </a>
 
               <a
-                href={PERSONAL_INFO.socials.twitter}
+                href={PERSONAL_INFO.socials.x || PERSONAL_INFO.socials.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="justify-center px-3 py-2 sm:py-1.5 rounded-md theme-subtle transition-all duration-150 flex items-center gap-2 text-xs font-medium cursor-pointer shadow-xs active:scale-[0.98]"
               >
-                <TwitterIcon className="w-3.5 h-3.5" />
-                <span>Twitter</span>
+                <XIcon className="w-3.5 h-3.5" />
+                <span>X</span>
               </a>
 
               <a

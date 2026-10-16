@@ -61,7 +61,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
     // Social Links
     { id: 'soc-gh', category: 'Social Links', label: 'GitHub Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.github, '_blank') },
-    { id: 'soc-tw', category: 'Social Links', label: 'Twitter / X Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.twitter, '_blank') },
+    { id: 'soc-tw', category: 'Social Links', label: 'X (formerly Twitter) Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.x || PERSONAL_INFO.socials.twitter, '_blank') },
     { id: 'soc-li', category: 'Social Links', label: 'LinkedIn Profile', icon: ExternalLink, action: () => window.open(PERSONAL_INFO.socials.linkedin, '_blank') },
   ];
 
