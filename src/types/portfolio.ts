@@ -89,3 +89,22 @@ export interface CommitActivityDay {
   count: number;
   level: 0 | 1 | 2 | 3 | 4;
 }
+
+export interface PricingPlan {
+  id: string;
+  name: string;
+  tagline: string;
+  badge?: string;
+  badgeVariant?: 'emerald' | 'indigo' | 'cyan' | 'amber';
+  priceUsd: number;
+  priceInr: number;
+  period?: string;
+  timeline: string;
+  description: string;
+  popular?: boolean;
+  idealFor: string;
+  deliverables: string[];
+  techStack: string[];
+  ctaText: string;
+  emailSubject: string;
+}

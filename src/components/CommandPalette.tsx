@@ -8,6 +8,7 @@ interface CommandPaletteProps {
   onOpenCalModal: () => void;
   onOpenResume: () => void;
   onOpenTerminal?: () => void;
+  onOpenPricing?: () => void;
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
@@ -16,6 +17,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenCalModal,
   onOpenResume,
   onOpenTerminal,
+  onOpenPricing,
 }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -44,6 +46,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
     // Quick Actions
     { id: 'act-cal', category: 'Actions', label: 'Book an Intro Call (Cal.com)', icon: Calendar, action: () => { onClose(); onOpenCalModal(); } },
+    { id: 'act-pricing', category: 'Actions', label: 'View Freelance Services & Pricing (/pricing)', icon: FolderGit2, action: () => { onClose(); if (onOpenPricing) onOpenPricing(); } },
     { id: 'act-mail', category: 'Actions', label: `Send Email (${PERSONAL_INFO.email})`, icon: Mail, action: () => { window.location.href = `mailto:${PERSONAL_INFO.email}`; } },
     { id: 'act-resume', category: 'Actions', label: 'View & Download Resume', icon: FileText, action: () => { onClose(); onOpenResume(); } },
 

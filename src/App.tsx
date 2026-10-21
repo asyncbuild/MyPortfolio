@@ -11,6 +11,7 @@ import { IndexSidebar } from './components/IndexSidebar';
 import { Footer } from './components/Footer';
 import { ResumeView } from './components/ResumeView';
 import { GoalsView } from './components/GoalsView';
+import { PricingView } from './components/PricingView';
 import { Watermark } from './components/Watermark';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { TerminalModal } from './components/TerminalModal';
@@ -20,12 +21,13 @@ import type { ProjectItem } from './types/portfolio';
 
 export function App() {
   const [sessionStartTime] = useState(() => Date.now());
-  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goals'>(() => {
+  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goals' | 'pricing'>(() => {
     if (typeof window !== 'undefined') {
       const p = window.location.pathname.toLowerCase();
       const h = window.location.hash.toLowerCase();
       if (p === '/goals' || h === '#goals') return 'goals';
       if (p === '/resume' || h === '#resume') return 'resume';
+      if (p === '/pricing' || h === '#pricing') return 'pricing';
     }
     return 'home';
   });
@@ -87,6 +89,7 @@ export function App() {
       const h = window.location.hash.toLowerCase();
       if (p === '/goals' || h === '#goals') setCurrentView('goals');
       else if (p === '/resume' || h === '#resume') setCurrentView('resume');
+      else if (p === '/pricing' || h === '#pricing') setCurrentView('pricing');
       else setCurrentView('home');
     };
     window.addEventListener('popstate', handlePopState);
@@ -190,6 +193,17 @@ export function App() {
             onToggleTheme={toggleTheme}
             sessionStartTime={sessionStartTime}
           />
+        ) : currentView === 'pricing' ? (
+          <PricingView
+            onBack={() => {
+              setCurrentView('home');
+              window.history.pushState({}, '', '/');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenCalModal={() => setCalModalOpen(true)}
+            theme={theme}
+            onToggleTheme={toggleTheme}
+          />
         ) : (
           /* Centered Page Layout - 100% untouched public view */
           <div className="w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl mx-auto px-4 sm:px-6 xl:px-8 py-6 sm:py-12 relative">
@@ -230,6 +244,11 @@ export function App() {
             window.history.pushState({}, '', '/resume');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
+          onOpenPricing={() => {
+            setCurrentView('pricing');
+            window.history.pushState({}, '', '/pricing');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           onOpenTerminal={() => setTerminalOpen(true)}
         />
 
@@ -243,6 +262,11 @@ export function App() {
           isOpen={terminalOpen}
           onClose={() => setTerminalOpen(false)}
           onToggleTheme={toggleTheme}
+          onOpenPricing={() => {
+            setCurrentView('pricing');
+            window.history.pushState({}, '', '/pricing');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         />
 
         <ProjectModal

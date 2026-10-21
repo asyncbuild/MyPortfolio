@@ -7,6 +7,7 @@ interface TerminalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onToggleTheme?: () => void;
+  onOpenPricing?: () => void;
 }
 
 interface CommandLog {
@@ -15,7 +16,7 @@ interface CommandLog {
   output: React.ReactNode;
 }
 
-export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme }) => {
+export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme, onOpenPricing }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -72,6 +73,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
               <div><span className="text-white font-mono font-medium">exp</span> - Work experience</div>
               <div><span className="text-white font-mono font-medium">contact</span> - Email & contact</div>
               <div><span className="text-white font-mono font-medium">socials</span> - GitHub, X, etc.</div>
+              <div><span className="text-white font-mono font-medium">pricing</span> - Freelance rates & sprints</div>
               <div><span className="text-white font-mono font-medium">motto</span> - Core guiding belief</div>
               <div><span className="text-white font-mono font-medium">matrix</span> - Digital rain mode</div>
               <div><span className="text-white font-mono font-medium">sudo hire</span> - Direct hire shortcut</div>
@@ -167,6 +169,26 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
         output = (
           <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs space-y-1">
             <p className="text-amber-400 font-serif italic text-sm">“Be Delusional.”</p>
+          </div>
+        );
+        break;
+
+      case 'pricing':
+      case 'freelance':
+      case 'rates':
+      case 'sprints':
+        output = (
+          <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs space-y-2 font-mono">
+            <p className="text-zinc-200 font-semibold font-sans">Deepesh Reddy • Freelance Engineering Sprints:</p>
+            <div className="space-y-1 text-zinc-300 text-[11px]">
+              <p>1. <span className="text-emerald-400 font-bold">Rapid MVP & Web App</span>: $1,499 (10–14 days)</p>
+              <p>2. <span className="text-indigo-400 font-bold">AI & LLM Workflows</span>: $2,299 (2–3 weeks)</p>
+              <p>3. <span className="text-cyan-400 font-bold">Data Engineering</span>: $2,899 (2–4 weeks)</p>
+              <p>4. <span className="text-amber-400 font-bold">Dedicated Tech Partner</span>: $3,499/mo (~20 hrs/wk)</p>
+            </div>
+            <p className="text-zinc-400 pt-1 text-[11px]">
+              Go to <a href="/pricing" onClick={(e) => { e.preventDefault(); onClose(); if (onOpenPricing) onOpenPricing(); }} className="text-indigo-400 underline font-semibold hover:text-indigo-300">/pricing</a> to view full deliverables, scope estimator, & FAQs.
+            </p>
           </div>
         );
         break;

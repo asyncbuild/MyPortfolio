@@ -1,4 +1,4 @@
-import type { ExperienceItem, ProjectItem, OpenSourcePR, BlogPost, HighlightItem, CommitActivityDay } from '../types/portfolio';
+import type { ExperienceItem, ProjectItem, OpenSourcePR, BlogPost, HighlightItem, CommitActivityDay, PricingPlan } from '../types/portfolio';
 
 export const PERSONAL_INFO = {
   name: "Deepesh Reddy",
@@ -214,3 +214,133 @@ export const GENERATE_COMMIT_ACTIVITY = (): CommitActivityDay[] => {
   }
   return days;
 };
+
+export const PRICING_PLANS: PricingPlan[] = [
+  {
+    id: "mvp-sprint",
+    name: "Rapid MVP & Web App",
+    tagline: "From concept to deployed, production-ready product in 10-14 days.",
+    priceUsd: 1499,
+    priceInr: 125000,
+    period: "fixed price",
+    timeline: "10 – 14 Days",
+    badge: "Fast Launch",
+    badgeVariant: "emerald",
+    popular: false,
+    description: "Ideal for early-stage founders, indie hackers, and creators who need an end-to-end full-stack web application built rapidly with modern clean code.",
+    idealFor: "Startups, MVPs, client portals, SaaS launches, and interactive web tools.",
+    deliverables: [
+      "High-performance React / Next.js / Vite web application",
+      "Authentication system (Supabase, Clerk, or NextAuth)",
+      "Database schema, migrations & CRUD APIs (PostgreSQL / SQLite)",
+      "Tailwind CSS responsive design for mobile, tablet & desktop",
+      "Production deployment on Vercel/Cloudflare with custom domain",
+      "Zero vendor lock-in — 100% full source code & repo ownership",
+      "14 days post-launch bug fixes & support"
+    ],
+    techStack: ["React", "TypeScript", "Next.js", "Tailwind CSS", "PostgreSQL", "Vercel"],
+    ctaText: "Start MVP Sprint",
+    emailSubject: "Inquiry: Rapid MVP & Web App Sprint"
+  },
+  {
+    id: "ai-workflows",
+    name: "AI & LLM Workflows",
+    tagline: "Autonomous agents, RAG search & custom LLM integrations.",
+    priceUsd: 2299,
+    priceInr: 195000,
+    period: "fixed price",
+    timeline: "2 – 3 Weeks",
+    badge: "Most Popular",
+    badgeVariant: "indigo",
+    popular: true,
+    description: "Integrate powerful LLMs (OpenAI, Anthropic Claude, Gemini, DeepSeek) into your software or automate repetitive enterprise processes.",
+    idealFor: "Companies embedding AI features, document intelligence, conversational bots, or smart automation.",
+    deliverables: [
+      "Custom LLM agent architecture tailored to your business logic",
+      "RAG pipeline with vector database (Pinecone / pgvector / Chroma)",
+      "Real-time streaming UI (streaming chat, voice or tool execution)",
+      "Prompt engineering, structured JSON outputs & fallback chains",
+      "Token cost optimization & rate-limit handling",
+      "API webhook integrations with your existing backend or CRMs",
+      "30 days post-launch tuning & performance monitoring"
+    ],
+    techStack: ["Python", "OpenAI / Claude API", "LangChain", "FastAPI", "pgvector", "TypeScript"],
+    ctaText: "Build AI Feature",
+    emailSubject: "Inquiry: AI & LLM Workflows Project"
+  },
+  {
+    id: "data-pipelines",
+    name: "Data Engineering & Systems",
+    tagline: "Enterprise-grade automated pipelines, scrapers, and database architectures.",
+    priceUsd: 2899,
+    priceInr: 245000,
+    period: "fixed price",
+    timeline: "2 – 4 Weeks",
+    badge: "Enterprise Grade",
+    badgeVariant: "cyan",
+    popular: false,
+    description: "Harnessing enterprise practices from EY GDS to build robust ETL/ELT pipelines, reliable data scrapers, and high-performance databases.",
+    idealFor: "Companies with messy data, breaking scrapers, slow queries, or complex sync pipelines.",
+    deliverables: [
+      "End-to-end automated ETL / ELT pipeline architecture",
+      "Resilient web scraping & structured data extraction engines",
+      "PostgreSQL / SQL query optimization, indexing & schema architecture",
+      "Automated scheduled cron jobs with retry logic & alert monitoring",
+      "Data transformation, validation, deduplication & cleansing scripts",
+      "Dockerized microservices & cloud deployment (AWS / GCP / VPS)",
+      "Comprehensive architecture documentation & data dictionary"
+    ],
+    techStack: ["Python", "PostgreSQL", "SQLAlchemy", "FastAPI", "Docker", "AWS"],
+    ctaText: "Discuss Data Scope",
+    emailSubject: "Inquiry: Data Engineering & Systems Pipeline"
+  },
+  {
+    id: "dedicated-retainer",
+    name: "Dedicated Tech Partner",
+    tagline: "Senior full-stack & AI engineering bandwidth embedded in your team.",
+    priceUsd: 3499,
+    priceInr: 295000,
+    period: "per month",
+    timeline: "Ongoing • Flexible",
+    badge: "1 Slot Open",
+    badgeVariant: "amber",
+    popular: false,
+    description: "Continuous sprint execution for growing startups. Fast turnaround, direct communication, and zero recruitment overhead.",
+    idealFor: "Funded startups, growing businesses, and founders needing a dedicated technical co-pilot.",
+    deliverables: [
+      "~20 dedicated hours/week of full-stack + AI development",
+      "Direct async channel (Slack, Discord, or Telegram) with rapid response",
+      "Weekly 1-on-1 sprint planning & sync video calls",
+      "Flexible priority pivoting — ship features, fix bugs, optimize",
+      "Code reviews, architectural advisory, and technical roadmapping",
+      "No long-term contracts: pause or cancel anytime with 1-week notice",
+      "Priority turnaround on mission-critical fixes"
+    ],
+    techStack: ["Full Stack", "AI / LLMs", "Cloud & DevOps", "Architecture"],
+    ctaText: "Claim Retainer Slot",
+    emailSubject: "Inquiry: Dedicated Engineering Retainer"
+  }
+];
+
+export const FREELANCE_FAQS = [
+  {
+    q: "How does the project process work from start to finish?",
+    a: "We start with a quick 20-minute discovery call to clarify your goals, timeline, and requirements. Next, I provide a clear scope breakdown and fixed proposal. Once approved, development kicks off in focused sprints with regular Loom updates and staging previews until launch."
+  },
+  {
+    q: "How are payments structured?",
+    a: "For fixed-price sprints, payments are typically split 50% upfront to reserve the sprint slot and 50% upon successful completion, testing, and deployment. For monthly retainers, billing is upfront at the beginning of each 30-day period with the freedom to cancel or pause anytime."
+  },
+  {
+    q: "Who owns the code and intellectual property?",
+    a: "You do. 100%. As soon as the project is paid for, all source code, Git repositories, deployment credentials, and assets are completely transferred to your control with zero proprietary locks."
+  },
+  {
+    q: "What if my requirements don't fit into these standard tiers?",
+    a: "Every project is unique. If you need a smaller micro-task, an hourly consulting session, or a hybrid enterprise solution, we can tailor a custom scope and estimate that fits your exact budget and timeline."
+  },
+  {
+    q: "What timezone do you work in and how do we communicate?",
+    a: "I am based in India (IST, UTC+5:30) with broad daily overlap across US, European, and APAC working hours. We communicate via Slack, Discord, email, or WhatsApp, complemented by Loom video walkthroughs and weekly scheduled calls."
+  }
+];
