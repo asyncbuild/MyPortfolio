@@ -17,7 +17,7 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({ onOpenCalModal }) => {
       <SpotlightCard className="p-5 sm:p-7 rounded-xl relative overflow-hidden theme-border shadow-xs">
         <div className="relative z-10 space-y-4 sm:space-y-5">
           <p className="text-xs sm:text-sm theme-text-muted leading-relaxed max-w-xl">
-            If you need any service, have a project or custom software to build, or want to collaborate—feel free to reach out. I'm always open to discussing new opportunities.
+            Have a project in mind, need help building a web tool or data pipeline, or just want to chat about engineering? My inbox is always open.
           </p>
 
           <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">

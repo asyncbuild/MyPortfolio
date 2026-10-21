@@ -134,8 +134,8 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Integrated Live Status & Real-Time IST Clock Banner */}
           <div className="mb-5 p-3 sm:p-3.5 rounded-xl bg-[var(--subtle-bg)] border theme-border flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3 text-xs shadow-xs">
             {/* Unified Status Badge & Full Readable Sentence */}
-            <div className="flex items-start gap-2.5 min-w-0">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider shrink-0 mt-0.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider shrink-0">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
@@ -143,8 +143,8 @@ export const Hero: React.FC<HeroProps> = ({
                 <span>Live</span>
               </span>
 
-              <p className="theme-text-muted text-[11px] sm:text-xs leading-relaxed">
-                Scaling real-time AI on{' '}
+              <p className="theme-text-muted text-[11px] sm:text-xs leading-none">
+                Scaling{' '}
                 <a
                   href="https://whisprlive.live"
                   target="_blank"
@@ -154,7 +154,7 @@ export const Hero: React.FC<HeroProps> = ({
                 >
                   WhisprLive
                 </a>{' '}
-                &amp; engineering distributed data pipelines for{' '}
+                &amp;{' '}
                 <strong className="theme-text-title font-semibold">GitHub Pulse</strong>
               </p>
             </div>
@@ -193,7 +193,7 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Bio Bullet Points */}
           <ul className="space-y-2 mb-6 sm:mb-7 text-xs sm:text-sm theme-text-muted">
             {PERSONAL_INFO.bioPoints.map((point, index) => {
-              const parts = point.split(/(React|TypeScript|Python|WhisprLive|GitHub Pulse|EY GDS)/g);
+              const parts = point.split(/(React|TypeScript|Python|SQL|XBRL|Node\.js|WebSockets|WhisprLive|GitHub Pulse|EY GDS|agentic coding)/g);
               return (
                 <li key={index} className="flex items-start gap-2.5">
                   <span className="theme-text-faint select-none mt-0.5">•</span>
@@ -213,7 +213,18 @@ export const Hero: React.FC<HeroProps> = ({
                           </a>
                         );
                       }
-                      if (part === 'React' || part === 'TypeScript' || part === 'Python' || part === 'GitHub Pulse' || part === 'EY GDS') {
+                      if (
+                        part === 'React' ||
+                        part === 'TypeScript' ||
+                        part === 'Python' ||
+                        part === 'SQL' ||
+                        part === 'XBRL' ||
+                        part === 'Node.js' ||
+                        part === 'WebSockets' ||
+                        part === 'GitHub Pulse' ||
+                        part === 'EY GDS' ||
+                        part === 'agentic coding'
+                      ) {
                         return (
                           <strong key={i} className="theme-text-title font-semibold">
                             {part}

@@ -4,12 +4,12 @@ export const PERSONAL_INFO = {
   name: "Deepesh Reddy",
   age: "23",
   title: "Data & AI Engineer • Full-Stack Developer",
-  tagline: "Data & AI Engineer at EY GDS by profession, Full-Stack Developer by passion. Building intelligent systems and fast, interactive web applications.",
+  tagline: "Data & AI Engineer at EY GDS, full-stack builder at heart. I build real-time web platforms, automated data pipelines, and fast user interfaces.",
   statusText: "Available for projects",
   location: "India (Remote)",
   email: "contact.deepeshreddy@gmail.com",
-  calComLink: "https://cal.com/saikumar2603",
-  calSlug: "saikumar2603",
+  calComLink: "https://cal.com/deepeshreddy",
+  calSlug: "deepeshreddy",
   resumeUrl: "/resume.pdf",
   avatarUrl: "/avatar.png",
   bannerUrl: "/banner.png",
@@ -21,9 +21,10 @@ export const PERSONAL_INFO = {
   },
   philosophy: "Be Delusional.",
   bioPoints: [
-    "Data & AI Engineer at EY GDS — engineering scalable data pipelines, AI integrations, and automated workflows.",
-    "Full-stack developer by passion — crafting real-time web platforms (WhisprLive) and interactive tools with React, TypeScript, and Node.js.",
-    "Bridging intelligent data/AI backends with high-performance, polished frontend experiences.",
+    "Data & AI Engineer at EY GDS — building Python XBRL parsers, web scrapers, and data validation pipelines for financial datasets.",
+    "Creator of WhisprLive — a real-time audience engagement platform built with React, TypeScript, Node.js, and WebSockets.",
+    "Big believer in agentic coding — using autonomous coding agents to build, test, and ship production-ready software much faster.",
+    "Comfortable across the entire stack, from distributed data pipelines to clean, responsive frontends.",
   ],
 };
 
@@ -34,15 +35,16 @@ export const EXPERIENCES: ExperienceItem[] = [
     company: "EY GDS",
     companyUrl: "https://www.ey.com",
     period: "Aug 2025 - Present",
-    location: "Kolkata",
+    location: "Kolkata, India",
     type: "Full-time",
-    metricBadges: ["Data & AI Engineering", "Python", "Enterprise Systems"],
+    metricBadges: ["XBRL Parsing", "Python & SQL", "Web Scraping"],
     bulletPoints: [
-      "Engineered scalable data pipelines, analytics services, and automated data tools using Python and SQL.",
-      "Collaborated with cross-functional enterprise teams to deploy robust data services and AI-assisted workflows.",
-      "Built internal full-stack web tools to streamline automated data collection, transformation, and reporting."
+      "Developed a Python-based XBRL parser to extract structured financial data using taxonomy definitions and extended it to process entire directories of XBRL files.",
+      "Evaluated financial data sources and developed Python web scraping solutions to retrieve relevant information from external websites.",
+      "Processed structured and semi-structured financial data using Python and SQL, implementing validation checks to improve data accuracy and consistency.",
+      "Collaborated with analysts to clarify data requirements and used AI coding assistants to support development, debugging, and test generation."
     ],
-    techStack: ["Python", "SQL", "FastAPI", "JavaScript", "AI & ML Tools"],
+    techStack: ["Python", "SQL", "XBRL", "Web Scraping", "Data Validation", "AI Assistants"],
     highlightColor: "indigo"
   },
   {
@@ -54,10 +56,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     type: "Freelance",
     metricBadges: ["Web Development", "Full Stack", "React & MongoDB"],
     bulletPoints: [
-      "Designed and developed custom web applications and client websites using React.js, Tailwind CSS, and MongoDB.",
-      "Integrated dynamic content management for efficient data storage of portfolios and services.",
-      "Implemented responsive UI components to ensure seamless user experience across devices.",
-      "Collaborated directly with clients to gather requirements and deliver features aligned with business needs."
+      "Built full-stack web applications and interactive landing pages using React, Tailwind CSS, and MongoDB.",
+      "Designed clean database schemas and integrated REST APIs tailored to client requirements.",
+      "Focused on mobile responsiveness, fast page load speeds, and intuitive user experiences.",
+      "Worked directly with founders from initial concept and UI design through production deployment."
     ],
     techStack: ["React.js", "MongoDB", "Tailwind CSS", "JavaScript", "Node.js"],
     highlightColor: "emerald"
@@ -68,8 +70,8 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: "proj-whispr",
     title: "WhisprLive",
-    tagline: "Zero-install real-time audience interaction platform for keynotes & webinars.",
-    description: "WhisprLive transforms presentations into interactive conversations with zero-install QR access, anonymous Q&A, crowdsourced upvoting, live polls, word clouds, and 4K stage projector mode.",
+    tagline: "Real-time audience Q&A and live polling platform for speakers and events.",
+    description: "A live presentation tool where audiences can scan a QR code to ask anonymous questions, upvote favorites, and vote in live polls — with zero app downloads or signups required.",
     status: "Live",
     metrics: "Sub-50ms Socket.IO • Zero App Installs • 4K Stage Mode",
     mediaType: "image",
@@ -81,23 +83,23 @@ export const PROJECTS: ProjectItem[] = [
     featured: true,
     colorHighlight: "cyan",
     highlights: [
-      "Engineered room-scoped Socket.IO WebSocket clustering for sub-50ms live synchronization.",
-      "Zero app download or signup required for audience — join in under 3 seconds via dynamic QR code.",
-      "Dedicated high-contrast 4K Stage Projector Mode with live upvoted question spotlighting.",
-      "In-memory democratic question ranking algorithms with client-side anti-spam single-vote integrity."
+      "Sub-50ms live synchronization using room-scoped Socket.IO WebSocket connections.",
+      "Zero audience friction — attendees scan a QR code and join the live room in under 3 seconds.",
+      "Dedicated 4K Stage Mode designed specifically for large event screens and projector displays.",
+      "Real-time democratic question ranking with built-in client rate limits and vote integrity."
     ],
     architecture: {
-      painPoint: "Audience hesitation and fear of speaking up, friction from app downloads/signups, and disorganized Q&A chat flood during live presentations.",
-      whatWeSolved: "Zero-install instant QR access in under 3 seconds, 100% anonymous Q&A, crowdsourced democratic upvoting, and a dedicated 4K stage projector view.",
-      howWeSolved: "Engineered room-scoped Socket.IO WebSocket clustering for <50ms bi-directional event sync, in-memory democratic ranking algorithms, and decoupled asynchronous PostgreSQL persistence.",
+      painPoint: "Traditional presentation Q&A is awkward: attendees hesitate to raise hands, app downloads cause high drop-off, and chat streams get flooded.",
+      whatWeSolved: "Instant QR access in 3 seconds, anonymous questions so people speak up freely, live crowdsourced upvoting, and a clean stage projector view.",
+      howWeSolved: "Room-scoped Socket.IO WebSockets for bi-directional event sync, in-memory question sorting, and background PostgreSQL persistence.",
       keyMetric: "< 50ms Real-Time Event Sync"
     }
   },
   {
     id: "proj-pulse",
     title: "GitHub Pulse",
-    tagline: "End-to-end cloud data pipeline on AWS with Airflow, PySpark, dbt & LLM RAG.",
-    description: "Automated data engineering pipeline ingesting millions of public GitHub events from GH Archive. Orchestrated on AWS with Apache Airflow and PySpark on AWS Glue, dbt star-schema modeling in S3/Athena, and a pgvector RAG question-answering app with FastAPI.",
+    tagline: "Cloud data pipeline ingesting millions of GitHub events into analytics tables and AI search.",
+    description: "Automated data engineering pipeline that ingests millions of public GitHub events from GH Archive, cleans and partitions them into Parquet with PySpark on AWS Glue, models star schemas with dbt, and enables conversational search via pgvector.",
     status: "Building",
     metrics: "AWS Data Pipeline • PySpark & dbt • pgvector & RAG Q&A",
     mediaType: "image",
@@ -108,15 +110,15 @@ export const PROJECTS: ProjectItem[] = [
     featured: true,
     colorHighlight: "emerald",
     highlights: [
-      "Automated scheduled ingestion of public GH Archive events via Airflow DAGs with fault-tolerant retries.",
-      "Distributed batch processing with PySpark on AWS Glue, generating partitioned Parquet tables in S3.",
-      "Analytics star-schema data modeling with dbt and Athena for daily trending repos and developer metrics.",
-      "RAG-powered conversational search over issue discussions using pgvector embeddings and FastAPI /ask endpoint with verified source links."
+      "Automated daily ingestion of GH Archive public logs via Apache Airflow DAGs with retry handling.",
+      "Distributed batch transformations with PySpark on AWS Glue, storing partitioned Parquet datasets in S3.",
+      "Star-schema analytics modeling with dbt and Athena to track developer activity and trending repos.",
+      "RAG search API built with FastAPI and pgvector to answer developer questions with direct source citations."
     ],
     architecture: {
-      painPoint: "Raw unorganized GitHub event logs are massive, unstructured, and difficult to query for developer trends or issue sentiment analysis.",
-      whatWeSolved: "Automated end-to-end pipeline that transforms raw event streams into clean analytics tables and provides plain-English Q&A with direct source links.",
-      howWeSolved: "Built an Airflow orchestration DAG ingesting GH Archive to S3 raw, PySpark cleaning on AWS Glue to partitioned Parquet, dbt star schema modeling, and an embedding retrieval layer (pgvector + FastAPI).",
+      painPoint: "Raw GH Archive event logs are massive, unstructured JSON dumps that are slow and expensive to query directly.",
+      whatWeSolved: "Turned raw event streams into clean, partitioned analytics tables and a conversational AI search assistant with verified links.",
+      howWeSolved: "Airflow DAGs for S3 landing, PySpark on AWS Glue for Parquet compaction, dbt for star schema modeling, and pgvector embeddings for fast RAG search.",
       keyMetric: "11-Stage Cloud Pipeline • Sub-second RAG Retrieval"
     }
   }
@@ -143,6 +145,8 @@ export const OPEN_SOURCE_PRS: OpenSourcePR[] = [
 ];
 
 export const SKILLS_LIST = [
+  // AI & Workflow
+  { name: "Agentic Coding", category: "AI" },
   // Languages (5)
   { name: "Python",       category: "Languages" },
   { name: "TypeScript",   category: "Languages" },

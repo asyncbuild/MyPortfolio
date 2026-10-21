@@ -18,7 +18,8 @@ import {
   Table,
   Cpu,
   Layers,
-  Zap
+  Zap,
+  Sparkles
 } from 'lucide-react';
 import { GithubIcon } from './SocialIcons';
 import { SKILLS_LIST } from '../data/portfolioData';
@@ -27,6 +28,7 @@ import { SKILLS_LIST } from '../data/portfolioData';
 const SkillBadgeIcon: React.FC<{ name: string }> = ({ name }) => {
   const n = name.toLowerCase();
 
+  if (n.includes('agent') || n.includes('ai')) return <Sparkles className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />;
   if (n === 'python')           return <Terminal    className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />;
   if (n === 'typescript')       return <FileCode    className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />;
   if (n === 'sql')              return <Table       className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />;
