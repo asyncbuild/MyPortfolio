@@ -4,7 +4,7 @@ export const PERSONAL_INFO = {
   name: "Deepesh Reddy",
   age: "23",
   title: "Data & AI Engineer • Full-Stack Developer",
-  tagline: "Data & AI Engineer at EY GDS, full-stack builder at heart. I build real-time web platforms, automated data pipelines, and fast user interfaces.",
+  tagline: "Data & AI Engineer at EY and full-stack developer. I build real-time web platforms, automated data pipelines, and fast user interfaces.",
   statusText: "Available for projects",
   location: "India (Remote)",
   email: "contact.deepeshreddy@gmail.com",
@@ -21,7 +21,7 @@ export const PERSONAL_INFO = {
   },
   philosophy: "Be Delusional.",
   bioPoints: [
-    "Data & AI Engineer at EY GDS — building Python XBRL parsers, web scrapers, and data validation pipelines for financial datasets.",
+    "Data & AI Engineer at EY — building Python XBRL parsers, web scrapers, and data validation pipelines for complex enterprise datasets.",
     "Creator of WhisprLive — a real-time audience engagement platform built with React, TypeScript, Node.js, and WebSockets.",
     "Big believer in agentic coding — using autonomous coding agents to build, test, and ship production-ready software much faster.",
     "Comfortable across the entire stack, from distributed data pipelines to clean, responsive frontends.",
@@ -32,16 +32,16 @@ export const EXPERIENCES: ExperienceItem[] = [
   {
     id: "exp-1",
     role: "Data & AI Engineer",
-    company: "EY GDS",
+    company: "EY",
     companyUrl: "https://www.ey.com",
     period: "Aug 2025 - Present",
     location: "Kolkata, India",
     type: "Full-time",
     metricBadges: ["XBRL Parsing", "Python & SQL", "Web Scraping"],
     bulletPoints: [
-      "Developed a Python-based XBRL parser to extract structured financial data using taxonomy definitions and extended it to process entire directories of XBRL files.",
-      "Evaluated financial data sources and developed Python web scraping solutions to retrieve relevant information from external websites.",
-      "Processed structured and semi-structured financial data using Python and SQL, implementing validation checks to improve data accuracy and consistency.",
+      "Developed a Python-based XBRL parser to extract structured data using taxonomy definitions and extended it to process entire directories of XBRL files.",
+      "Evaluated external data sources and developed Python web scraping solutions to retrieve relevant information from target websites.",
+      "Processed structured and semi-structured enterprise data using Python and SQL, implementing validation checks to improve data accuracy and consistency.",
       "Collaborated with analysts to clarify data requirements and used AI coding assistants to support development, debugging, and test generation."
     ],
     techStack: ["Python", "SQL", "XBRL", "Web Scraping", "Data Validation", "AI Assistants"],

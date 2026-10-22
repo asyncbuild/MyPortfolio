@@ -193,7 +193,7 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Bio Bullet Points */}
           <ul className="space-y-2 mb-6 sm:mb-7 text-xs sm:text-sm theme-text-muted">
             {PERSONAL_INFO.bioPoints.map((point, index) => {
-              const parts = point.split(/(React|TypeScript|Python|SQL|XBRL|Node\.js|WebSockets|WhisprLive|GitHub Pulse|EY GDS|agentic coding)/g);
+              const parts = point.split(/(React|TypeScript|Python|SQL|XBRL|Node\.js|WebSockets|WhisprLive|GitHub Pulse|EY|agentic coding)/g);
               return (
                 <li key={index} className="flex items-start gap-2.5">
                   <span className="theme-text-faint select-none mt-0.5">•</span>
@@ -222,7 +222,7 @@ export const Hero: React.FC<HeroProps> = ({
                         part === 'Node.js' ||
                         part === 'WebSockets' ||
                         part === 'GitHub Pulse' ||
-                        part === 'EY GDS' ||
+                        part === 'EY' ||
                         part === 'agentic coding'
                       ) {
                         return (
