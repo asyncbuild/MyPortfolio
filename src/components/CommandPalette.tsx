@@ -46,6 +46,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'act-cal', category: 'Actions', label: 'Book an Intro Call (Cal.com)', icon: Calendar, action: () => { onClose(); onOpenCalModal(); } },
     { id: 'act-mail', category: 'Actions', label: `Send Email (${PERSONAL_INFO.email})`, icon: Mail, action: () => { window.location.href = `mailto:${PERSONAL_INFO.email}`; } },
     { id: 'act-resume', category: 'Actions', label: 'View & Download Resume', icon: FileText, action: () => { onClose(); onOpenResume(); } },
+    { id: 'act-resume-drive', category: 'Actions', label: 'Open Resume in Google Drive', icon: ExternalLink, action: () => { onClose(); window.open(PERSONAL_INFO.resumeDriveFolderUrl, '_blank', 'noopener,noreferrer'); } },
 
     // Projects
     ...PROJECTS.map(p => ({
