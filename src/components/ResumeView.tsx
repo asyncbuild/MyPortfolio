@@ -21,13 +21,13 @@ interface ResumeMeta {
 }
 
 const DEFAULT_META: ResumeMeta = {
-  fileId: PERSONAL_INFO.resumeDriveFileId || '191H04i6tMOif7e_Y5xOD2ygs9Upppwwa',
+  fileId: PERSONAL_INFO.resumeDriveFileId || '1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV',
   fileName: 'DeepeshReddy.pdf',
   folderUrl: PERSONAL_INFO.resumeDriveFolderUrl || 'https://drive.google.com/drive/folders/1UX5SMG8lc-FwWiNs6VbJmwe7xvk3-c2r',
-  viewUrl: PERSONAL_INFO.resumeDriveViewUrl || 'https://drive.google.com/file/d/191H04i6tMOif7e_Y5xOD2ygs9Upppwwa/view',
-  downloadUrl: PERSONAL_INFO.resumeDriveDownloadUrl || 'https://drive.google.com/uc?export=download&id=191H04i6tMOif7e_Y5xOD2ygs9Upppwwa',
-  previewUrl: PERSONAL_INFO.resumeDrivePreviewUrl || 'https://drive.google.com/file/d/191H04i6tMOif7e_Y5xOD2ygs9Upppwwa/preview',
-  pdfProxyUrl: '/api/resume?action=pdf',
+  viewUrl: PERSONAL_INFO.resumeDriveViewUrl || 'https://drive.google.com/file/d/1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV/view',
+  downloadUrl: PERSONAL_INFO.resumeDriveDownloadUrl || 'https://drive.google.com/uc?export=download&id=1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV',
+  previewUrl: PERSONAL_INFO.resumeDrivePreviewUrl || 'https://drive.google.com/file/d/1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV/preview',
+  pdfProxyUrl: '/api/resume?action=pdf&id=1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV',
 };
 
 export const ResumeView: React.FC<ResumeViewProps> = ({ onBack }) => {
@@ -40,7 +40,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ onBack }) => {
     let isMounted = true;
     const syncResumeMeta = async () => {
       try {
-        const res = await fetch('/api/resume');
+        const res = await fetch(`/api/resume?t=${Date.now()}`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.fileId && isMounted) {
@@ -51,7 +51,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ onBack }) => {
               viewUrl: data.viewUrl || `https://drive.google.com/file/d/${data.fileId}/view`,
               downloadUrl: data.downloadUrl || `https://drive.google.com/uc?export=download&id=${data.fileId}`,
               previewUrl: data.previewUrl || `https://drive.google.com/file/d/${data.fileId}/preview`,
-              pdfProxyUrl: data.pdfProxyUrl || '/api/resume?action=pdf',
+              pdfProxyUrl: `/api/resume?action=pdf&id=${data.fileId}&t=${Date.now()}`,
             });
           }
         }
@@ -107,10 +107,11 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ onBack }) => {
         // Try proxy endpoint first to get latest Drive file, fallback to static /resume.pdf
         let pdf;
         try {
-          const loadingTask = pdfjsLib.getDocument(meta.pdfProxyUrl);
+          const proxyUrl = `/api/resume?action=pdf&id=${meta.fileId}&t=${Date.now()}`;
+          const loadingTask = pdfjsLib.getDocument(proxyUrl);
           pdf = await loadingTask.promise;
         } catch {
-          const fallbackTask = pdfjsLib.getDocument('/resume.pdf');
+          const fallbackTask = pdfjsLib.getDocument(`/resume.pdf?t=${Date.now()}`);
           pdf = await fallbackTask.promise;
         }
 
@@ -157,7 +158,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ onBack }) => {
     return () => {
       isMounted = false;
     };
-  }, [meta.pdfProxyUrl]);
+  }, [meta.fileId]);
 
   return (
     <div className="min-h-screen py-6 sm:py-8 px-3 sm:px-6 max-w-3xl mx-auto space-y-5 animate-in fade-in duration-200">

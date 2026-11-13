@@ -5,11 +5,53 @@ export interface CacheEntry {
 }
 
 let memoryCache: CacheEntry | null = null;
-const CACHE_TTL_MS = 5 * 60 * 1000; // Cache for 5 minutes
+const CACHE_TTL_MS = 15 * 1000; // 15 seconds cache to avoid spamming Google, but fast enough for instant updates
 
 export const DRIVE_FOLDER_ID = '1UX5SMG8lc-FwWiNs6VbJmwe7xvk3-c2r';
-export const DEFAULT_RESUME_FILE_ID = '191H04i6tMOif7e_Y5xOD2ygs9Upppwwa';
+export const DEFAULT_RESUME_FILE_ID = '1LALaVnCWuSCh8NChgQX1JeaCCi-9P1QV';
 export const DEFAULT_RESUME_FILE_NAME = 'DeepeshReddy.pdf';
+
+/**
+ * Robust extraction of PDF file metadata from Google Drive folder HTML
+ */
+export function extractPdfFromDriveHtml(html: string): { fileId: string; fileName: string } | null {
+  // Method 1: Matches JSON stringified items in AF_initDataCallback / _DRIVE_ivd
+  const m1 = html.match(/\\x22([a-zA-Z0-9_-]{25,35})\\x22[^]*?\\x22([^"\\]+\.pdf)\\x22[^]*?\\x22application\/pdf\\x22/i);
+  if (m1) {
+    return { fileId: m1[1], fileName: m1[2] };
+  }
+
+  // Method 2: AF_initDataCallback JSON structure
+  const m2Id = html.match(/\[null,"([a-zA-Z0-9_-]{25,35})"\][^\n]{0,200}"application\/pdf"/i);
+  if (m2Id) {
+    const m2Name = html.match(/\[\[\["([^"]+\.pdf)"/i) || html.match(/"([^"]+\.pdf)"/i);
+    return {
+      fileId: m2Id[1],
+      fileName: m2Name ? m2Name[1] : DEFAULT_RESUME_FILE_NAME,
+    };
+  }
+
+  // Method 3: DOM data-id in table row
+  const m3 = html.match(/data-id="([a-zA-Z0-9_-]{25,35})"[^>]*?data-target="doc"/i);
+  if (m3) {
+    const m3Name = html.match(/data-tooltip="([^"]+\.pdf)\s+PDF"/i) || html.match(/"([^"]+\.pdf)"/i);
+    return {
+      fileId: m3[1],
+      fileName: m3Name ? m3Name[1] : DEFAULT_RESUME_FILE_NAME,
+    };
+  }
+
+  // Method 4: Direct drive view link
+  const m4 = html.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]{25,35})\/view/i);
+  if (m4) {
+    return {
+      fileId: m4[1],
+      fileName: DEFAULT_RESUME_FILE_NAME,
+    };
+  }
+
+  return null;
+}
 
 /**
  * Dynamically resolves the latest PDF resume file from the public Google Drive folder.
@@ -32,30 +74,15 @@ export async function getLatestResumeFromDrive(forceRefresh = false): Promise<{ 
 
     if (response.ok) {
       const html = await response.text();
+      const extracted = extractPdfFromDriveHtml(html);
 
-      // Collect all PDF files found in the folder
-      const regex = /\[\[null,"([a-zA-Z0-9_-]{25,})"\][^\]]*?"application\/pdf"[^]*?\[\[\["([^"]+\.pdf)"/gi;
-      const pdfs: { id: string; name: string }[] = [];
-      let m;
-      while ((m = regex.exec(html)) !== null) {
-        pdfs.push({ id: m[1], name: m[2] });
-      }
-
-      if (pdfs.length > 0) {
-        // If multiple PDFs exist, prioritize one with 'resume' or 'deepesh' in the filename, else use the first/latest
-        const prioritized = pdfs.find(p => /resume|deepesh|cv/i.test(p.name)) || pdfs[0];
-        memoryCache = { fileId: prioritized.id, fileName: prioritized.name, fetchedAt: now };
-        return { fileId: prioritized.id, fileName: prioritized.name };
-      }
-
-      // Secondary fallback regex if DOM/JSON layout slightly shifts
-      const idMatch = html.match(/\[null,"([a-zA-Z0-9_-]{25,})"\][^\n]{0,200}application\/pdf/);
-      if (idMatch && idMatch[1]) {
-        const nameMatch = html.match(/\[\[\["([^"]+\.pdf)"/i);
-        const fileId = idMatch[1];
-        const fileName = nameMatch ? nameMatch[1] : DEFAULT_RESUME_FILE_NAME;
-        memoryCache = { fileId, fileName, fetchedAt: now };
-        return { fileId, fileName };
+      if (extracted && extracted.fileId) {
+        memoryCache = {
+          fileId: extracted.fileId,
+          fileName: extracted.fileName,
+          fetchedAt: now,
+        };
+        return extracted;
       }
     }
   } catch (err) {
@@ -88,7 +115,11 @@ export default async function handler(req: any, res: any) {
     req.query?.refresh === '1';
 
   try {
-    const { fileId, fileName } = await getLatestResumeFromDrive(refresh);
+    const latest = await getLatestResumeFromDrive(refresh);
+    const requestedFileId = parsedUrl.searchParams.get('id') || req.query?.id || latest.fileId;
+    const fileId = requestedFileId;
+    const fileName = latest.fileName;
+
     const folderUrl = `https://drive.google.com/drive/folders/${DRIVE_FOLDER_ID}`;
     const viewUrl = `https://drive.google.com/file/d/${fileId}/view`;
     const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
@@ -109,8 +140,10 @@ export default async function handler(req: any, res: any) {
     if (action === 'pdf') {
       // Proxy raw PDF bytes to bypass CORS restrictions for client-side viewers
       const drivePdfRes = await fetch(downloadUrl, {
+        redirect: 'follow',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         },
       });
 
@@ -121,7 +154,10 @@ export default async function handler(req: any, res: any) {
       const buffer = await drivePdfRes.arrayBuffer();
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
-      res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
+      // Never cache the proxied stream so updates are instant
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
       res.statusCode = 200;
       res.end(Buffer.from(buffer));
       return;
@@ -129,7 +165,9 @@ export default async function handler(req: any, res: any) {
 
     // Default: JSON info
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300, stale-while-revalidate=600');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.statusCode = 200;
     res.end(
       JSON.stringify({
@@ -140,7 +178,7 @@ export default async function handler(req: any, res: any) {
         viewUrl,
         downloadUrl,
         previewUrl,
-        pdfProxyUrl: '/api/resume?action=pdf',
+        pdfProxyUrl: `/api/resume?action=pdf&id=${fileId}`,
       })
     );
   } catch (err: any) {
@@ -157,10 +195,9 @@ export default async function handler(req: any, res: any) {
           viewUrl: `https://drive.google.com/file/d/${DEFAULT_RESUME_FILE_ID}/view`,
           downloadUrl: `https://drive.google.com/uc?export=download&id=${DEFAULT_RESUME_FILE_ID}`,
           previewUrl: `https://drive.google.com/file/d/${DEFAULT_RESUME_FILE_ID}/preview`,
-          pdfProxyUrl: '/resume.pdf',
+          pdfProxyUrl: `/api/resume?action=pdf&id=${DEFAULT_RESUME_FILE_ID}`,
         },
       })
     );
   }
 }
-
