@@ -160,25 +160,25 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Location, IST Clock & Live Total Visits */}
-            <div className="flex items-center gap-2.5 text-[11px] font-mono theme-text-faint shrink-0 pt-2 md:pt-0 border-t md:border-t-0 theme-border md:border-transparent flex-wrap">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                <span className="theme-text-muted">India</span>
+            <div className="flex items-center gap-2.5 text-[11px] font-mono leading-none theme-text-faint shrink-0 pt-2 md:pt-0 border-t md:border-t-0 theme-border md:border-transparent flex-wrap">
+              <div className="inline-flex items-center gap-1.5 leading-none">
+                <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0 -translate-y-px" />
+                <span className="theme-text-muted leading-none">India</span>
               </div>
-              <span className="opacity-30 select-none theme-text-faint">•</span>
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="theme-text-title tabular-nums font-semibold">
+              <span className="opacity-30 select-none theme-text-faint leading-none">•</span>
+              <div className="inline-flex items-center gap-1.5 leading-none">
+                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 -translate-y-px" />
+                <span className="theme-text-title tabular-nums font-semibold leading-none">
                   {timeStr || 'IST'}
                 </span>
               </div>
-              <span className="opacity-30 select-none theme-text-faint">•</span>
-              <div className="flex items-center gap-1.5" title="Total unique visits tracked live">
-                <Eye className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span className="theme-text-title tabular-nums font-semibold">
+              <span className="opacity-30 select-none theme-text-faint leading-none">•</span>
+              <div className="inline-flex items-center gap-1.5 leading-none" title="Total unique visits tracked live">
+                <Eye className="w-3.5 h-3.5 text-cyan-400 shrink-0 -translate-y-px" />
+                <span className="theme-text-title tabular-nums font-semibold leading-none">
                   {visitCount.toLocaleString()}
                 </span>
-                <span className="theme-text-faint text-[10px]">
+                <span className="theme-text-faint text-[10px] leading-none">
                   {visitCount === 1 ? 'visit' : 'visits'}
                 </span>
               </div>
