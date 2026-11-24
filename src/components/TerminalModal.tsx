@@ -7,6 +7,7 @@ interface TerminalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onToggleTheme?: () => void;
+  onOpenGoals?: () => void;
 }
 
 interface CommandLog {
@@ -15,7 +16,7 @@ interface CommandLog {
   output: React.ReactNode;
 }
 
-export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme }) => {
+export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme, onOpenGoals }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -75,6 +76,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
               <div><span className="text-white font-mono font-medium">motto</span> - Core guiding belief</div>
               <div><span className="text-white font-mono font-medium">matrix</span> - Digital rain mode</div>
               <div><span className="text-white font-mono font-medium">sudo hire</span> - Direct hire shortcut</div>
+              <div><span className="text-white font-mono font-medium">goals</span> - 20-wk AI backend roadmap</div>
               <div><span className="text-white font-mono font-medium">theme</span> - Toggle light/dark</div>
               <div><span className="text-white font-mono font-medium">clear</span> - Clear screen</div>
               <div><span className="text-white font-mono font-medium">exit</span> - Close terminal</div>
@@ -199,6 +201,26 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
           onToggleTheme();
           output = <p className="text-zinc-300 text-xs font-mono">Theme toggled successfully.</p>;
         }
+        break;
+
+      case 'goals':
+      case 'plan':
+      case 'roadmap':
+        output = (
+          <div className="space-y-1 text-zinc-300 text-xs font-mono">
+            <p className="text-teal-300 font-bold">20-Week AI Backend Lock-In Plan (Nov 2026 – Apr 2027)</p>
+            <p className="text-zinc-400">8 Tracks: SQL, DSA, GitHub Pulse, AI Backend, Interviews, System Design &amp; OSS.</p>
+            <p className="text-zinc-400">Opening study plan at <span className="text-teal-300 underline">/goals</span>...</p>
+          </div>
+        );
+        setTimeout(() => {
+          onClose();
+          if (onOpenGoals) onOpenGoals();
+          else {
+            window.history.pushState({}, '', '/goals');
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          }
+        }, 500);
         break;
 
       case 'clear':

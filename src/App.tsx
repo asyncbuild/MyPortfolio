@@ -172,6 +172,7 @@ export function App() {
 
         {currentView === 'goals' ? (
           <GoalsView
+            theme={theme}
             onBack={() => {
               setCurrentView('home');
               window.history.pushState({}, '', '/');
@@ -231,6 +232,11 @@ export function App() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           onOpenTerminal={() => setTerminalOpen(true)}
+          onOpenGoals={() => {
+            setCurrentView('goals');
+            window.history.pushState({}, '', '/goals');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         />
 
         <CalModal
@@ -243,6 +249,11 @@ export function App() {
           isOpen={terminalOpen}
           onClose={() => setTerminalOpen(false)}
           onToggleTheme={toggleTheme}
+          onOpenGoals={() => {
+            setCurrentView('goals');
+            window.history.pushState({}, '', '/goals');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         />
 
         <ProjectModal

@@ -25,8 +25,22 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Center / Tech Stack */}
-        <div className="text-[11px] theme-text-faint hidden md:block">
-          Built with React 19, TypeScript &amp; Tailwind
+        <div className="text-[11px] theme-text-faint hidden md:flex items-center gap-2">
+          <span>Built with React 19, TypeScript &amp; Tailwind</span>
+          <span>•</span>
+          <a
+            href="/goals"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '/goals');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:theme-text-title transition-colors underline underline-offset-2 cursor-pointer"
+            title="View 20-Week AI Backend Lock-In Plan"
+          >
+            Lock-In Plan
+          </a>
         </div>
 
         {/* Right: Back to Top */}
