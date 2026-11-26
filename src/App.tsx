@@ -11,6 +11,7 @@ import { IndexSidebar } from './components/IndexSidebar';
 import { Footer } from './components/Footer';
 import { ResumeView } from './components/ResumeView';
 import { GoalsView } from './components/GoalsView';
+import { LearningsView } from './components/LearningsView';
 import { Watermark } from './components/Watermark';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { TerminalModal } from './components/TerminalModal';
@@ -20,11 +21,12 @@ import type { ProjectItem } from './types/portfolio';
 
 export function App() {
   const [sessionStartTime] = useState(() => Date.now());
-  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goals'>(() => {
+  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goals' | 'learnings'>(() => {
     if (typeof window !== 'undefined') {
       const p = window.location.pathname.toLowerCase();
       const h = window.location.hash.toLowerCase();
       if (p === '/goals' || h === '#goals') return 'goals';
+      if (p === '/learnings' || h === '#learnings') return 'learnings';
       if (p === '/resume' || h === '#resume') return 'resume';
     }
     return 'home';
@@ -86,6 +88,7 @@ export function App() {
       const p = window.location.pathname.toLowerCase();
       const h = window.location.hash.toLowerCase();
       if (p === '/goals' || h === '#goals') setCurrentView('goals');
+      else if (p === '/learnings' || h === '#learnings') setCurrentView('learnings');
       else if (p === '/resume' || h === '#resume') setCurrentView('resume');
       else setCurrentView('home');
     };
@@ -179,6 +182,15 @@ export function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
+        ) : currentView === 'learnings' ? (
+          <LearningsView
+            theme={theme}
+            onBack={() => {
+              setCurrentView('home');
+              window.history.pushState({}, '', '/');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         ) : currentView === 'resume' ? (
           <ResumeView
             onBack={() => {
@@ -237,6 +249,11 @@ export function App() {
             window.history.pushState({}, '', '/goals');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
+          onOpenLearnings={() => {
+            setCurrentView('learnings');
+            window.history.pushState({}, '', '/learnings');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         />
 
         <CalModal
@@ -252,6 +269,11 @@ export function App() {
           onOpenGoals={() => {
             setCurrentView('goals');
             window.history.pushState({}, '', '/goals');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenLearnings={() => {
+            setCurrentView('learnings');
+            window.history.pushState({}, '', '/learnings');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />

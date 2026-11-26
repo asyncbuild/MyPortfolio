@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal, Target } from 'lucide-react';
+import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal, Target, BookOpen } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 
 interface CommandPaletteProps {
@@ -9,6 +9,7 @@ interface CommandPaletteProps {
   onOpenResume: () => void;
   onOpenTerminal?: () => void;
   onOpenGoals?: () => void;
+  onOpenLearnings?: () => void;
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
@@ -18,6 +19,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenResume,
   onOpenTerminal,
   onOpenGoals,
+  onOpenLearnings,
 }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -55,6 +57,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         if (onOpenGoals) onOpenGoals();
         else {
           window.history.pushState({}, '', '/goals');
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }
+      },
+    },
+    {
+      id: 'act-learnings',
+      category: 'Actions',
+      label: 'View 90-Day Backend + AI Plan (/learnings)',
+      icon: BookOpen,
+      action: () => {
+        onClose();
+        if (onOpenLearnings) onOpenLearnings();
+        else {
+          window.history.pushState({}, '', '/learnings');
           window.dispatchEvent(new PopStateEvent('popstate'));
         }
       },

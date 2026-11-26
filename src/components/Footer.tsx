@@ -41,6 +41,20 @@ export const Footer: React.FC = () => {
           >
             Lock-In Plan
           </a>
+          <span>•</span>
+          <a
+            href="/learnings"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '/learnings');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="hover:theme-text-title transition-colors underline underline-offset-2 cursor-pointer"
+            title="View 90-Day Backend + AI Plan"
+          >
+            Learnings
+          </a>
         </div>
 
         {/* Right: Back to Top */}
