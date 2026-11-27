@@ -29,31 +29,17 @@ export const Footer: React.FC = () => {
           <span>Built with React 19, TypeScript &amp; Tailwind</span>
           <span>•</span>
           <a
-            href="/goals"
+            href="/goal"
             onClick={(e) => {
               e.preventDefault();
-              window.history.pushState({}, '', '/goals');
+              window.history.pushState({}, '', '/goal');
               window.dispatchEvent(new PopStateEvent('popstate'));
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="hover:theme-text-title transition-colors underline underline-offset-2 cursor-pointer"
-            title="View 20-Week AI Backend Lock-In Plan"
+            title="View AI Backend Lock-In Plan"
           >
             Lock-In Plan
-          </a>
-          <span>•</span>
-          <a
-            href="/learnings"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.pushState({}, '', '/learnings');
-              window.dispatchEvent(new PopStateEvent('popstate'));
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="hover:theme-text-title transition-colors underline underline-offset-2 cursor-pointer"
-            title="View 90-Day Backend + AI Plan"
-          >
-            Learnings
           </a>
         </div>
 

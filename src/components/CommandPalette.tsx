@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal, Target, BookOpen } from 'lucide-react';
+import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal, Target } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 
 interface CommandPaletteProps {
@@ -8,8 +8,7 @@ interface CommandPaletteProps {
   onOpenCalModal: () => void;
   onOpenResume: () => void;
   onOpenTerminal?: () => void;
-  onOpenGoals?: () => void;
-  onOpenLearnings?: () => void;
+  onOpenGoal?: () => void;
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
@@ -18,8 +17,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenCalModal,
   onOpenResume,
   onOpenTerminal,
-  onOpenGoals,
-  onOpenLearnings,
+  onOpenGoal,
 }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -48,29 +46,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
     // Quick Actions
     {
-      id: 'act-goals',
+      id: 'act-goal',
       category: 'Actions',
-      label: 'View 20-Week AI Backend Plan (/goals)',
+      label: 'View AI Backend Lock-In Plan (/goal)',
       icon: Target,
       action: () => {
         onClose();
-        if (onOpenGoals) onOpenGoals();
+        if (onOpenGoal) onOpenGoal();
         else {
-          window.history.pushState({}, '', '/goals');
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        }
-      },
-    },
-    {
-      id: 'act-learnings',
-      category: 'Actions',
-      label: 'View 90-Day Backend + AI Plan (/learnings)',
-      icon: BookOpen,
-      action: () => {
-        onClose();
-        if (onOpenLearnings) onOpenLearnings();
-        else {
-          window.history.pushState({}, '', '/learnings');
+          window.history.pushState({}, '', '/goal');
           window.dispatchEvent(new PopStateEvent('popstate'));
         }
       },

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
-interface GoalsViewProps {
+interface GoalViewProps {
   onBack: () => void;
   theme?: 'dark' | 'light';
 }
 
-export const GoalsView: React.FC<GoalsViewProps> = ({ onBack, theme = 'dark' }) => {
+export const GoalView: React.FC<GoalViewProps> = ({ onBack, theme = 'dark' }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const isLight = theme === 'light';
 
@@ -39,17 +39,17 @@ export const GoalsView: React.FC<GoalsViewProps> = ({ onBack, theme = 'dark' }) 
         <div className={`flex items-center gap-2 text-xs font-mono ${isLight ? 'text-[#586966]' : 'text-[#93A8A3]'}`}>
           <span className={`w-2 h-2 rounded-full animate-pulse ${isLight ? 'bg-[#0F766E]' : 'bg-[#34D3C1]'}`} />
           <span className={`font-semibold ${isLight ? 'text-[#13211F]' : 'text-[#E4EEEB]'}`}>AI Backend Lock-In Plan</span>
-          <span className="hidden sm:inline opacity-60">• Nov 2026 – Apr 2027</span>
+          <span className="hidden sm:inline opacity-60">• 3-Month Plan</span>
         </div>
       </div>
 
-      {/* Embedded Study Plan Document */}
+      {/* Embedded Goal Document */}
       <div className={`flex-1 w-full h-[calc(100vh-48px)] overflow-hidden ${isLight ? 'bg-[#EEF2F1]' : 'bg-[#0C1413]'}`}>
         <iframe
           ref={iframeRef}
-          src={`/goals.html?theme=${theme}`}
+          src={`/goal.html?theme=${theme}`}
+          className="w-full h-full border-0 select-text"
           title="AI Backend Lock-In Plan"
-          className="w-full h-full border-none"
         />
       </div>
     </div>

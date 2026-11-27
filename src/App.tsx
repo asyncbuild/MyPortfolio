@@ -10,8 +10,7 @@ import { ContactCTA } from './components/ContactCTA';
 import { IndexSidebar } from './components/IndexSidebar';
 import { Footer } from './components/Footer';
 import { ResumeView } from './components/ResumeView';
-import { GoalsView } from './components/GoalsView';
-import { LearningsView } from './components/LearningsView';
+import { GoalView } from './components/GoalView';
 import { Watermark } from './components/Watermark';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { TerminalModal } from './components/TerminalModal';
@@ -21,12 +20,16 @@ import type { ProjectItem } from './types/portfolio';
 
 export function App() {
   const [sessionStartTime] = useState(() => Date.now());
-  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goals' | 'learnings'>(() => {
+  const [currentView, setCurrentView] = useState<'home' | 'resume' | 'goal'>(() => {
     if (typeof window !== 'undefined') {
       const p = window.location.pathname.toLowerCase();
       const h = window.location.hash.toLowerCase();
-      if (p === '/goals' || h === '#goals') return 'goals';
-      if (p === '/learnings' || h === '#learnings') return 'learnings';
+      if (p === '/goal' || h === '#goal' || p === '/goals' || h === '#goals') {
+        if (p === '/goals' || h === '#goals') {
+          window.history.replaceState({}, '', '/goal');
+        }
+        return 'goal';
+      }
       if (p === '/resume' || h === '#resume') return 'resume';
     }
     return 'home';
@@ -87,10 +90,16 @@ export function App() {
     const handlePopState = () => {
       const p = window.location.pathname.toLowerCase();
       const h = window.location.hash.toLowerCase();
-      if (p === '/goals' || h === '#goals') setCurrentView('goals');
-      else if (p === '/learnings' || h === '#learnings') setCurrentView('learnings');
-      else if (p === '/resume' || h === '#resume') setCurrentView('resume');
-      else setCurrentView('home');
+      if (p === '/goal' || h === '#goal' || p === '/goals' || h === '#goals') {
+        if (p === '/goals' || h === '#goals') {
+          window.history.replaceState({}, '', '/goal');
+        }
+        setCurrentView('goal');
+      } else if (p === '/resume' || h === '#resume') {
+        setCurrentView('resume');
+      } else {
+        setCurrentView('home');
+      }
     };
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('hashchange', handlePopState);
@@ -173,17 +182,8 @@ export function App() {
         {/* Soft Ambient Radial Glow */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-indigo-500/5 via-transparent to-transparent" />
 
-        {currentView === 'goals' ? (
-          <GoalsView
-            theme={theme}
-            onBack={() => {
-              setCurrentView('home');
-              window.history.pushState({}, '', '/');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        ) : currentView === 'learnings' ? (
-          <LearningsView
+        {currentView === 'goal' ? (
+          <GoalView
             theme={theme}
             onBack={() => {
               setCurrentView('home');
@@ -244,14 +244,9 @@ export function App() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           onOpenTerminal={() => setTerminalOpen(true)}
-          onOpenGoals={() => {
-            setCurrentView('goals');
-            window.history.pushState({}, '', '/goals');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onOpenLearnings={() => {
-            setCurrentView('learnings');
-            window.history.pushState({}, '', '/learnings');
+          onOpenGoal={() => {
+            setCurrentView('goal');
+            window.history.pushState({}, '', '/goal');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
@@ -266,14 +261,9 @@ export function App() {
           isOpen={terminalOpen}
           onClose={() => setTerminalOpen(false)}
           onToggleTheme={toggleTheme}
-          onOpenGoals={() => {
-            setCurrentView('goals');
-            window.history.pushState({}, '', '/goals');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onOpenLearnings={() => {
-            setCurrentView('learnings');
-            window.history.pushState({}, '', '/learnings');
+          onOpenGoal={() => {
+            setCurrentView('goal');
+            window.history.pushState({}, '', '/goal');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
