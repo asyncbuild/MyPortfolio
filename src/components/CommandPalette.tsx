@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal, Target } from 'lucide-react';
+import { Search, ArrowRight, FolderGit2, Briefcase, Code, User, Calendar, Mail, FileText, ExternalLink, X, Terminal } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 
 interface CommandPaletteProps {
@@ -8,7 +8,6 @@ interface CommandPaletteProps {
   onOpenCalModal: () => void;
   onOpenResume: () => void;
   onOpenTerminal?: () => void;
-  onOpenGoal?: () => void;
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
@@ -17,7 +16,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenCalModal,
   onOpenResume,
   onOpenTerminal,
-  onOpenGoal,
 }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -45,20 +43,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     },
 
     // Quick Actions
-    {
-      id: 'act-goal',
-      category: 'Actions',
-      label: 'View AI Backend Lock-In Plan (/goal)',
-      icon: Target,
-      action: () => {
-        onClose();
-        if (onOpenGoal) onOpenGoal();
-        else {
-          window.history.pushState({}, '', '/goal');
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        }
-      },
-    },
     { id: 'act-cal', category: 'Actions', label: 'Book an Intro Call (Cal.com)', icon: Calendar, action: () => { onClose(); onOpenCalModal(); } },
     { id: 'act-mail', category: 'Actions', label: `Send Email (${PERSONAL_INFO.email})`, icon: Mail, action: () => { window.location.href = `mailto:${PERSONAL_INFO.email}`; } },
     { id: 'act-resume', category: 'Actions', label: 'View & Download Resume', icon: FileText, action: () => { onClose(); onOpenResume(); } },

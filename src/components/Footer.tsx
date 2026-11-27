@@ -27,20 +27,6 @@ export const Footer: React.FC = () => {
         {/* Center / Tech Stack */}
         <div className="text-[11px] theme-text-faint hidden md:flex items-center gap-2">
           <span>Built with React 19, TypeScript &amp; Tailwind</span>
-          <span>•</span>
-          <a
-            href="/goal"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.pushState({}, '', '/goal');
-              window.dispatchEvent(new PopStateEvent('popstate'));
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="hover:theme-text-title transition-colors underline underline-offset-2 cursor-pointer"
-            title="View AI Backend Lock-In Plan"
-          >
-            Lock-In Plan
-          </a>
         </div>
 
         {/* Right: Back to Top */}

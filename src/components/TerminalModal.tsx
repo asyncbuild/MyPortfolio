@@ -7,7 +7,6 @@ interface TerminalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onToggleTheme?: () => void;
-  onOpenGoal?: () => void;
 }
 
 interface CommandLog {
@@ -16,7 +15,7 @@ interface CommandLog {
   output: React.ReactNode;
 }
 
-export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme, onOpenGoal }) => {
+export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, onToggleTheme }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -76,7 +75,6 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
               <div><span className="text-white font-mono font-medium">motto</span> - Core guiding belief</div>
               <div><span className="text-white font-mono font-medium">matrix</span> - Digital rain mode</div>
               <div><span className="text-white font-mono font-medium">sudo hire</span> - Direct hire shortcut</div>
-              <div><span className="text-white font-mono font-medium">goal</span> - AI backend lock-in plan</div>
               <div><span className="text-white font-mono font-medium">theme</span> - Toggle light/dark</div>
               <div><span className="text-white font-mono font-medium">clear</span> - Clear screen</div>
               <div><span className="text-white font-mono font-medium">exit</span> - Close terminal</div>
@@ -201,26 +199,6 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose, o
           onToggleTheme();
           output = <p className="text-zinc-300 text-xs font-mono">Theme toggled successfully.</p>;
         }
-        break;
-
-      case 'goal':
-      case 'goals':
-      case 'plan':
-      case 'roadmap':
-        output = (
-          <div className="space-y-1 text-zinc-300 text-xs font-mono">
-            <p className="text-teal-300 font-bold">AI Backend Lock-In Plan</p>
-            <p className="text-zinc-400">Opening lock-in plan at <span className="text-teal-300 underline">/goal</span>...</p>
-          </div>
-        );
-        setTimeout(() => {
-          onClose();
-          if (onOpenGoal) onOpenGoal();
-          else {
-            window.history.pushState({}, '', '/goal');
-            window.dispatchEvent(new PopStateEvent('popstate'));
-          }
-        }, 500);
         break;
 
       case 'clear':

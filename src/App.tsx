@@ -244,11 +244,6 @@ export function App() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           onOpenTerminal={() => setTerminalOpen(true)}
-          onOpenGoal={() => {
-            setCurrentView('goal');
-            window.history.pushState({}, '', '/goal');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
         />
 
         <CalModal
@@ -261,11 +256,6 @@ export function App() {
           isOpen={terminalOpen}
           onClose={() => setTerminalOpen(false)}
           onToggleTheme={toggleTheme}
-          onOpenGoal={() => {
-            setCurrentView('goal');
-            window.history.pushState({}, '', '/goal');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
         />
 
         <ProjectModal
