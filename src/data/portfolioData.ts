@@ -3,8 +3,8 @@ import type { ExperienceItem, ProjectItem, OpenSourcePR, BlogPost, HighlightItem
 export const PERSONAL_INFO = {
   name: "Deepesh Reddy",
   age: "23",
-  title: "Data & AI Engineer • Full-Stack Developer",
-  tagline: "Data & AI Engineer at EY and full-stack developer. I build real-time web platforms, automated data pipelines, and fast user interfaces.",
+  title: "Associate Software Engineer • Full-Stack Developer",
+  tagline: "Associate Software Engineer at EY GDS and full-stack developer. I build real-time web platforms, automated data pipelines, and fast user interfaces.",
   statusText: "Available for projects",
   location: "India (Remote)",
   email: "contact.deepeshreddy@gmail.com",
@@ -27,7 +27,7 @@ export const PERSONAL_INFO = {
   },
   philosophy: "Be Delusional.",
   bioPoints: [
-    "Data & AI Engineer at EY — building Python XBRL parsers, web scrapers, and data validation pipelines for complex enterprise datasets.",
+    "Associate Software Engineer at EY GDS — building Python data processing pipelines, XBRL parsers, and validation systems for financial datasets.",
     "Creator of WhisprLive — a real-time audience engagement platform built with React, TypeScript, Node.js, and WebSockets.",
     "Big believer in agentic coding — using autonomous coding agents to build, test, and ship production-ready software much faster.",
     "Comfortable across the entire stack, from distributed data pipelines to clean, responsive frontends.",
@@ -37,20 +37,21 @@ export const PERSONAL_INFO = {
 export const EXPERIENCES: ExperienceItem[] = [
   {
     id: "exp-1",
-    role: "Data & AI Engineer",
-    company: "EY",
+    role: "Associate Software Engineer",
+    company: "EY GDS",
     companyUrl: "https://www.ey.com",
     period: "Aug 2025 - Present",
     location: "Kolkata, India",
     type: "Full-time",
-    metricBadges: ["XBRL Parsing", "Python & SQL", "Web Scraping"],
+    metricBadges: ["265K+ Filings (98.6% Success)", "Python & SQL Pipeline", "XBRL Taxonomies"],
     bulletPoints: [
-      "Developed a Python-based XBRL parser to extract structured data using taxonomy definitions and extended it to process entire directories of XBRL files.",
-      "Evaluated external data sources and developed Python web scraping solutions to retrieve relevant information from target websites.",
-      "Processed structured and semi-structured enterprise data using Python and SQL, implementing validation checks to improve data accuracy and consistency.",
-      "Collaborated with analysts to clarify data requirements and used AI coding assistants to support development, debugging, and test generation."
+      "Developed an end-to-end Python data processing pipeline covering download, parsing, validation, and database ingestion of XBRL financial filings across base and extension taxonomies for IFRS- and US-GAAP-based reporting formats.",
+      "Processed 265K+ filings across two national registries, extracting 12–14 financial fields per filing with a reported 98.6% success rate (261,663 successful filings).",
+      "Investigated approximately 3.7K failed filings, identifying recurring data-quality issues involving invalid taxonomy files and malformed date formats.",
+      "Implemented SQL-based validation checks to ensure consistency of extracted financial data before database ingestion.",
+      "Worked with analysts and cross-functional stakeholders to translate taxonomy-specific reporting requirements into parsing and validation rules."
     ],
-    techStack: ["Python", "SQL", "XBRL", "Web Scraping", "Data Validation", "AI Assistants"],
+    techStack: ["Python", "SQL", "XBRL", "Data Pipelines", "Data Validation", "IFRS & US-GAAP"],
     highlightColor: "indigo"
   },
   {

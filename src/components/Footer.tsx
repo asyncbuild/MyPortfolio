@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <span className="theme-text-title font-semibold">{PERSONAL_INFO.name}</span>
           <span className="opacity-30">•</span>
-          <span className="theme-text-muted">Data &amp; AI Engineer</span>
+          <span className="theme-text-muted">Associate Software Engineer</span>
         </div>
 
         {/* Center / Tech Stack */}
